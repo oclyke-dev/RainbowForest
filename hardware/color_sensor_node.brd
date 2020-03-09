@@ -180,6 +180,7 @@
 <vertex x="5.3975" y="15.5575"/>
 <vertex x="5.08" y="15.24"/>
 </polygon>
+<text x="0.381" y="8.382" size="1.778" layer="1" font="vector" ratio="15" rot="SR270">v01</text>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors">
@@ -1003,9 +1004,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <contactref element="J3" pad="10"/>
 <wire x1="14.69" y1="14.47" x2="15.24" y2="14.47" width="0.2032" layer="1"/>
 <wire x1="16.51" y1="7.62" x2="21.59" y2="2.54" width="0.2032" layer="1"/>
-<wire x1="21.59" y1="4.445" x2="21.59" y2="2.54" width="0.4064" layer="16"/>
-<wire x1="21.59" y1="4.445" x2="20.828" y2="5.207" width="0.4064" layer="16"/>
-<wire x1="20.828" y1="5.207" x2="14.097" y2="5.207" width="0.4064" layer="16"/>
+<wire x1="21.59" y1="3.556" x2="21.59" y2="2.54" width="0.4064" layer="16"/>
+<wire x1="21.59" y1="3.556" x2="19.939" y2="5.207" width="0.4064" layer="16"/>
+<wire x1="19.939" y1="5.207" x2="14.097" y2="5.207" width="0.4064" layer="16"/>
 <wire x1="14.097" y1="5.207" x2="11.43" y2="2.54" width="0.4064" layer="16"/>
 <wire x1="15.24" y1="14.47" x2="16.51" y2="13.2" width="0.2032" layer="1"/>
 <wire x1="16.51" y1="13.2" x2="16.51" y2="7.62" width="0.2032" layer="1"/>
@@ -1076,9 +1077,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <mfgpreviewcolor name="coppercolor" color="0xFFFFBF00"/>
 <mfgpreviewcolor name="substratecolor" color="0xFF786E46"/>
 </mfgpreviewcolors>
-<errors>
-<approved hash="23,1,a6e59a728434f63b"/>
-</errors>
 </board>
 </drawing>
 </eagle>
