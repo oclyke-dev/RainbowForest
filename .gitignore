@@ -1,6 +1,9 @@
 # MacOS
 .SD_Store
 
+# Logic Captures
+*.logicdata
+
 # Ignore list for Eagle, a PCB layout tool
 
 # Backup files
