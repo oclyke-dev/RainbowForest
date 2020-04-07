@@ -425,42 +425,28 @@ We've spent an enormous amount of time creating and checking these footprints an
 &lt;br&gt;
 You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
 <packages>
-<package name="WS2812B">
-<description>&lt;h3&gt;WS2812B&lt;/h3&gt;
-
+<package name="WS2812-2020">
+<description>&lt;h3&gt;WS2812-2020 - 2020 package for the WS2812&lt;/h3&gt;
 &lt;p&gt;Specifications:
 &lt;ul&gt;&lt;li&gt;Pin count: 4&lt;/li&gt;
-&lt;li&gt;Size: 5.0 x 5.0 mm&lt;/li&gt;
+&lt;li&gt;Pin pitch: 1 mm&lt;/li&gt;
+&lt;li&gt;Area: 2.2 mm x 2.0 mm&lt;/li&gt;
 &lt;/ul&gt;&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;Datasheet referenced for footprint:&lt;/b&gt; &lt;a href="http://cdn.sparkfun.com/datasheets/BreakoutBoards/WS2812B.pdf"&gt;WS2812B&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Example device:
-&lt;ul&gt;&lt;li&gt;WS2812B&lt;/li&gt;</description>
-<smd name="1" x="2.577" y="-1.6" dx="1.651" dy="1" layer="1" rot="R180"/>
-<smd name="4" x="-2.577" y="-1.6" dx="1.651" dy="1" layer="1" rot="R180"/>
-<smd name="3" x="-2.577" y="1.6" dx="1.651" dy="1" layer="1" rot="R180"/>
-<smd name="2" x="2.577" y="1.6" dx="1.651" dy="1" layer="1" rot="R180"/>
-<wire x1="2.5" y1="-2.5" x2="2.5" y2="2.5" width="0.127" layer="51"/>
-<wire x1="2.5" y1="2.5" x2="-2.5" y2="2.5" width="0.127" layer="51"/>
-<wire x1="-2.5" y1="2.5" x2="-2.5" y2="-2.5" width="0.127" layer="51"/>
-<wire x1="-2.5" y1="-2.5" x2="2.5" y2="-2.5" width="0.127" layer="51"/>
-<text x="0" y="2.794" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-2.794" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
-<wire x1="2.4892" y1="-2.362203125" x2="2.4892" y2="-2.616203125" width="0.2032" layer="21"/>
-<wire x1="2.4892" y1="-2.616203125" x2="2.4384" y2="-2.616203125" width="0.2032" layer="21"/>
-<wire x1="2.4384" y1="-2.616203125" x2="2.4384" y2="-2.611121875" width="0.2032" layer="21"/>
-<wire x1="2.4384" y1="-2.611121875" x2="-2.512059375" y2="-2.611121875" width="0.2032" layer="21"/>
-<wire x1="-2.512059375" y1="-2.611121875" x2="-2.512059375" y2="-2.37998125" width="0.2032" layer="21"/>
-<wire x1="2.50951875" y1="2.319021875" x2="2.50951875" y2="2.5908" width="0.2032" layer="21"/>
-<wire x1="2.50951875" y1="2.5908" x2="2.45871875" y2="2.5908" width="0.2032" layer="21"/>
-<wire x1="2.45871875" y1="2.5908" x2="2.45871875" y2="2.593340625" width="0.2032" layer="21"/>
-<wire x1="2.45871875" y1="2.593340625" x2="-2.50951875" y2="2.593340625" width="0.2032" layer="21"/>
-<wire x1="-2.50951875" y1="2.593340625" x2="-2.50951875" y2="2.36728125" width="0.2032" layer="21"/>
-<wire x1="2.54" y1="0.889" x2="2.54" y2="-0.8128" width="0.2032" layer="21"/>
-<wire x1="-2.54" y1="-0.8636" x2="-2.54" y2="0" width="0.2032" layer="21"/>
-<wire x1="-2.54" y1="0" x2="-2.54" y2="0.8636" width="0.2032" layer="21"/>
-<wire x1="-2.54" y1="0" x2="0" y2="2.54" width="0.2032" layer="21"/>
-<circle x="-2.8575" y="2.8575" radius="0.2032" width="0" layer="21"/>
-<circle x="-1.27" y="1.905" radius="0.2032" width="0" layer="51"/>
+&lt;p&gt;&lt;a href=https://www.aliexpress.com/store/product/WS2812-2020-Intelligent-control-LED-integrated-light-source-2020-SMD-RGB-LED-with-built-in-WS2811/701799_32879024689.html?spm=2114.12010612.8148356.3.67626848TBx3Ev&gt;Datasheet referenced for footprint&lt;/a&gt;&lt;/p&gt;</description>
+<smd name="2" x="0.915" y="0.55" dx="0.7" dy="0.7" layer="1"/>
+<smd name="1" x="0.915" y="-0.55" dx="0.7" dy="0.7" layer="1"/>
+<smd name="4" x="-0.915" y="-0.55" dx="0.7" dy="0.7" layer="1"/>
+<smd name="3" x="-0.915" y="0.55" dx="0.7" dy="0.7" layer="1"/>
+<wire x1="-1.1" y1="1.1" x2="1.1" y2="1.1" width="0.127" layer="21"/>
+<wire x1="1.1" y1="-1.1" x2="-1.1" y2="-1.1" width="0.127" layer="21"/>
+<rectangle x1="0" y1="-1" x2="0.5" y2="1" layer="51"/>
+<wire x1="-1.1" y1="1" x2="-1.1" y2="-1" width="0.127" layer="51"/>
+<wire x1="-1.1" y1="-1" x2="1.1" y2="-1" width="0.127" layer="51"/>
+<wire x1="1.1" y1="-1" x2="1.1" y2="1" width="0.127" layer="51"/>
+<wire x1="1.1" y1="1" x2="-1.1" y2="1" width="0.127" layer="51"/>
+<wire x1="-1.1" y1="-0.1" x2="-1.1" y2="0.1" width="0.127" layer="21"/>
+<wire x1="1.1" y1="-0.1" x2="1.1" y2="0.1" width="0.127" layer="21"/>
+<circle x="1.3" y="-1.3" radius="0.07" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -515,34 +501,20 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="WS2812B" prefix="D" uservalue="yes">
-<description>&lt;h3&gt;WS2812B SMD addressable RGB LED&lt;/h3&gt;
-5x5mm SMD LED with built-in controller IC.
-
-&lt;p&gt;&lt;li&gt;&lt;b&gt;Color:&lt;/b&gt; Red/Green/Blue&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;mC Rating: &lt;/b&gt;RGB: 390, 660, 180 mcd&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Forward Voltage: &lt;/b&gt; RGB: 2.0, 3.0, 3.0 V&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Packages:&lt;/b&gt;WS2812B&lt;/li&gt;
-&lt;/p&gt;
-&lt;p&gt;SparkFun Products:
-&lt;ul&gt;&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/13794”&gt;Blynk Board - ESP8266&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;</description>
+<deviceset name="WS2812-2020">
 <gates>
-<gate name="G$1" symbol="LED-TRICOLOR-WS28X1" x="2.54" y="0"/>
+<gate name="G$1" symbol="LED-TRICOLOR-WS28X1" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="WS2812B">
+<device name="" package="WS2812-2020">
 <connects>
-<connect gate="G$1" pin="DI" pad="4"/>
-<connect gate="G$1" pin="DO" pad="2"/>
-<connect gate="G$1" pin="VDD" pad="1"/>
-<connect gate="G$1" pin="VSS" pad="3"/>
+<connect gate="G$1" pin="DI" pad="3"/>
+<connect gate="G$1" pin="DO" pad="1"/>
+<connect gate="G$1" pin="VDD" pad="4"/>
+<connect gate="G$1" pin="VSS" pad="2"/>
 </connects>
 <technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-12503"/>
-<attribute name="VALUE" value="WS2812B" constant="no"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -1715,7 +1687,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="GND4" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="R1" library="SparkFun-Resistors" deviceset="10KOHM" device="-0603-1/10W-1%" value="10k"/>
 <part name="C2" library="SparkFun-Capacitors" deviceset="1.0UF" device="-0603-16V-10%" value="1.0uF"/>
-<part name="D1" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
+<part name="D1" library="SparkFun-LED" deviceset="WS2812-2020" device="" value="WS2812B"/>
 <part name="U3" library="ws2811" deviceset="WS2811" device=""/>
 <part name="GND5" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="SUPPLY6" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
@@ -1797,7 +1769,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </instance>
 <instance part="D1" gate="G$1" x="73.66" y="134.62">
 <attribute name="NAME" x="71.12" y="143.002" size="1.778" layer="95" font="vector" align="bottom-center"/>
-<attribute name="VALUE" x="71.12" y="127" size="1.778" layer="95" font="vector" align="bottom-center"/>
 </instance>
 <instance part="U3" gate="G$1" x="71.12" y="109.22"/>
 <instance part="GND5" gate="1" x="55.88" y="101.6">
@@ -1856,9 +1827,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="NAME" x="180.34" y="89.154" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="180.34" y="71.374" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="C3" gate="G$1" x="48.26" y="88.9">
-<attribute name="NAME" x="49.784" y="91.821" size="1.778" layer="95" font="vector"/>
-<attribute name="VALUE" x="49.784" y="86.741" size="1.778" layer="96" font="vector"/>
+<instance part="C3" gate="G$1" x="48.26" y="86.36">
+<attribute name="NAME" x="49.784" y="89.281" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="49.784" y="84.201" size="1.778" layer="96" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -1887,7 +1858,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="48.26" y1="81.28" x2="48.26" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="GND4" gate="1" pin="GND"/>
 <pinref part="C3" gate="G$1" pin="2"/>
-<wire x1="48.26" y1="86.36" x2="48.26" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="83.82" x2="48.26" y2="81.28" width="0.1524" layer="91"/>
 <junction x="48.26" y="81.28"/>
 </segment>
 <segment>
@@ -2109,7 +2080,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="58.42" y1="86.36" x2="60.96" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="96.52" x2="58.42" y2="96.52" width="0.1524" layer="91"/>
 <pinref part="C3" gate="G$1" pin="1"/>
-<wire x1="48.26" y1="96.52" x2="48.26" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="96.52" x2="48.26" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="58.42" y1="96.52" x2="48.26" y2="96.52" width="0.1524" layer="91"/>
 <junction x="58.42" y="96.52"/>
 <wire x1="48.26" y1="114.3" x2="48.26" y2="96.52" width="0.1524" layer="91"/>
