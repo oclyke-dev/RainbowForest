@@ -33,36 +33,34 @@ unsigned int green = 0;
 unsigned int blue = 0;
 
 // The LuMini rings need two data pins connected
-#define DATA_PIN 16
-#define CLOCK_PIN 17
-#define NUM_LEDS 20 //1 Inch
-CRGB ring[NUM_LEDS];
+#define DATA_PIN 18
+#define NUM_LEDS 2
+CRGB leds[NUM_LEDS];
 
-// Manual detection trigger
-#define TRIGGER_PIN 0
 volatile bool isr_fired = false;
 volatile uint32_t debounce_time = 0;
-
 
 void setup() {
   // put your setup code here, to run once:
 
   Serial.begin(115200);
+  
+  FastLED.addLeds<WS2811, DATA_PIN, RGB>(leds, NUM_LEDS);
+  LEDS.setBrightness(255);
+  // Turn on the sensor by writing a full value to the R channel
+  leds[0] = CRGB(255, 0, 0);
+  
+  FastLED.show();
+  delay(1000);
 
   // Initialize the ISL29125 with simple configuration so it starts sampling
-  if (RGB_sensor.init())
-  {
-    Serial.println("Sensor Initialization Successful\n\r");
+  while(!RGB_sensor.init()){
+    Serial.println("trying to start the sensor!");
+    delay(50);
   }
-  
-  LEDS.addLeds<APA102, DATA_PIN, CLOCK_PIN, BGR>(ring, NUM_LEDS);
-  LEDS.setBrightness(128);
+  Serial.println("Sensor Initialization Successful\n\r");
 
-  // set up the trigger pin
-  pinMode(TRIGGER_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(TRIGGER_PIN), startReading, RISING);
-
-  Serial.print("Press button 0 to begin sampling colors!");
+  startReading();
 }
 
 void loop() {
@@ -72,13 +70,22 @@ void loop() {
     printResults();
     isr_fired = false;
   }
-  
 }
 
 
 
 void completeReading( void * parameter )
 {
+  // Turn on the sensor by writing a full value to the R channel
+  leds[0] = CRGB(255, 0, 0);
+
+  // Turn on the LED to illuminate the subject area
+  leds[1] = CRGB(200, 200, 255);  // adjust the balance of white here... blue seems to need some help (higher Vf than other leds..)
+  FastLED.show(); // can't call ws2811 show in ISR context it seems
+
+  delay(100);         // some time for sensor to come online
+  RGB_sensor.init();  // now perform initialization since the sensor had been asleep
+  
   // sensor continuously runs ADC at ~ 10 hz so to be sure wait 0.2 seconds before reading
   delay(200);
 
@@ -104,10 +111,11 @@ void completeReading( void * parameter )
   }
 
 
-  // Turn the ring to off
-  for (int i = 0; i < NUM_LEDS; i++) {
-    ring[i] = CRGB(0, 0, 0);
-  }
+  // Turn off the sensor
+  leds[0] = CRGB(0, 0, 0);
+
+  // Turn off the LED
+  leds[1] = CRGB(0, 0, 0);
   FastLED.show();
 
   isr_fired = true;
@@ -126,17 +134,10 @@ void startReading( void ){
 
   debounce_time = millis() + 50;
 
-//  // Turn the ring to white
-//  for (int i = 0; i < NUM_LEDS; i++) {
-  for (int i = 0; i < 1; i++) { // turn on only one led to be closer to the final design
-    ring[i] = CRGB(200, 200, 255);  // adjust the balance of white here... blue seems to need some help (higher Vf than other leds..)
-  }
-  FastLED.show();
-
   // Start a new task to read the sensor (since it needs to wait for a sample)
   xTaskCreate(  completeReading,          /* Task function. */
                 "completeReading",        /* String with name of task. */
-                1000,                    /* Stack size in bytes. */
+                10000,                    /* Stack size in bytes. */
                 NULL,                     /* Parameter passed as input of the task */
                 1,                        /* Priority of the task. */
                 NULL                      /* Task handle. */
@@ -192,7 +193,7 @@ float min3( float Rp, float Gp, float Bp, uint8_t* index ){
 }
 
 void printResults( void ){
-    if(isr_fired){
+  if(isr_fired){
     float Rp = (float)red/255;
     float Gp = (float)green/255;
     float Bp = (float)blue/255;
