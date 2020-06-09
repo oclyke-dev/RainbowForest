@@ -160,7 +160,7 @@
 <text x="4.445" y="18.7325" size="1.27" layer="22" font="vector" ratio="15" rot="MR0">IN</text>
 <text x="25.7175" y="18.7325" size="1.27" layer="22" font="vector" ratio="15" rot="MR0">OUT</text>
 <circle x="13.97" y="9.525" radius="7.62" width="0.4064" layer="51"/>
-<text x="10.668" y="0.381" size="1.778" layer="16" font="vector" ratio="15" rot="SMR0">v02A</text>
+<text x="10.668" y="0.381" size="1.778" layer="16" font="vector" ratio="15" rot="SMR0">v03</text>
 <rectangle x1="10.795" y1="19.05" x2="17.145" y2="28.575" layer="51"/>
 <hole x="10.795" y="28.575" drill="1.27"/>
 <hole x="17.145" y="28.575" drill="1.27"/>
