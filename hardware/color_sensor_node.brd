@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.2.0">
+<eagle version="9.6.0">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.005" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.001" altunitdist="inch" altunit="inch"/>
+<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="1" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="24" fill="1" visible="yes" active="yes"/>
 <layer number="21" name="tPlace" color="16" fill="1" visible="yes" active="yes"/>
-<layer number="22" name="bPlace" color="14" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="14" fill="1" visible="no" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
-<layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
-<layer number="31" name="tCream" color="7" fill="4" visible="yes" active="yes"/>
-<layer number="32" name="bCream" color="7" fill="5" visible="yes" active="yes"/>
-<layer number="33" name="tFinish" color="6" fill="3" visible="yes" active="yes"/>
-<layer number="34" name="bFinish" color="6" fill="6" visible="yes" active="yes"/>
-<layer number="35" name="tGlue" color="7" fill="4" visible="yes" active="yes"/>
-<layer number="36" name="bGlue" color="7" fill="5" visible="yes" active="yes"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
+<layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
+<layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
-<layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
+<layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="yes"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
-<layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
-<layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
-<layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes"/>
+<layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="no" active="yes"/>
 <layer number="51" name="tDocu" color="6" fill="1" visible="yes" active="yes"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="no" active="no"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="no" active="no"/>
 <layer number="93" name="Pins" color="2" fill="1" visible="no" active="no"/>
@@ -172,46 +172,8 @@
 <wire x1="17.272" y1="28.702" x2="10.668" y2="28.702" width="0" layer="20"/>
 <circle x="2.54" y="27.94" radius="1.27" width="0" layer="51"/>
 <circle x="25.4" y="27.94" radius="1.27" width="0" layer="51"/>
-<wire x1="2.168025" y1="5.3975" x2="9.261975" y2="5.3975" width="0.6096" layer="41"/>
-<wire x1="9.261975" y1="5.3975" x2="9.7109875" y2="5.5834875" width="0.6096" layer="41" curve="45"/>
-<wire x1="9.7109875" y1="5.5834875" x2="11.5615125" y2="7.4340125" width="0.6096" layer="41"/>
-<wire x1="11.5615125" y1="7.4340125" x2="12.010525" y2="7.62" width="0.6096" layer="41" curve="-45"/>
-<wire x1="12.010525" y1="7.62" x2="17.516975" y2="7.62" width="0.6096" layer="41"/>
-<wire x1="17.516975" y1="7.62" x2="17.9659875" y2="7.8059875" width="0.6096" layer="41" curve="45"/>
-<wire x1="17.9659875" y1="7.8059875" x2="18.8640125" y2="8.7040125" width="0.6096" layer="41"/>
-<wire x1="18.8640125" y1="8.7040125" x2="19.05" y2="9.153025" width="0.6096" layer="41" curve="45"/>
-<wire x1="19.05" y1="9.153025" x2="19.05" y2="13.706975" width="0.6096" layer="41"/>
-<wire x1="19.05" y1="13.706975" x2="18.8640125" y2="14.1559875" width="0.6096" layer="41" curve="45"/>
-<wire x1="18.8640125" y1="14.1559875" x2="17.9659875" y2="15.0540125" width="0.6096" layer="41"/>
-<wire x1="17.9659875" y1="15.0540125" x2="17.516975" y2="15.24" width="0.6096" layer="41" curve="45"/>
-<wire x1="17.516975" y1="15.24" x2="13.598025" y2="15.24" width="0.6096" layer="41"/>
-<wire x1="13.598025" y1="15.24" x2="13.1490125" y2="15.4259875" width="0.6096" layer="41" curve="-45"/>
-<wire x1="13.1490125" y1="15.4259875" x2="11.2984875" y2="17.2765125" width="0.6096" layer="41"/>
-<wire x1="11.2984875" y1="17.2765125" x2="10.849475" y2="17.4625" width="0.6096" layer="41" curve="45"/>
-<wire x1="10.849475" y1="17.4625" x2="2.803025" y2="17.4625" width="0.6096" layer="41"/>
-<wire x1="2.803025" y1="17.4625" x2="2.3540125" y2="17.2765125" width="0.6096" layer="41" curve="45"/>
-<wire x1="2.3540125" y1="17.2765125" x2="1.1384875" y2="16.0609875" width="0.6096" layer="41"/>
-<wire x1="1.1384875" y1="16.0609875" x2="0.9525" y2="15.611975" width="0.6096" layer="41" curve="45"/>
-<wire x1="0.9525" y1="15.611975" x2="0.9525" y2="6.613025" width="0.6096" layer="41"/>
-<wire x1="0.9525" y1="6.613025" x2="1.1384875" y2="6.1640125" width="0.6096" layer="41" curve="45"/>
-<wire x1="1.1384875" y1="6.1640125" x2="1.7190125" y2="5.5834875" width="0.6096" layer="41"/>
-<wire x1="1.7190125" y1="5.5834875" x2="2.168025" y2="5.3975" width="0.6096" layer="41" curve="45"/>
 <circle x="2.54" y="27.94" radius="1.79605" width="0.254" layer="51"/>
 <circle x="25.4" y="27.94" radius="1.79605" width="0.254" layer="51"/>
-<polygon width="0.2032" layer="41">
-<vertex x="1.27" y="15.875"/>
-<vertex x="2.54" y="17.145"/>
-<vertex x="10.795" y="17.145"/>
-<vertex x="13.0175" y="14.9225"/>
-<vertex x="17.4625" y="14.9225"/>
-<vertex x="18.7325" y="13.6525"/>
-<vertex x="18.7325" y="9.2075"/>
-<vertex x="17.4625" y="7.9375"/>
-<vertex x="11.43" y="7.9375"/>
-<vertex x="9.2075" y="5.715"/>
-<vertex x="2.2225" y="5.715"/>
-<vertex x="1.27" y="6.6675"/>
-</polygon>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors">
@@ -751,73 +713,73 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </pass>
 </autorouter>
 <elements>
-<element name="C1" library="SparkFun-Capacitors" package="0603" value="1.0uF" x="8.128" y="13.97" rot="R270">
+<element name="C1" library="SparkFun-Capacitors" package="0603" value="1.0uF" x="8.128" y="13.97" smashed="yes" rot="R270">
 <attribute name="NAME" x="8.89" y="13.97" size="0.6096" layer="25" font="vector" ratio="20" rot="R270" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-00868" x="-19.812" y="-1.27" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="7.366" y="13.97" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
-<element name="C2" library="SparkFun-Capacitors" package="0603" value="1.0uF" x="2.54" y="13.97" rot="R270">
+<element name="C2" library="SparkFun-Capacitors" package="0603" value="1.0uF" x="2.54" y="13.97" smashed="yes" rot="R270">
 <attribute name="NAME" x="3.302" y="13.97" size="0.6096" layer="25" font="vector" ratio="20" rot="R270" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-00868" x="-25.4" y="-5.08" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="1.778" y="13.97" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
-<element name="D1" library="SparkFun-LED" package="WS2812-2020" value="WS2812B" x="13.97" y="9.525" rot="R90">
+<element name="D1" library="SparkFun-LED" package="WS2812-2020" value="WS2812B" x="13.97" y="9.525" smashed="yes" rot="R90">
 <attribute name="VALUE" x="16.764" y="9.525" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
 </element>
-<element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LETTER" x="-5.08" y="-8.89">
+<element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LETTER" x="-5.08" y="-8.89" smashed="yes">
 <attribute name="DESIGNER" value="" x="74.93" y="-20.32" size="1.778" layer="27" display="off"/>
 <attribute name="REV" value="" x="74.93" y="-20.32" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R2" library="SparkFun-Resistors" package="0603" value="220" x="9.652" y="13.97" rot="R90">
+<element name="R2" library="SparkFun-Resistors" package="0603" value="220" x="9.652" y="13.97" smashed="yes" rot="R90">
 <attribute name="NAME" x="8.89" y="13.97" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
 <attribute name="PROD_ID" value="RES-07861" x="37.592" y="40.64" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" value="220" x="10.414" y="13.97" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
 </element>
-<element name="U1" library="SparkFun-Sensors" package="ODFN-6" value="ISL29125" x="13.97" y="12.573">
+<element name="U1" library="SparkFun-Sensors" package="ODFN-6" value="ISL29125" x="13.97" y="12.573" smashed="yes">
 <attribute name="NAME" x="12.827" y="12.573" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
 <attribute name="PROD_ID" value="IC-12055" x="39.37" y="-9.017" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="15.113" y="12.573" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
 </element>
-<element name="U2" library="SparkFun-IC-Power" package="SOT23-5" value="3.3V" x="5.334" y="13.97" rot="R90">
+<element name="U2" library="SparkFun-IC-Power" package="SOT23-5" value="3.3V" x="5.334" y="13.97" smashed="yes" rot="R90">
 <attribute name="NAME" x="3.175" y="13.081" size="0.4064" layer="25" rot="R90"/>
 <attribute name="PROD_ID" value="VREG-12457" x="26.924" y="35.56" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="5.5245" y="13.0175" size="0.4064" layer="27" rot="R90"/>
 </element>
-<element name="U3" library="ws2811" package="SOIC-8" value="WS2811" x="5.715" y="8.89" rot="R270">
+<element name="U3" library="ws2811" package="SOIC-8" value="WS2811" x="5.715" y="8.89" smashed="yes" rot="R270">
 <attribute name="NAME" x="4.445" y="11.43" size="0.4064" layer="25"/>
 <attribute name="VALUE" x="4.445" y="6.35" size="0.4064" layer="27"/>
 </element>
-<element name="H1" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="25.4" y="2.54">
+<element name="H1" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="25.4" y="2.54" smashed="yes">
 <attribute name="NAME" x="25.4" y="4.572" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="25.4" y="0.508" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H2" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="2.54" y="2.54">
+<element name="H2" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="2.54" y="2.54" smashed="yes">
 <attribute name="NAME" x="2.54" y="4.572" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="2.54" y="0.508" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H3" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="25.4" y="27.94">
+<element name="H3" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="25.4" y="27.94" smashed="yes">
 <attribute name="NAME" x="25.4" y="29.972" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="25.4" y="25.908" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H4" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="2.54" y="27.94">
+<element name="H4" library="SparkFun-Hardware" package="STAND-OFF" value="STAND-OFF" x="2.54" y="27.94" smashed="yes">
 <attribute name="NAME" x="2.54" y="29.972" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="2.54" y="25.908" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4"/>
-<element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08"/>
-<element name="FD3" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" rot="MR0"/>
-<element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" rot="MR0"/>
-<element name="J1" library="SparkFun-Connectors" package="2X5-SMD-1.27MM" value="JTAG" x="3.81" y="12.065" rot="MR90">
+<element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" smashed="yes"/>
+<element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" smashed="yes"/>
+<element name="FD3" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" smashed="yes" rot="MR0"/>
+<element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" smashed="yes" rot="MR0"/>
+<element name="J1" library="SparkFun-Connectors" package="2X5-SMD-1.27MM" value="JTAG" x="3.81" y="12.065" smashed="yes" rot="MR90">
 <attribute name="NAME" x="5.7404" y="10.4902" size="0.6096" layer="26" font="vector" ratio="20" rot="MR90"/>
 <attribute name="PROD_ID" value="CONN-14503" x="3.81" y="12.065" size="1.778" layer="28" rot="MR90" display="off"/>
 <attribute name="VALUE" value="JTAG" x="1.3462" y="10.2362" size="0.6096" layer="28" font="vector" ratio="20" rot="MR90"/>
 </element>
-<element name="J2" library="SparkFun-Connectors" package="2X5-SMD-1.27MM" value="JTAG" x="24.13" y="12.065" rot="MR90">
+<element name="J2" library="SparkFun-Connectors" package="2X5-SMD-1.27MM" value="JTAG" x="24.13" y="12.065" smashed="yes" rot="MR90">
 <attribute name="NAME" x="26.0604" y="10.4902" size="0.6096" layer="26" font="vector" ratio="20" rot="MR90"/>
 <attribute name="PROD_ID" value="CONN-14503" x="24.13" y="12.065" size="1.778" layer="28" rot="MR90" display="off"/>
 <attribute name="VALUE" value="JTAG" x="21.6662" y="10.2362" size="0.6096" layer="28" font="vector" ratio="20" rot="MR90"/>
 </element>
-<element name="C3" library="SparkFun-Capacitors" package="0603" value="1.0uF" x="11.176" y="13.97" rot="R90">
+<element name="C3" library="SparkFun-Capacitors" package="0603" value="1.0uF" x="11.176" y="13.97" smashed="yes" rot="R90">
 <attribute name="NAME" x="10.414" y="13.97" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
 <attribute name="PROD_ID" value="CAP-00868" x="11.176" y="13.97" size="1.778" layer="27" font="vector" ratio="15" rot="R90" display="off"/>
 <attribute name="VALUE" value="1.0uF" x="11.938" y="13.97" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
@@ -844,7 +806,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <vertex x="27.94" y="27.94"/>
 <vertex x="27.94" y="2.54" curve="-90"/>
 </polygon>
-<polygon width="0.2032" layer="1" isolate="0.3048">
+<polygon width="0.2032" layer="1" isolate="0.3048" rank="2">
 <vertex x="25.4" y="0"/>
 <vertex x="2.54" y="0" curve="-90"/>
 <vertex x="0" y="2.54"/>
@@ -908,6 +870,32 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="5.969" y1="9.691" x2="7.151" y2="9.691" width="0.4064" layer="1"/>
 <wire x1="7.62" y1="10.16" x2="7.151" y2="9.691" width="0.4064" layer="1"/>
 <via x="7.62" y="10.16" extent="1-16" drill="0.381"/>
+<polygon width="0.4064" layer="1" pour="cutout" isolate="0.3048">
+<vertex x="17.25395" y="7.62"/>
+<vertex x="12.27355" y="7.62" curve="45"/>
+<vertex x="11.375525" y="7.248025"/>
+<vertex x="9.896975" y="5.769475" curve="-45"/>
+<vertex x="8.99895" y="5.3975"/>
+<vertex x="2.43105" y="5.3975" curve="-45"/>
+<vertex x="1.533025" y="5.769475"/>
+<vertex x="1.324475" y="5.978025" curve="-45"/>
+<vertex x="0.9525" y="6.87605"/>
+<vertex x="0.9525" y="15.34895" curve="-45"/>
+<vertex x="1.324475" y="16.246975"/>
+<vertex x="2.168025" y="17.090525" curve="-45"/>
+<vertex x="3.06605" y="17.4625"/>
+<vertex x="10.58645" y="17.4625" curve="-45"/>
+<vertex x="11.484475" y="17.090525"/>
+<vertex x="12.963025" y="15.611975" curve="45"/>
+<vertex x="13.86105" y="15.24"/>
+<vertex x="17.25395" y="15.24" curve="-45"/>
+<vertex x="18.151975" y="14.868025"/>
+<vertex x="18.678025" y="14.341975" curve="-45"/>
+<vertex x="19.05" y="13.44395"/>
+<vertex x="19.05" y="9.41605" curve="-45"/>
+<vertex x="18.678025" y="8.518025"/>
+<vertex x="18.151975" y="7.991975" curve="-45"/>
+</polygon>
 </signal>
 <signal name="3.3V">
 <contactref element="U2" pad="5"/>
@@ -1069,129 +1057,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <mfgpreviewcolor name="coppercolor" color="0xFFFFBF00"/>
 <mfgpreviewcolor name="substratecolor" color="0xFF786E46"/>
 </mfgpreviewcolors>
-<errors>
-<approved hash="6,1,d501553f7c8cfcb2"/>
-<approved hash="6,1,5ed6789607f321b3"/>
-<approved hash="6,1,27f4a7f2ce414e47"/>
-<approved hash="6,1,505dd063f333730d"/>
-<approved hash="6,1,426be1abe18f424f"/>
-<approved hash="6,1,acb82c867657f669"/>
-<approved hash="6,1,61daf2b4772850d2"/>
-<approved hash="6,1,6210cee9cae9730d"/>
-<approved hash="6,1,c381d0744a060052"/>
-<approved hash="6,1,d7ba53d05392d7f8"/>
-<approved hash="6,1,e42e6044601be471"/>
-<approved hash="6,1,dbb5f09ffe9fd5b5"/>
-<approved hash="6,1,df106cf4f6dfedce"/>
-<approved hash="6,1,f4a6f9afb96fb36e"/>
-<approved hash="6,1,1a42188218401a80"/>
-<approved hash="6,1,3414545453773337"/>
-<approved hash="6,1,b562ab90cd92cc9e"/>
-<approved hash="6,1,68a8296829ee682e"/>
-<approved hash="6,1,3235727573f033b0"/>
-<approved hash="6,1,78240dec7f9e01bf"/>
-<approved hash="6,1,fdda5f3051b2fefb"/>
-<approved hash="6,1,a51cafb6ae6fa4c5"/>
-<approved hash="6,1,745135bb35927478"/>
-<approved hash="6,1,e63e5df85f0ce4ca"/>
-<approved hash="6,1,8276bb9c3e4c9319"/>
-<approved hash="6,1,0b4a1d20132e0544"/>
-<approved hash="6,1,9525db4c25ed97e0"/>
-<approved hash="6,1,74e262886350753a"/>
-<approved hash="6,1,740ae7e0e7a97443"/>
-<approved hash="6,1,2f724c9637e9277b"/>
-<approved hash="6,1,f318c572c4d4f2be"/>
-<approved hash="6,1,b2a58e0f8cc7b06d"/>
-<approved hash="6,1,ed0509ef09d5ed3f"/>
-<approved hash="6,1,f40d17e717b1f45b"/>
-<approved hash="6,1,a3b483f482f0a2b0"/>
-<approved hash="6,1,ad8d11ae03d47f8f"/>
-<approved hash="6,1,f91dee5deeecf9ac"/>
-<approved hash="6,1,7c9ddc5ddc787cb8"/>
-<approved hash="6,1,f510f8de3618b716"/>
-<approved hash="6,1,c3234de34d03c3c3"/>
-<approved hash="6,1,f53a74bfba7b30fe"/>
-<approved hash="6,1,f3d6153c1508f3e2"/>
-<approved hash="6,1,b925fee5fec0b900"/>
-<approved hash="6,1,252e596e59bc25fc"/>
-<approved hash="6,1,18d65e165ec71807"/>
-<approved hash="6,1,7d2b3bcad809d8e3"/>
-<approved hash="6,1,2decf5acf2e82aa8"/>
-<approved hash="6,1,30a3f0e3fcc23c82"/>
-<approved hash="6,1,f8c1512b5254fbbe"/>
-<approved hash="6,1,920d689b66098b7d"/>
-<approved hash="6,1,773584df841c77f6"/>
-<approved hash="6,1,5d1357b951775bdd"/>
-<approved hash="6,1,6b532d33262192d1"/>
-<approved hash="6,1,c694c699ea38ea35"/>
-<approved hash="6,1,be59be54e38be386"/>
-<approved hash="6,1,94bb7c7b706498a4"/>
-<approved hash="6,1,cff8cff0824a8242"/>
-<approved hash="6,1,49cc49c4099e0996"/>
-<approved hash="6,1,c39fc3978fd18fd9"/>
-<approved hash="6,1,83bf83a84fee4ff9"/>
-<approved hash="6,1,09ec09fbc9a1c9b6"/>
-<approved hash="6,1,8fd88fcf42754262"/>
-<approved hash="6,1,16151602dc48dc5f"/>
-<approved hash="6,1,7b5408be098b7a61"/>
-<approved hash="6,1,f955cb3fb775851f"/>
-<approved hash="6,1,5095f8d5fbff53bf"/>
-<approved hash="6,1,255b18d821e79b1d"/>
-<approved hash="6,1,5e4dde4bc49a449c"/>
-<approved hash="6,1,ec295be9248c934c"/>
-<approved hash="6,1,d306b9ff398ff769"/>
-<approved hash="6,1,7bcefbb35a7bda06"/>
-<approved hash="6,1,0030804d939513e8"/>
-<approved hash="6,1,03b783b88ef00eff"/>
-<approved hash="6,1,579c57817b207b3d"/>
-<approved hash="6,1,1a68b48c3964197a"/>
-<approved hash="6,1,91ab6daff6816cae"/>
-<approved hash="6,1,9835e9c7622ac2fd"/>
-<approved hash="6,1,e9d0669b373cd701"/>
-<approved hash="6,1,149614eafa7ffa03"/>
-<approved hash="6,1,b39db3901b051b08"/>
-<approved hash="6,1,f3beb3feaddbed9b"/>
-<approved hash="6,1,2a8c2a81846a8467"/>
-<approved hash="6,1,36759f9f9eee3704"/>
-<approved hash="6,1,8d878dfb6510656c"/>
-<approved hash="6,1,ba11347b374db927"/>
-<approved hash="6,1,bad734bd3497bafd"/>
-<approved hash="6,1,34b634b1656e6569"/>
-<approved hash="6,1,524d7a0d7dff55bf"/>
-<approved hash="6,1,6938264fd88b6b86"/>
-<approved hash="6,1,fd9afd959c4a9c45"/>
-<approved hash="6,1,7a3ccfd6cc5379b9"/>
-<approved hash="6,1,0dfce016e01c0df6"/>
-<approved hash="6,1,4822f3c8f30f48e5"/>
-<approved hash="6,1,3d053d021da31da4"/>
-<approved hash="6,1,5635563d1c771c7f"/>
-<approved hash="6,1,cc15157cfdab0a0b"/>
-<approved hash="6,1,1c1a2579acb8ad2c"/>
-<approved hash="6,1,f9364adc4a77f99d"/>
-<approved hash="6,1,f429f426e487e488"/>
-<approved hash="6,1,05bf85c2950a1577"/>
-<approved hash="6,1,bd168d568873b833"/>
-<approved hash="6,1,7dc6fdc98d010d0e"/>
-<approved hash="6,1,8b9e0b917849f846"/>
-<approved hash="6,1,2f512f4c7293728e"/>
-<approved hash="6,1,a4bb5f515f93a479"/>
-<approved hash="6,1,0ba49ec687957df6"/>
-<approved hash="6,1,98dab1b1b0f3fe7a"/>
-<approved hash="6,1,eb11d3fbd0d2e838"/>
-<approved hash="6,1,3d197f737e033c69"/>
-<approved hash="6,1,6d9ac92177010007"/>
-<approved hash="6,1,f6bbb386e2a6abf0"/>
-<approved hash="6,1,9e48c8ebd4289e95"/>
-<approved hash="6,1,e9ddfefe487945e8"/>
-<approved hash="6,1,6d9ac92177010007"/>
-<approved hash="6,1,3c8cd4d7ef313b45"/>
-<approved hash="6,1,bc97dcd7dc86bcc6"/>
-<approved hash="6,1,5baf51c551985bf2"/>
-<approved hash="6,1,783ed0dbd0b17ea4"/>
-<approved hash="6,1,c2f7cbfdcbffc2f5"/>
-<approved hash="6,1,bdb41b85253cc83e"/>
-<approved hash="6,1,ba9220f822d2b8b8"/>
-</errors>
 </board>
 </drawing>
 </eagle>
