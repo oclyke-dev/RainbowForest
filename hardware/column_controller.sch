@@ -5474,7 +5474,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </class>
 </classes>
 <parts>
-<part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-LEDGER" device=""/>
+<part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-LEDGER" device="">
+<attribute name="DESIGNER" value="Owen Lyke"/>
+<attribute name="REV" value="v03"/>
+</part>
 <part name="U1" library="SparkFun-RF" deviceset="ESP-WROVER-32" device="ESP-WROVER-32"/>
 <part name="SUPPLY1" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="R1" library="SparkFun-Resistors" deviceset="10KOHM" device="-0603-1/10W-1%" value="10k"/>

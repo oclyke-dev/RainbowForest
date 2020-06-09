@@ -157,7 +157,7 @@
 <wire x1="35.56" y1="52.07" x2="33.02" y2="54.61" width="0" layer="20" curve="90"/>
 <wire x1="33.02" y1="54.61" x2="2.54" y2="54.61" width="0" layer="20"/>
 <wire x1="2.54" y1="54.61" x2="0" y2="52.07" width="0" layer="20" curve="90"/>
-<text x="18.415" y="0.3175" size="1.778" layer="1" font="vector" ratio="15">v02</text>
+<text x="18.415" y="0.3175" size="1.778" layer="1" font="vector" ratio="15">v03</text>
 <text x="23.495" y="2.54" size="1.778" layer="21" font="vector" ratio="15">+</text>
 <text x="26.035" y="2.54" size="1.778" layer="21" font="vector" ratio="15">-</text>
 <text x="2.8575" y="37.1475" size="1.778" layer="21" font="vector" ratio="15" rot="SR270">RESET</text>
@@ -1210,8 +1210,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </autorouter>
 <elements>
 <element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LEDGER" x="21.59" y="-8.89" smashed="yes">
-<attribute name="DESIGNER" value="" x="21.59" y="-8.89" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
-<attribute name="REV" value="" x="21.59" y="-8.89" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
+<attribute name="DESIGNER" value="Owen Lyke" x="21.59" y="-8.89" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
+<attribute name="REV" value="v03" x="21.59" y="-8.89" size="1.778" layer="27" font="vector" ratio="15" display="off"/>
 </element>
 <element name="U1" library="SparkFun-RF" package="ESP-WROVER-32" value="ESP-WROVER-32ESP-WROVER-32" x="7.62" y="59.69" smashed="yes">
 <attribute name="NAME" x="15.62" y="50.05" size="0.8128" layer="25" align="center"/>
