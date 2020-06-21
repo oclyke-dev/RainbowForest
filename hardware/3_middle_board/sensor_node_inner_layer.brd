@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.2.0">
+<eagle version="9.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.005" altunitdist="inch" altunit="inch"/>
+<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -267,8 +267,6 @@
 <circle x="8.128" y="16.0782" radius="0.345475" width="0" layer="51"/>
 <circle x="15.748" y="8.636" radius="0.338878125" width="0" layer="51"/>
 <circle x="13.97" y="9.525" radius="7.62" width="0.4064" layer="51"/>
-<circle x="2.54" y="27.94" radius="1.27" width="0" layer="51"/>
-<circle x="25.4" y="27.94" radius="1.27" width="0" layer="51"/>
 <circle x="13.97" y="9.525" radius="8.03845625" width="0" layer="21"/>
 <text x="22.86" y="0.508" size="1.778" layer="16" font="vector" ratio="15" rot="MR0">SHIELD</text>
 <text x="13.97" y="20.32" size="1.016" layer="1" font="vector" ratio="15" rot="R90">ROUTE OUT</text>
@@ -527,26 +525,26 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </pass>
 </autorouter>
 <elements>
-<element name="H1" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="2.54">
+<element name="H1" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="2.54" smashed="yes">
 <attribute name="NAME" x="25.4" y="4.572" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="25.4" y="0.508" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H2" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="2.54">
+<element name="H2" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="2.54" smashed="yes">
 <attribute name="NAME" x="2.54" y="4.572" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="2.54" y="0.508" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H3" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="27.94">
+<element name="H3" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="27.94" smashed="yes">
 <attribute name="NAME" x="25.4" y="29.972" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="25.4" y="25.908" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H4" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="27.94">
+<element name="H4" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="27.94" smashed="yes">
 <attribute name="NAME" x="2.54" y="29.972" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="2.54" y="25.908" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4"/>
-<element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08"/>
-<element name="FD3" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" rot="MR0"/>
-<element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" rot="MR0"/>
+<element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" smashed="yes"/>
+<element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" smashed="yes"/>
+<element name="FD3" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" smashed="yes" rot="MR0"/>
+<element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" smashed="yes" rot="MR0"/>
 </elements>
 <signals>
 <signal name="GND">
