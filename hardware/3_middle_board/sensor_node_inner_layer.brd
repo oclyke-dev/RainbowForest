@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.6.0">
+<eagle version="9.2.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="2.5" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="2.5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -14,7 +14,7 @@
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="24" fill="1" visible="yes" active="yes"/>
-<layer number="21" name="tPlace" color="16" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="16" fill="1" visible="no" active="yes"/>
 <layer number="22" name="bPlace" color="14" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
@@ -157,7 +157,7 @@
 <wire x1="27.9440375" y1="27.790775" x2="25.25666875" y2="30.48" width="0" layer="20" curve="90.020521"/>
 <wire x1="25.25666875" y1="30.48" x2="2.54" y2="30.48" width="0" layer="20"/>
 <wire x1="2.54" y1="30.48" x2="0.00909375" y2="27.9479375" width="0" layer="20" curve="90.026176"/>
-<text x="10.033" y="0.381" size="1.778" layer="16" font="vector" ratio="15" rot="SMR0">v03</text>
+<text x="10.033" y="0.381" size="1.778" layer="16" font="vector" ratio="15" rot="SMR0">v10</text>
 <hole x="10.795" y="28.575" drill="1.27"/>
 <hole x="17.145" y="28.575" drill="1.27"/>
 <hole x="10.795" y="19.05" drill="1.27"/>
@@ -166,30 +166,6 @@
 <wire x1="10.668" y1="18.923" x2="17.272" y2="18.923" width="0" layer="20"/>
 <wire x1="17.272" y1="18.923" x2="17.272" y2="28.702" width="0" layer="20"/>
 <wire x1="17.272" y1="28.702" x2="10.668" y2="28.702" width="0" layer="20"/>
-<wire x1="2.168025" y1="5.3975" x2="9.261975" y2="5.3975" width="0" layer="20"/>
-<wire x1="9.261975" y1="5.3975" x2="9.7109875" y2="5.5834875" width="0" layer="20" curve="45"/>
-<wire x1="9.7109875" y1="5.5834875" x2="11.5615125" y2="7.4340125" width="0" layer="20"/>
-<wire x1="11.5615125" y1="7.4340125" x2="12.010525" y2="7.62" width="0" layer="20" curve="-45"/>
-<wire x1="12.010525" y1="7.62" x2="17.516975" y2="7.62" width="0" layer="20"/>
-<wire x1="17.516975" y1="7.62" x2="17.9659875" y2="7.8059875" width="0" layer="20" curve="45"/>
-<wire x1="17.9659875" y1="7.8059875" x2="18.8640125" y2="8.7040125" width="0" layer="20"/>
-<wire x1="18.8640125" y1="8.7040125" x2="19.05" y2="9.153025" width="0" layer="20" curve="45"/>
-<wire x1="19.05" y1="9.153025" x2="19.05" y2="13.706975" width="0" layer="20"/>
-<wire x1="19.05" y1="13.706975" x2="18.8640125" y2="14.1559875" width="0" layer="20" curve="45"/>
-<wire x1="18.8640125" y1="14.1559875" x2="17.9659875" y2="15.0540125" width="0" layer="20"/>
-<wire x1="17.9659875" y1="15.0540125" x2="17.516975" y2="15.24" width="0" layer="20" curve="45"/>
-<wire x1="17.516975" y1="15.24" x2="13.598025" y2="15.24" width="0" layer="20"/>
-<wire x1="13.598025" y1="15.24" x2="13.1490125" y2="15.4259875" width="0" layer="20" curve="-45"/>
-<wire x1="13.1490125" y1="15.4259875" x2="11.2984875" y2="17.2765125" width="0" layer="20"/>
-<wire x1="11.2984875" y1="17.2765125" x2="10.849475" y2="17.4625" width="0" layer="20" curve="45"/>
-<wire x1="10.849475" y1="17.4625" x2="2.803025" y2="17.4625" width="0" layer="20"/>
-<wire x1="2.803025" y1="17.4625" x2="2.3540125" y2="17.2765125" width="0" layer="20" curve="45"/>
-<wire x1="2.3540125" y1="17.2765125" x2="1.1384875" y2="16.0609875" width="0" layer="20"/>
-<wire x1="1.1384875" y1="16.0609875" x2="0.9525" y2="15.611975" width="0" layer="20" curve="45"/>
-<wire x1="0.9525" y1="15.611975" x2="0.9525" y2="6.613025" width="0" layer="20"/>
-<wire x1="0.9525" y1="6.613025" x2="1.1384875" y2="6.1640125" width="0" layer="20" curve="45"/>
-<wire x1="1.1384875" y1="6.1640125" x2="1.7190125" y2="5.5834875" width="0" layer="20"/>
-<wire x1="1.7190125" y1="5.5834875" x2="2.168025" y2="5.3975" width="0" layer="20" curve="45"/>
 <wire x1="7.151" y1="13.97" x2="6.6341" y2="13.97" width="0.4064" layer="51"/>
 <wire x1="8.128" y1="13.12" x2="8.001" y2="13.12" width="0.4064" layer="51"/>
 <wire x1="8.001" y1="13.12" x2="7.151" y2="13.97" width="0.4064" layer="51"/>
@@ -294,7 +270,37 @@
 <circle x="2.54" y="27.94" radius="1.27" width="0" layer="51"/>
 <circle x="25.4" y="27.94" radius="1.27" width="0" layer="51"/>
 <circle x="13.97" y="9.525" radius="8.03845625" width="0" layer="21"/>
-<text x="22.86" y="0.508" size="1.778" layer="16" font="vector" ratio="15" rot="MR0">MID</text>
+<text x="22.86" y="0.508" size="1.778" layer="16" font="vector" ratio="15" rot="MR0">SHIELD</text>
+<text x="13.97" y="20.32" size="1.016" layer="1" font="vector" ratio="15" rot="R90">ROUTE OUT</text>
+<text x="2.54" y="12.7" size="1.016" layer="1" font="vector" ratio="15">ROUTE OUT</text>
+<wire x1="12.7635" y1="10.9855" x2="15.0495" y2="10.9855" width="0" layer="20"/>
+<wire x1="15.0495" y1="10.9855" x2="16.5735" y2="9.525" width="0" layer="20" curve="-90"/>
+<wire x1="16.5735" y1="9.525" x2="15.113" y2="8.0645" width="0" layer="20" curve="-90"/>
+<wire x1="15.113" y1="8.0645" x2="12.827" y2="8.0645" width="0" layer="20"/>
+<wire x1="12.827" y1="8.0645" x2="11.3665" y2="9.525" width="0" layer="20" curve="-90"/>
+<wire x1="11.3665" y1="9.525" x2="12.7635" y2="10.9855" width="0" layer="20" curve="-90"/>
+<wire x1="12.7635" y1="11.4935" x2="10.8585" y2="9.5885" width="0" layer="20" curve="90"/>
+<text x="12.192" y="9.271" size="0.508" layer="1" font="vector" ratio="15">ROUTE OUT</text>
+<wire x1="1.016" y1="15.738975" x2="1.016" y2="7.121025" width="0" layer="20"/>
+<wire x1="1.016" y1="7.121025" x2="1.2019875" y2="6.6720125" width="0" layer="20" curve="45"/>
+<wire x1="1.2019875" y1="6.6720125" x2="2.1000125" y2="5.7739875" width="0" layer="20"/>
+<wire x1="2.1000125" y1="5.7739875" x2="2.549025" y2="5.588" width="0" layer="20" curve="45"/>
+<wire x1="2.549025" y1="5.588" x2="9.388975" y2="5.588" width="0" layer="20"/>
+<wire x1="9.388975" y1="5.588" x2="9.8379875" y2="5.7739875" width="0" layer="20" curve="45"/>
+<wire x1="9.8379875" y1="5.7739875" x2="10.6725125" y2="6.6085125" width="0" layer="20"/>
+<wire x1="10.6725125" y1="6.6085125" x2="10.8585" y2="7.057525" width="0" layer="20" curve="45"/>
+<wire x1="10.8585" y1="7.057525" x2="10.8585" y2="9.5885" width="0" layer="20"/>
+<wire x1="1.016" y1="15.738975" x2="1.2019875" y2="16.1879875" width="0" layer="20" curve="-45"/>
+<wire x1="1.2019875" y1="16.1879875" x2="2.1000125" y2="17.0860125" width="0" layer="20"/>
+<wire x1="2.1000125" y1="17.0860125" x2="2.549025" y2="17.272" width="0" layer="20" curve="-45"/>
+<wire x1="2.549025" y1="17.272" x2="10.912975" y2="17.272" width="0" layer="20"/>
+<wire x1="10.912975" y1="17.272" x2="11.3619875" y2="17.0860125" width="0" layer="20" curve="-45"/>
+<wire x1="11.3619875" y1="17.0860125" x2="13.8475125" y2="14.6004875" width="0" layer="20"/>
+<wire x1="14.986" y1="14.4145" x2="16.51" y2="12.954" width="0" layer="20" curve="-90"/>
+<wire x1="16.51" y1="12.954" x2="15.0495" y2="11.4935" width="0" layer="20" curve="-90"/>
+<wire x1="15.0495" y1="11.4935" x2="12.7635" y2="11.4935" width="0" layer="20"/>
+<wire x1="13.8475125" y1="14.6004875" x2="14.296525" y2="14.4145" width="0" layer="20" curve="45"/>
+<wire x1="14.296525" y1="14.4145" x2="14.986" y2="14.4145" width="0" layer="20"/>
 </plain>
 <libraries>
 <library name="SparkFun-Aesthetics">
@@ -521,26 +527,26 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </pass>
 </autorouter>
 <elements>
-<element name="H1" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="2.54" smashed="yes">
+<element name="H1" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="2.54">
 <attribute name="NAME" x="25.4" y="4.572" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="25.4" y="0.508" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H2" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="2.54" smashed="yes">
+<element name="H2" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="2.54">
 <attribute name="NAME" x="2.54" y="4.572" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="2.54" y="0.508" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H3" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="27.94" smashed="yes">
+<element name="H3" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="25.4" y="27.94">
 <attribute name="NAME" x="25.4" y="29.972" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="25.4" y="25.908" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="H4" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="27.94" smashed="yes">
+<element name="H4" library="standoff" package="STAND-OFF-#8" value="STAND-OFF" x="2.54" y="27.94">
 <attribute name="NAME" x="2.54" y="29.972" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center"/>
 <attribute name="VALUE" x="2.54" y="25.908" size="0.6096" layer="27" font="vector" ratio="20" align="top-center"/>
 </element>
-<element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" smashed="yes"/>
-<element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" smashed="yes"/>
-<element name="FD3" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" smashed="yes" rot="MR0"/>
-<element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" smashed="yes" rot="MR0"/>
+<element name="FD1" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4"/>
+<element name="FD2" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08"/>
+<element name="FD3" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="5.08" y="25.4" rot="MR0"/>
+<element name="FD4" library="SparkFun-Aesthetics" package="FIDUCIAL-1X2" value="FIDUCIAL1X2" x="22.86" y="5.08" rot="MR0"/>
 </elements>
 <signals>
 <signal name="GND">
