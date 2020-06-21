@@ -1,1 +1,10 @@
-"(13)"
+"(13)" -s 0.06
+"(user)" -s 0.06
+"(reset)" -s 0.06
+"5V" -s 0.075
+"[GND]" -s 0.075
+"oclyke.dev" -s 0.13 -f Roboto
+"[Rainbow Forest]" -s 0.12
+"Museum of Boulder" -s 0.1
+"Summer 2020" -s 0.06
+"'Playzeum'" -s 0.06
