@@ -3,6 +3,7 @@
 
 # Logic Captures
 *.logicdata
+*.logicsettings
 
 # Ignore list for Eagle, a PCB layout tool
 
