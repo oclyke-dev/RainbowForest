@@ -1,5 +1,5 @@
 # components within main programs
-firmware/main/*/staff_data/*
+firmware/main/*/components/*
 
 # MacOS
 .DS_Store

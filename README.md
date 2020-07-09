@@ -14,8 +14,8 @@ The programs that run on each of these devices can be found in ```firmware/main`
 
 Components that are common between programs can be found in ```firmware/components```. These components are expected to be symbolically linked into the main program directories. Due to cross-platform limitations it is necessary to construct these links manually. Example usage for Linux / Windows follows:
 
-- **linux**: ```ln -s firmware/components/${component} firmware/main/${program}```
-- **windows**: ```mklink /J firmware\main\%program%\%component% firmware\components\%component%```
+- **linux**: ```ln -s firmware/components/${component} firmware/main/${program}/components```
+- **windows**: ```mklink /J firmware\main\%program%\components\%component% firmware\components\%component%```
 
 Partial / experimental programs may be contained in ```firmware/prototyping``` for reference
 
