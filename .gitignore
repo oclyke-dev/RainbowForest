@@ -1,3 +1,6 @@
+# components within main programs
+firmware/main/*/staff_data/*
+
 # MacOS
 .DS_Store
 
