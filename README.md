@@ -17,6 +17,8 @@ Components that are common between programs can be found in ```firmware/componen
 - **linux**: ```ln -s firmware/components/${component} firmware/main/${program}```
 - **windows**: ```mklink /J firmware\main\%program%\%component% firmware\components\%component%```
 
+Partial / experimental programs may be contained in ```firmware/prototyping``` for reference
+
 ## Hardware
 
 The hardware directory contains the Eagle design files and Gerber manufacturing files for the original Rainbow Forest installation.
