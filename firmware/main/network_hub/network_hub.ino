@@ -3,7 +3,7 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
-#include "components/staff/staff.h"
+#include "src/components/staff/staff.h"
 
 void setup() {
 
