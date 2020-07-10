@@ -20,7 +20,6 @@ cart_t cart;
 
 IntervalTimer playbackTimer;
 bool playbackRunning = true;
-volatile uint32_t playbackColumn = 0;
 
 typedef uint8_t staff_data_t;
 Staff <staff_data_t> staff;
@@ -31,6 +30,7 @@ void onCartReception(cart_t* cart, void* args){
 }
 
 void playColumn( void ){
+  static volatile uint32_t playbackColumn = 0;
   if(playbackRunning){
     staff_data_t* data = staff[playbackColumn];
   
