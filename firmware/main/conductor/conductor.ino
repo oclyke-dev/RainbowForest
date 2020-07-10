@@ -4,20 +4,33 @@
 */
 
 #include "src/components/staff/staff.h"
+#include "src/components/uart_bridge/uart_bridge.h"
+#include "src/components/cart/cart.h"
 
-Staff <uint8_t> staff;
-#define STAFF_COLS (16)
-#define STAFF_ROWS (7)
+#include "src/components/configuration/configuration.h"
 
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
 #define DEBUG_VERBOSE (true)
 
+#define BRIDGE_PORT Serial1
+#define BRIDGE_BAUD (115200)
+UARTBridge <cart_t> cartBridge(BRIDGE_PORT);
+cart_t cart;
 
+Staff <STAFF_DATA_TYPE> staff;
+
+void onCartReception(cart_t* cart, void* args){
+  staff[cart->col][cart->row] = cart->val;
+  staff.showStaffDebug();
+}
 
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
   if(DEBUG_VERBOSE){ while(!DEBUG_PORT){}; }
+
+  BRIDGE_PORT.begin(BRIDGE_BAUD);
+  cartBridge.onReceive(onCartReception, NULL);
 
   staff.setDebugVerbose(DEBUG_VERBOSE);
   staff.setDebugStream(DEBUG_PORT);
@@ -27,9 +40,14 @@ void setup() {
   DEBUG_PORT.print("Staff Bit Depth: ");
   DEBUG_PORT.println(staff.getBitDepth());
   staff.setDebugVerbose(DEBUG_VERBOSE);
+  
+  staff[0][0] = 8;
 
+  Serial.println(staff[0][0]);
 }
 
 void loop() {
+
+  cartBridge.check();
 
 }
