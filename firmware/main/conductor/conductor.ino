@@ -40,10 +40,6 @@ void setup() {
   DEBUG_PORT.print("Staff Bit Depth: ");
   DEBUG_PORT.println(staff.getBitDepth());
   staff.setDebugVerbose(DEBUG_VERBOSE);
-  
-  staff[0][0] = 8;
-
-  Serial.println(staff[0][0]);
 }
 
 void loop() {
