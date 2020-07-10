@@ -9,6 +9,7 @@
 #define STAFF_COLS (16)
 #define STAFF_ROWS (7)
 #define STAFF_VALS (5)
-#define STAFF_DATA_TYPE uint8_t
+
+#define PLAYBACK_PERIOD_DEFAULT (500000)
 
 #endif // _RF_COMPONENT_CONFIGURATION_H_

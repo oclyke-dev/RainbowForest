@@ -18,11 +18,33 @@
 UARTBridge <cart_t> cartBridge(BRIDGE_PORT);
 cart_t cart;
 
-Staff <STAFF_DATA_TYPE> staff;
+IntervalTimer playbackTimer;
+bool playbackRunning = true;
+volatile uint32_t playbackColumn = 0;
+
+typedef uint8_t staff_data_t;
+Staff <staff_data_t> staff;
 
 void onCartReception(cart_t* cart, void* args){
   staff[cart->col][cart->row] = cart->val;
-  staff.showStaffDebug();
+//  staff.showStaffDebug();
+}
+
+void playColumn( void ){
+  if(playbackRunning){
+    staff_data_t* data = staff[playbackColumn];
+  
+    for(uint32_t indi = 0; indi < STAFF_ROWS; indi++){
+      DEBUG_PORT.print(*(data + indi));
+      DEBUG_PORT.print(" ");
+    }
+    DEBUG_PORT.println();
+  
+    playbackColumn++;
+    if(playbackColumn >= STAFF_COLS){
+      playbackColumn = 0;
+    }
+  }
 }
 
 void setup() {
@@ -40,6 +62,8 @@ void setup() {
   DEBUG_PORT.print("Staff Bit Depth: ");
   DEBUG_PORT.println(staff.getBitDepth());
   staff.setDebugVerbose(DEBUG_VERBOSE);
+
+  playbackTimer.begin(playColumn, PLAYBACK_PERIOD_DEFAULT);
 }
 
 void loop() {
