@@ -154,6 +154,7 @@ template <class StaffDataType_t> StaffStatus_e Staff<StaffDataType_t>::setSize(u
         _rows = 0;
         status = STAFF_ERR_NOMEM;
     }
+    memset((void*)_data, 0x00, (_cols * _rows)*(sizeof(StaffDataType_t)/sizeof(StaffDataType_t)));
     return report(status, __PRETTY_FUNCTION__, __FILE__, __LINE__);
 }
 
