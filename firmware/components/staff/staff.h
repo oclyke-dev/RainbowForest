@@ -45,6 +45,7 @@ public:
 
     StaffStatus_e setDebugStream(Stream& stream);
     StaffStatus_e setDebugVerbose(bool on);
+    StaffStatus_e showStaffDebug( void );
 
     StaffStatus_e setSize(uint32_t cols, uint32_t rows);
     StaffStatus_e setRows(uint32_t rows);
@@ -120,6 +121,23 @@ template <class StaffDataType_t> StaffStatus_e Staff<StaffDataType_t>::setDebugS
 
 template <class StaffDataType_t> StaffStatus_e Staff<StaffDataType_t>::setDebugVerbose(bool on){
     _debug_verbose = on;
+    return report(STAFF_NOM);
+}
+
+template <class StaffDataType_t> StaffStatus_e Staff<StaffDataType_t>::showStaffDebug( void ){
+    for(uint32_t indi = 0; indi < 300; indi++){
+        _debugs->println();
+    }
+
+    for(uint32_t row = 0; row < _rows; row++){
+        for(uint32_t col = 0; col < _cols; col++){
+            uint32_t index = indexOf(col, row);
+            _debugs->print(_data[index]);
+            _debugs->print(" ");
+        }
+        _debugs->println();
+    }
+    _debugs->println("\n");
     return report(STAFF_NOM);
 }
 
