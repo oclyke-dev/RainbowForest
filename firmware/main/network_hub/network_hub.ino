@@ -26,6 +26,11 @@ IPAddress IP;
 WiFiUDP udp;
 AsyncServer server(NETWORK_TCP_PORT);
 
+volatile bool button0 = false;
+void IRAM_ATTR button0ISR() {
+  button0 = true;
+}
+
 void random_cart( void ){
   cart.col = random(0, STAFF_COLS);
   cart.row = random(0, STAFF_ROWS);
@@ -46,7 +51,8 @@ void handleClientDisconnect(void* args, AsyncClient* client){
   DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
   DEBUG_PORT.println(" disconnected!");
-  // todo: idk
+  while(!client->freeable()){};
+  client->free();
 }
 
 void handleClientAck(void* args, AsyncClient* client, size_t len, uint32_t time){
@@ -67,6 +73,14 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
   DEBUG_PORT.println();
 }
 
+void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
+  DEBUG_PORT.print("Client 0x");
+  DEBUG_PORT.print((uint32_t)client, HEX);
+  DEBUG_PORT.print(" onData! ACKing later");
+  DEBUG_PORT.println();
+  client->ackLater();
+}
+
 void handleClientPacket(void* args, AsyncClient* client, struct pbuf *pb){
   DEBUG_PORT.print("0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
@@ -77,6 +91,8 @@ void handleClientPacket(void* args, AsyncClient* client, struct pbuf *pb){
   DEBUG_PORT.print(", tot_len = ");
   DEBUG_PORT.print(pb->tot_len);
   DEBUG_PORT.println();
+
+  client->write("harrow");
 }
 
 void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
@@ -97,11 +113,17 @@ void handleClientConnected(void* args, AsyncClient* client){
   client->onError(handleClientError, NULL);           //unsuccessful connect or error
   client->onPacket(handleClientPacket, NULL);         //data received
   client->onTimeout(handleClientTimeout, NULL);       //ack timeout
+
+
+//  client->onData(handleClientData, NULL); // testing ACK denial
 }
 
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
   BRIDGE_PORT.begin(BRIDGE_BAUD);
+
+  pinMode(0, INPUT_PULLUP);
+  attachInterrupt(0, button0ISR, RISING);
 
   WiFi.softAP(NETWORK_SSID, NETWORK_PASSWORD);
   IP = WiFi.softAPIP();
@@ -117,4 +139,9 @@ void loop() {
   random_cart();
   cartBridge.send(&cart);
   delay(200);
+
+  if(button0){
+    DEBUG_PORT.println("button0 released");
+    button0 = false;
+  }
 }
