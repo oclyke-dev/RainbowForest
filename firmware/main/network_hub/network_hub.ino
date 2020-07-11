@@ -40,16 +40,14 @@ void broadcastIP( void * params ){
   vTaskDelete( NULL );
 }
 
-void handleClientDisconnected(void* arg, AsyncClient* client){
-  DEBUG_PORT.print("Client 0x");
-  DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.println(" disconnected!");
-}
-
 void handleClientConnected(void* arg, AsyncClient* client){
   DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
   DEBUG_PORT.println(" connected!");
+
+  // todo: configure the new client (callbacks)
+  // todo: keep track of the client (maybe not necessary if all callbacks can be used to handle this)
+}
 
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
