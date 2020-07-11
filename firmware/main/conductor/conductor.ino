@@ -30,7 +30,11 @@ void onCartReception(cart_t* cart, void* args){
 }
 
 void playColumn( void ){
+  //make player in here
+  random_cart();
+  
   static volatile uint32_t playbackColumn = 0;
+  staff[playbackColumn][cart.row] = cart.val;
   if(playbackRunning){
     staff_data_t* data = staff[playbackColumn];
   
@@ -45,6 +49,12 @@ void playColumn( void ){
       playbackColumn = 0;
     }
   }
+}
+
+void random_cart( void ){
+  cart.col = random(0, STAFF_COLS);
+  cart.row = random(0, STAFF_ROWS);
+  cart.val = random(0, STAFF_VALS);
 }
 
 void setup() {
