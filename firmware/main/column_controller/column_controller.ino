@@ -3,6 +3,8 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+// BOARD: Adafruit ESP32 Feather
+
 #include "src/components/cart/cart.h"
 
 #include "src/components/configuration/configuration.h"
@@ -39,6 +41,7 @@ void WiFiEvent(WiFiEvent_t event){
       case SYSTEM_EVENT_STA_DISCONNECTED:
           DEBUG_PORT.println("WiFi lost connection");
           wifi_connected = false;
+          // todo: handle lost connections properly (re-establish)
           break;
       default: break;
     }
@@ -93,8 +96,11 @@ void setup() {
 
 void loop() {
   if(button0){
-    client.close(true);
-    client.stop();
+//    client.close(true);
+//    client.stop();
+
+    client.write("test message!");
+
     button0 = false;
   }
 }

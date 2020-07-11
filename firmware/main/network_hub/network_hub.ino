@@ -3,6 +3,8 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+// BOARD: Adafruit ESP32 Feather
+
 #include "src/components/uart_bridge/uart_bridge.h"
 #include "src/components/cart/cart.h"
 
@@ -40,13 +42,61 @@ void broadcastIP( void * params ){
   vTaskDelete( NULL );
 }
 
-void handleClientConnected(void* arg, AsyncClient* client){
+void handleClientDisconnect(void* args, AsyncClient* client){
+  DEBUG_PORT.print("Client 0x");
+  DEBUG_PORT.print((uint32_t)client, HEX);
+  DEBUG_PORT.println(" disconnected!");
+  // todo: idk
+}
+
+void handleClientAck(void* args, AsyncClient* client, size_t len, uint32_t time){
+  DEBUG_PORT.print("Client 0x");
+  DEBUG_PORT.print((uint32_t)client, HEX);
+  DEBUG_PORT.print(" ACKed! len = ");
+  DEBUG_PORT.print(len);
+  DEBUG_PORT.print(", time = ");
+  DEBUG_PORT.print(time);
+  DEBUG_PORT.println();
+}
+
+void handleClientError(void* args, AsyncClient* client, int8_t error){
+  DEBUG_PORT.print("Client 0x");
+  DEBUG_PORT.print((uint32_t)client, HEX);
+  DEBUG_PORT.print(" error! error = ");
+  DEBUG_PORT.print(error);
+  DEBUG_PORT.println();
+}
+
+void handleClientPacket(void* args, AsyncClient* client, struct pbuf *pb){
+  DEBUG_PORT.print("0x");
+  DEBUG_PORT.print((uint32_t)client, HEX);
+  DEBUG_PORT.print(" received a packet. pb* = 0x");
+  DEBUG_PORT.print((uint32_t)pb, HEX);
+  DEBUG_PORT.print(", len = ");
+  DEBUG_PORT.print(pb->len);
+  DEBUG_PORT.print(", tot_len = ");
+  DEBUG_PORT.print(pb->tot_len);
+  DEBUG_PORT.println();
+}
+
+void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
+  DEBUG_PORT.print("Client 0x");
+  DEBUG_PORT.print((uint32_t)client, HEX);
+  DEBUG_PORT.print(" timeout! time = ");
+  DEBUG_PORT.print(time);
+  DEBUG_PORT.println();
+}
+
+void handleClientConnected(void* args, AsyncClient* client){
   DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
   DEBUG_PORT.println(" connected!");
 
-  // todo: configure the new client (callbacks)
-  // todo: keep track of the client (maybe not necessary if all callbacks can be used to handle this)
+  client->onDisconnect(handleClientDisconnect, NULL); //disconnected
+  client->onAck(handleClientAck, NULL);               //ack received
+  client->onError(handleClientError, NULL);           //unsuccessful connect or error
+  client->onPacket(handleClientPacket, NULL);         //data received
+  client->onTimeout(handleClientTimeout, NULL);       //ack timeout
 }
 
 void setup() {
