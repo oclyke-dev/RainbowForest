@@ -13,6 +13,11 @@ void handleClientAck(void* args, AsyncClient* client, size_t len, uint32_t time)
   DEBUG_PORT.print(len);
   DEBUG_PORT.print(", time = ");
   DEBUG_PORT.print(time);
+  
+  pending = false;
+  DEBUG_PORT.print(", pending = ");
+  DEBUG_PORT.print((pending) ? "true" : "false");
+
   DEBUG_PORT.println();
 }
 
@@ -41,13 +46,22 @@ void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
   DEBUG_PORT.print((uint32_t)client, HEX);
   DEBUG_PORT.print(" timeout! time = ");
   DEBUG_PORT.print(time);
+
+  pending = false;
+  DEBUG_PORT.print(", pending = ");
+  DEBUG_PORT.print((pending) ? "true" : "false");
+
   DEBUG_PORT.println();
 }
 
 void handleClientConnected(void* args, AsyncClient* client){
   DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.println(" connected!");
+  DEBUG_PORT.print(" connected!");
+  
+  pending = false;
+  DEBUG_PORT.print(", pending = ");
+  DEBUG_PORT.print((pending) ? "true" : "false");
 }
 
 void setupClient( void ){

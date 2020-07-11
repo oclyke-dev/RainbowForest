@@ -16,6 +16,8 @@
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
 
+#define CONTROLLER_COLUMN (0) // indicates which column this controller reads
+
 volatile bool button0 = false;
 volatile bool wifi_connected = false;
 volatile bool client_connected = false;
@@ -23,6 +25,9 @@ IPAddress IP;
 IPAddress ServerIP;
 WiFiUDP udp;
 AsyncClient client;
+
+volatile bool pending = true;
+cart_t cart;
 
 void IRAM_ATTR button0ISR() {
   button0 = true;
@@ -34,14 +39,34 @@ void setup() {
   pinMode(0, INPUT_PULLUP);
   attachInterrupt(0, button0ISR, RISING);
 
+  memset((void*)&cart, 0x00, (sizeof(cart_t)/sizeof(uint8_t)));
+  cart.col = CONTROLLER_COLUMN;
+
   WiFi.onEvent(WiFiEvent);
   setupClient();
   connectToServer();
 }
 
+void sendRV(uint8_t row, uint8_t val){
+  while(pending){};
+  cart.row = row;
+  cart.val = val;
+  client.write((const char*)&cart, (sizeof(cart_t)/sizeof(uint8_t)));
+  pending = true;
+  DEBUG_PORT.print("pending = ");
+  DEBUG_PORT.print((pending) ? "true" : "false");
+  DEBUG_PORT.println();
+}
+
 void loop() {
-  if(button0){
-    client.write("test message!");
+  static uint32_t send_message = 0;
+  if(button0 || (millis() >= send_message)){
+    static uint8_t row = 0;
+    sendRV(row++, 3);
+    if(row >= STAFF_ROWS){
+      row = 0;
+    }
     button0 = false;
+    send_message = millis() + 3000;
   }
 }

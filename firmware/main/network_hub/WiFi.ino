@@ -47,6 +47,16 @@ void handleClientPacket(void* args, AsyncClient* client, struct pbuf *pb){
   DEBUG_PORT.print(", tot_len = ");
   DEBUG_PORT.print(pb->tot_len);
   DEBUG_PORT.println();
+
+  memcpy((void*)&cart, pb->payload, pb->len);
+
+  DEBUG_PORT.print("col: "); DEBUG_PORT.println(cart.col);
+  DEBUG_PORT.print("row: "); DEBUG_PORT.println(cart.row);
+  DEBUG_PORT.print("val: "); DEBUG_PORT.println(cart.val);
+
+  DEBUG_PORT.print("Space in TCP window: ");
+  DEBUG_PORT.print(client->space());
+  DEBUG_PORT.println();  
 }
 
 void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
