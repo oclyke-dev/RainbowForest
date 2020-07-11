@@ -53,9 +53,6 @@ void sendRV(uint8_t row, uint8_t val){
   cart.val = val;
   client.write((const char*)&cart, (sizeof(cart_t)/sizeof(uint8_t)));
   pending = true;
-  DEBUG_PORT.print("pending = ");
-  DEBUG_PORT.print((pending) ? "true" : "false");
-  DEBUG_PORT.println();
 }
 
 void loop() {
@@ -67,6 +64,6 @@ void loop() {
       row = 0;
     }
     button0 = false;
-    send_message = millis() + 3000;
+    send_message = millis() + 300;
   }
 }

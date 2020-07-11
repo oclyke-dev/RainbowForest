@@ -32,23 +32,10 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
   DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.print(" onData! ACKing later");
-  DEBUG_PORT.println();
-  client->ackLater();
-}
-
-void handleClientPacket(void* args, AsyncClient* client, struct pbuf *pb){
-  DEBUG_PORT.print("0x");
-  DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.print(" received a packet. pb* = 0x");
-  DEBUG_PORT.print((uint32_t)pb, HEX);
-  DEBUG_PORT.print(", len = ");
-  DEBUG_PORT.print(pb->len);
-  DEBUG_PORT.print(", tot_len = ");
-  DEBUG_PORT.print(pb->tot_len);
+  DEBUG_PORT.print(" onData!");
   DEBUG_PORT.println();
 
-  memcpy((void*)&cart, pb->payload, pb->len);
+  memcpy((void*)&cart, data, len);
 
   DEBUG_PORT.print("col: "); DEBUG_PORT.println(cart.col);
   DEBUG_PORT.print("row: "); DEBUG_PORT.println(cart.row);
@@ -75,7 +62,7 @@ void handleClientConnected(void* args, AsyncClient* client){
   client->onDisconnect(handleClientDisconnect, NULL); //disconnected
   client->onAck(handleClientAck, NULL);               //ack received
   client->onError(handleClientError, NULL);           //unsuccessful connect or error
-  client->onPacket(handleClientPacket, NULL);         //data received
+  client->onData(handleClientData, NULL);             //data received (called if onPacket is not used)
   client->onTimeout(handleClientTimeout, NULL);       //ack timeout
 }
 

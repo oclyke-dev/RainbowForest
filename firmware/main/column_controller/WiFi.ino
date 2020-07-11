@@ -13,12 +13,9 @@ void handleClientAck(void* args, AsyncClient* client, size_t len, uint32_t time)
   DEBUG_PORT.print(len);
   DEBUG_PORT.print(", time = ");
   DEBUG_PORT.print(time);
-  
-  pending = false;
-  DEBUG_PORT.print(", pending = ");
-  DEBUG_PORT.print((pending) ? "true" : "false");
-
   DEBUG_PORT.println();
+
+  pending = false;
 }
 
 void handleClientError(void* args, AsyncClient* client, int8_t error){
@@ -27,18 +24,16 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
   DEBUG_PORT.print(" error! error = ");
   DEBUG_PORT.print(error);
   DEBUG_PORT.println();
+
+  pending = false;
 }
 
-void handleClientPacket(void* args, AsyncClient* client, struct pbuf *pb){
-  DEBUG_PORT.print("0x");
+void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
+  DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.print(" received a packet. pb* = 0x");
-  DEBUG_PORT.print((uint32_t)pb, HEX);
-  DEBUG_PORT.print(", len = ");
-  DEBUG_PORT.print(pb->len);
-  DEBUG_PORT.print(", tot_len = ");
-  DEBUG_PORT.print(pb->tot_len);
+  DEBUG_PORT.print(" onData!");
   DEBUG_PORT.println();
+  // todo: parse this data to know what LEDs to light up
 }
 
 void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
@@ -72,7 +67,7 @@ void setupClient( void ){
   client.onDisconnect(handleClientDisconnect, NULL);  //disconnected
   client.onAck(handleClientAck, NULL);                //ack received
   client.onError(handleClientError, NULL);            //unsuccessful connect or error
-  client.onPacket(handleClientPacket, NULL);          //data received
+  client.onData(handleClientData, NULL);              //data received (called if onPacket is not used)
   client.onTimeout(handleClientTimeout, NULL);        //ack timeout
 }
 
