@@ -6,7 +6,7 @@
 // BOARD: Adafruit ESP32 Feather
 
 #include "src/components/cart/cart.h"
-
+#include "src/components/sensor/sensor.h"
 #include "src/components/configuration/configuration.h"
 
 #include "WiFi.h"
@@ -17,6 +17,10 @@
 #define DEBUG_BAUD (115200)
 
 #define CONTROLLER_COLUMN (0) // indicates which column this controller reads
+
+#define DATA_PIN 18
+#define COLUMN_LEN (7)
+SensorString sensors(COLUMN_LEN, DATA_PIN);
 
 volatile bool button0 = false;
 volatile bool wifi_connected = false;
@@ -45,6 +49,8 @@ void setup() {
   WiFi.onEvent(WiFiEvent);
   setupClient();
   connectToServer();
+
+  xTaskCreate(  updateSensors, "updateSensors", 10000, NULL, 1, NULL);
 }
 
 void sendRV(uint8_t row, uint8_t val){
@@ -55,15 +61,45 @@ void sendRV(uint8_t row, uint8_t val){
   pending = true;
 }
 
+void detectAndTransmit(SensorNode* node, size_t idx, void* args){
+  node->read();
+  
+  rgb_f_t rgb;
+  rgb.r = rgbElemByUI16(node->getRed());
+  rgb.g = rgbElemByUI16(node->getGreen());
+  rgb.b = rgbElemByUI16(node->getBlue());
+
+  DEBUG_PORT.print(idx);
+  DEBUG_PORT.print(": ");
+  
+  size_t val;
+  if(COLOR_DETECT_OK == detectedColor(&rgb, &val)){
+    sendRV(idx, val);
+    DEBUG_PORT.print(detectable_colors[val].name);
+  }else{
+    DEBUG_PORT.print("unknown");
+  }
+
+  DEBUG_PORT.print(", ");
+}
+
+void updateSensors( void* args ){
+
+  FastLED.addLeds<WS2811, DATA_PIN, RGB>(sensors.getControl(), sensors.getNumControlElements()); // have to add leds in main sketch before sensors.begin()
+  SensorStatus_e retval = sensors.begin();
+  DEBUG_PORT.print("sensors.begin() returned: "); DEBUG_PORT.println(retval);
+
+  while(1){
+    DEBUG_PORT.print("Column: [");
+    sensors.forEach(detectAndTransmit);
+    DEBUG_PORT.println("]");
+  }
+}
+
 void loop() {
-  static uint32_t send_message = 0;
-  if(button0 || (millis() >= send_message)){
-    static uint8_t row = 0;
-    sendRV(row++, 3);
-    if(row >= STAFF_ROWS){
-      row = 0;
-    }
+  if(button0){
+    // handle button 0 released
+    DEBUG_PORT.println("Button 0!!!!");
     button0 = false;
-    send_message = millis() + 300;
   }
 }
