@@ -1,6 +1,9 @@
 # components within main programs
 firmware/main/*/src/components/*
 
+# components within prototyping programs
+firmware/prototyping/*/src/components/*
+
 # MacOS
 .DS_Store
 
