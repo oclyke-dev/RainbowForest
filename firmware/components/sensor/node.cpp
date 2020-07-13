@@ -31,10 +31,6 @@ SensorStatus_e SensorNode::power(bool on){
 }
 
 isl_readint_t SensorNode::read( void ){
-    // Serial.print("_index: "); Serial.println(_index);
-    // Serial.print("_sensor: 0x"); Serial.println((uint32_t)_sensor, HEX);
-    // Serial.print("_control: 0x"); Serial.println((uint32_t)_control, HEX);
-
     if((!_control) || (!_sensor)){
         _report(SENSOR_ERR_CONFIG);
         return _reading;
