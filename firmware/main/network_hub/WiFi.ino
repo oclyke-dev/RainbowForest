@@ -30,20 +30,21 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
 }
 
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
-  DEBUG_PORT.print("Client 0x");
-  DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.print(" onData!");
-  DEBUG_PORT.println();
+//  DEBUG_PORT.print("Client 0x");
+//  DEBUG_PORT.print((uint32_t)client, HEX);
+//  DEBUG_PORT.print(" onData!");
+//  DEBUG_PORT.println();
 
   memcpy((void*)&cart, data, len);
+  cartBridge.send(&cart);
 
-  DEBUG_PORT.print("col: "); DEBUG_PORT.println(cart.col);
-  DEBUG_PORT.print("row: "); DEBUG_PORT.println(cart.row);
-  DEBUG_PORT.print("val: "); DEBUG_PORT.println(cart.val);
-
-  DEBUG_PORT.print("Space in TCP window: ");
-  DEBUG_PORT.print(client->space());
-  DEBUG_PORT.println();  
+//  DEBUG_PORT.print("col: "); DEBUG_PORT.println(cart.col);
+//  DEBUG_PORT.print("row: "); DEBUG_PORT.println(cart.row);
+//  DEBUG_PORT.print("val: "); DEBUG_PORT.println(cart.val);
+//
+//  DEBUG_PORT.print("Space in TCP window: ");
+//  DEBUG_PORT.print(client->space());
+//  DEBUG_PORT.println();  
 }
 
 void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
