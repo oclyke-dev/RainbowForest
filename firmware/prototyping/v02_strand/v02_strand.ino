@@ -47,17 +47,13 @@ void setup() {
   
   FastLED.addLeds<WS2811, DATA_PIN, RGB>(leds, NUM_LEDS);
   LEDS.setBrightness(255);
-  // Turn on the sensor by writing a 0 value to the R channel
-  leds[0] = CRGB(0, 0, 0);
+
+  // make sure all sensors begin turned off
+  for(uint8_t sensor = 0; sensor < 8; sensor++){
+    leds[(2*sensor) + 0] = CRGB(255, 0, 0);
+  }
+  FastLED.show();
   
-//  FastLED.show();
-//
-//  // Initialize the ISL29125 with simple configuration so it starts sampling
-//  while(!RGB_sensor.init()){
-//    Serial.println("trying to start the sensor!");
-//    delay(50);
-//  }
-//  Serial.println("Sensor Initialization Successful\n\r");
 
   startReading();
 }
