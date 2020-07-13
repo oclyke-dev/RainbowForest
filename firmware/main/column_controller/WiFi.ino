@@ -7,14 +7,6 @@ void handleClientDisconnect(void* args, AsyncClient* client){
 }
 
 void handleClientAck(void* args, AsyncClient* client, size_t len, uint32_t time){
-  DEBUG_PORT.print("Client 0x");
-  DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.print(" ACKed! len = ");
-  DEBUG_PORT.print(len);
-  DEBUG_PORT.print(", time = ");
-  DEBUG_PORT.print(time);
-  DEBUG_PORT.println();
-
   pending = false;
 }
 
@@ -29,10 +21,6 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
 }
 
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
-  DEBUG_PORT.print("Client 0x");
-  DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.print(" onData!");
-  DEBUG_PORT.println();
   // todo: parse this data to know what LEDs to light up
 }
 
@@ -50,13 +38,7 @@ void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
 }
 
 void handleClientConnected(void* args, AsyncClient* client){
-  DEBUG_PORT.print("Client 0x");
-  DEBUG_PORT.print((uint32_t)client, HEX);
-  DEBUG_PORT.print(" connected!");
-  
   pending = false;
-  DEBUG_PORT.print(", pending = ");
-  DEBUG_PORT.print((pending) ? "true" : "false");
 }
 
 void setupClient( void ){
