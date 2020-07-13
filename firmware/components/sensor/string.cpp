@@ -46,14 +46,6 @@ SensorStatus_e SensorString::_report(SensorStatus_e s){
 
 
 SensorStatus_e SensorString::begin( void ){
-    Serial.print("_len: "); Serial.println(_len);
-    Serial.print("&_sensor: 0x"); Serial.println((uint32_t)&_sensor, HEX);
-    Serial.print("_control: 0x"); Serial.println((uint32_t)_control, HEX);
-    Serial.print("_nodes: 0x"); Serial.println((uint32_t)_nodes, HEX);
-    Serial.print("_data_pin: "); Serial.println(_data_pin);
-    Serial.print("_num_control_elements: "); Serial.println(_num_control_elements);
-
-
     if(!_control){ return _report(SENSOR_ERR_CONFIG); }
     if(!_nodes){ return _report(SENSOR_ERR_CONFIG); }
 
