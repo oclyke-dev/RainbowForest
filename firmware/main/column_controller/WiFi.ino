@@ -22,6 +22,7 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
 
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
   // todo: parse this data to know what LEDs to light up
+//  *(node) = CRGB(255, 0, 0); // G R B
 }
 
 void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
