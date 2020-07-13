@@ -6,6 +6,9 @@
 #ifndef _RF_COMPONENT_SENSOR_H_
 #define _RF_COMPONENT_SENSOR_H_
 
+#include <algorithm>    // std::random_shuffle
+#include <cstdlib>      // std::rand, std::srand
+
 #include "Arduino.h"
 #include "Wire.h"
 #include "FastLED.h"
@@ -92,6 +95,28 @@ public:
         if(!node){ continue; }
         fn(node, idx, args);
     }
+    return _report(SENSOR_OK);
+  }
+
+  SensorStatus_e forEachRandOrder(forEach_fn fn, void* args = NULL){
+    if(!fn){ return _report(SENSOR_ERR_ARGS); }
+
+    size_t* rand_list = new size_t[_len];
+    if(!rand_list){ return _report(SENSOR_ERR_NOMEM); }
+    for(size_t idx = 0; idx < _len; idx++){
+      rand_list[idx] = idx;
+    }
+    std::random_shuffle(rand_list, rand_list + _len);
+
+    for(size_t idx = 0; idx < _len; idx++){
+      size_t node_index = rand_list[idx];
+      SensorNode* node = (*this)[node_index];
+      if(!node){ continue; }
+      fn(node, node_index, args);
+    }
+
+    delete rand_list;
+
     return _report(SENSOR_OK);
   }
 

@@ -81,6 +81,8 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   }
 
   DEBUG_PORT.print(", ");
+
+  delay(esp_random() & (uint32_t)0x0000000F);
 }
 
 void updateSensors( void* args ){
@@ -91,7 +93,7 @@ void updateSensors( void* args ){
 
   while(1){
     DEBUG_PORT.print("Column: [");
-    sensors.forEach(detectAndTransmit);
+    sensors.forEachRandOrder(detectAndTransmit);
     DEBUG_PORT.println("]");
   }
 }
