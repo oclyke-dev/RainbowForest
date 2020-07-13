@@ -35,8 +35,8 @@ isl_readint_t SensorNode::read( void ){
         _report(SENSOR_ERR_CONFIG);
         return _reading;
     }
-
-    _setLed(CRGB(200, 200, 255));   // illuminate the target (adjust white balance)
+    //             G  R  B
+    _setLed(CRGB(180, 255, 140));   // illuminate the target (adjust white balance)
     power(true);                    // turn on sensor power
     
     _sensor->init();
