@@ -16,7 +16,7 @@
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
 
-#define CONTROLLER_COLUMN (0) // indicates which column this controller reads
+#define CONTROLLER_COLUMN (15) // indicates which column this controller reads
 
 #define DATA_PIN 18
 #define COLUMN_LEN (7)
@@ -100,8 +100,18 @@ void updateSensors( void* args ){
 
 void loop() {
   if(button0){
-    // handle button 0 released
-    DEBUG_PORT.println("Button 0!!!!");
     button0 = false;
+    static uint32_t debounce = 0;
+    if(millis() > debounce){
+      debounce = millis() + 50;
+      cart.col++;
+      if(cart.col >= STAFF_COLS){
+        cart.col = 0;
+      }
+      for(size_t idx = 0; idx < COLUMN_LEN; idx++){
+        SensorNode* node = sensors[idx];
+        *(node) = (cart.col & (0x01 << idx)) ? CRGB(127, 127, 127) : CRGB(0, 0, 0);
+      }
+    }
   }
 }
