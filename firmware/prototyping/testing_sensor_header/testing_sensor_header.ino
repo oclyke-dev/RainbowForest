@@ -1,6 +1,5 @@
 #include "src/components/sensor/sensor.h"
 
-
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
 
