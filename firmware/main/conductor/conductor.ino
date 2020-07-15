@@ -85,16 +85,33 @@ void onCartReception(cart_t* cart, void* args){
 //  staff.showStaffDebug();
 }
 
+static volatile uint32_t playbackColumn = 0;
+//int bars = 0;
 
 void playColumn( void ){
   //make player in here
   random_cart();
+  //random_cart();
+  //random_cart();
   
-  static volatile uint32_t playbackColumn = 0;
+  
   staff[playbackColumn][cart.row] = cart.val;
   if(playbackRunning){
     staff_data_t* data = staff[playbackColumn];
-  
+
+    
+    playSdWav1.stop();
+    playSdWav2.stop();
+    playSdWav3.stop();
+    playSdWav4.stop();
+    playSdWav5.stop();
+    playSdWav6.stop();
+    playSdWav7.stop();
+
+    //the audio player would crash after 3 playthroughs, for some reason, adding these two lines prevents that
+    AudioNoInterrupts();
+    AudioInterrupts();
+    
     for(uint32_t indi = 0; indi < STAFF_ROWS; indi++){
       
       //setting the note of the instrument, based on the position in the column array
@@ -149,46 +166,53 @@ void playColumn( void ){
       //sending the file name to the appropriate .WAV player
       if(indi == 0){
         if (playSdWav1.isPlaying() == false) {
-          Serial.print("Start playing ");
-          Serial.println(fileName);
-          playSdWav1.play("PIANOC.WAV");
-          delay(20); // wait for library to parse WAV info
+          //Serial.print("Start playing ");
+          //Serial.println(fileName);
+          playSdWav1.play(fileName);
+          //DEBUG_PORT.println(1);
+          //delay(20); // wait for library to parse WAV info
         }
       }
+      
       else if(indi == 1){
         if (playSdWav2.isPlaying() == false) {
-          Serial.print("Start playing ");
-          Serial.println(fileName);
+          //Serial.print("Start playing ");
+          //Serial.println(fileName);
           playSdWav2.play(fileName);
-          delay(20); // wait for library to parse WAV info
+          //DEBUG_PORT.println(2);
+          //delay(20); // wait for library to parse WAV info
         }
       }
       else if(indi == 2){
         if (playSdWav3.isPlaying() == false) {
           //Serial.println("Start playing 1");
           playSdWav3.play(fileName);
-          delay(20); // wait for library to parse WAV info
+          //DEBUG_PORT.println(3);
+          //delay(20); // wait for library to parse WAV info
         }
       }
       else if(indi == 3){
         if (playSdWav4.isPlaying() == false) {
           //Serial.println("Start playing 1");
           playSdWav4.play(fileName);
-          delay(20); // wait for library to parse WAV info
+          //DEBUG_PORT.println(4);
+          //delay(20); // wait for library to parse WAV info
         }
       }
       else if(indi == 4){
         if (playSdWav5.isPlaying() == false) {
           //Serial.println("Start playing 1");
           playSdWav5.play(fileName);
-          delay(20); // wait for library to parse WAV info
+          //DEBUG_PORT.println(5);
+          //delay(20); // wait for library to parse WAV info
         }
       }
       else if(indi == 5){
         if (playSdWav6.isPlaying() == false) {
           //Serial.println("Start playing 1");
           playSdWav6.play(fileName);
-          delay(20); // wait for library to parse WAV info
+          //DEBUG_PORT.println(6);
+          //delay(20); // wait for library to parse WAV info
         }
       }
       else if(indi == 6){
@@ -198,23 +222,53 @@ void playColumn( void ){
         if (playSdWav7.isPlaying() == false) {
           //Serial.println("Start playing 1");
           playSdWav7.play(fileName);
-          delay(20); // wait for library to parse WAV info
+          //DEBUG_PORT.println(7);
+          //delay(20); // wait for library to parse WAV info
         }
       }
       
-    //  DEBUG_PORT.print(*(data + indi));
       
-    //  DEBUG_PORT.print(" ");
-    //  DEBUG_PORT.print(fileName);
+      
+      DEBUG_PORT.print(*(data + indi));
+      
+      DEBUG_PORT.print(" ");
+      //DEBUG_PORT.print(fileName);
     }
-    delay(1000);
+
+    /***
+    if(playSdWav1.isPlaying()){
+      DEBUG_PORT.println("Playing 1");
+    }
+    if(playSdWav2.isPlaying()){
+      DEBUG_PORT.println("Playing 2");
+    }
+    if(playSdWav3.isPlaying()){
+      DEBUG_PORT.println("Playing 3");
+    }
+    if(playSdWav4.isPlaying()){
+      DEBUG_PORT.println("Playing 4");
+    }
+    if(playSdWav5.isPlaying()){
+      DEBUG_PORT.println("Playing 5");
+    }
+    if(playSdWav6.isPlaying()){
+      DEBUG_PORT.println("Playing 6");
+    }
+    if(playSdWav7.isPlaying()){
+      DEBUG_PORT.println("Playing 7");
+    }
+    ***/
     DEBUG_PORT.println();
-    DEBUG_PORT.print(playbackColumn);    
+    DEBUG_PORT.print(playbackColumn);
+    
+    //DEBUG_PORT.print(AudioProcessorUsage());    
     DEBUG_PORT.println();
     
     
     playbackColumn++;
     if(playbackColumn >= STAFF_COLS){
+      //bars += 1;
+      //DEBUG_PORT.println(bars);
       playbackColumn = 0;
     }
   }
@@ -223,7 +277,17 @@ void playColumn( void ){
 void random_cart( void ){
   cart.col = random(0, STAFF_COLS);
   cart.row = random(0, STAFF_ROWS);
-  cart.val = random(0, STAFF_VALS);
+  cart.val = random(0, 6);
+  //cart.col = random(0, 4);
+  //cart.row = random(0, 3);
+  //cart.val = random(0, 6);
+  //cart.col = random(0, STAFF_COLS);
+  //cart.row = random(0, STAFF_ROWS);
+  //cart.val = random(0, 6);
+  //cart.col = (playbackColumn);
+  //cart.row = (random(2));
+  //cart.val = (3);
+   
 }
 
 void setup() {
@@ -247,7 +311,7 @@ void setup() {
   Serial.begin(9600);
   AudioMemory(40);
   sgtl5000_1.enable();
-  sgtl5000_1.volume(.5);
+  sgtl5000_1.volume(.8);
   SPI.setMOSI(SDCARD_MOSI_PIN);
   SPI.setSCK(SDCARD_SCK_PIN);
   if (!(SD.begin(SDCARD_CS_PIN))) {
@@ -257,27 +321,42 @@ void setup() {
     }
   }
   pinMode(13, OUTPUT); // LED on pin 13
-  /***mixer1.gain(0, .2);
-  mixer1.gain(1, .2);
-  mixer1.gain(2, .2);
-  mixer1.gain(3, .2);
-  mixer2.gain(0, .2);
-  mixer2.gain(1, .2);
-  mixer2.gain(2, .2);
-  mixer2.gain(3, .2);
-  mixer5.gain(0, .2);
-  mixer5.gain(1, .2);***/
-  delay(1000);
+  
+  mixer1.gain(0, .1);
+  mixer1.gain(1, .1);
+  mixer1.gain(2, .1);
+  mixer1.gain(3, .1);
+  
+  mixer2.gain(0, .1);
+  mixer2.gain(1, .1);
+  mixer2.gain(2, .1);
+  mixer2.gain(3, .1);
+  
+  mixer3.gain(0, .1);
+  mixer3.gain(1, .1);
+  mixer3.gain(2, .1);
+
+  mixer4.gain(0, .1);
+  mixer4.gain(1, .1);
+  mixer4.gain(2, .1);
+ 
+  mixer5.gain(0, .1);
+  mixer5.gain(1, .1);
+  
+  mixer6.gain(0, .1);
+  mixer6.gain(1, .1);
+  
+  
 
   
 }
 
 void loop() {
-
+  //if (!(SD.begin(SDCARD_CS_PIN))) {
+  //  while (1) {
+  //    Serial.println("Unable to access the SD card");
+      delay(500);
+  //  }
+  //}
   cartBridge.check();
-  if (playSdWav1.isPlaying() == false) {
-          Serial.println("LOOP");
-          playSdWav1.play("PIANOC.WAV");
-          delay(20); // wait for library to parse WAV info
-        }
 }
