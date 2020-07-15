@@ -74,8 +74,6 @@ void setup() {
 
   staff.setDebugVerbose(false);
   DEBUG_PORT.print("Staff Bit Depth: ");
-  DEBUG_PORT.println(staff.getBitDepth());
-  staff.setDebugVerbose(DEBUG_VERBOSE);
 
   playbackTimer.begin(playColumn, PLAYBACK_PERIOD_DEFAULT);
 }
