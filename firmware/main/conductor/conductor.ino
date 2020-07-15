@@ -14,7 +14,6 @@
 
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
-#define DEBUG_VERBOSE (true)
 
 #define BRIDGE_PORT Serial1
 #define BRIDGE_BAUD (115200)
@@ -66,7 +65,6 @@ void playColumn( void ){
 
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
-  if(DEBUG_VERBOSE){ while(!DEBUG_PORT){}; }
 
   BRIDGE_PORT.begin(BRIDGE_BAUD);
   cartBridge.onReceive(onCartReception, NULL);
