@@ -69,7 +69,6 @@ void setup() {
   BRIDGE_PORT.begin(BRIDGE_BAUD);
   cartBridge.onReceive(onCartReception, NULL);
 
-  staff.setDebugVerbose(DEBUG_VERBOSE);
   staff.setDebugStream(DEBUG_PORT);
   staff.setSize(STAFF_COLS, STAFF_ROWS);
 
