@@ -19,7 +19,7 @@
 #define CONTROLLER_COLUMN (15) // indicates which column this controller reads
 
 #define DATA_PIN 18
-#define COLUMN_LEN (7)
+#define COLUMN_LEN (STAFF_ROWS)
 SensorString sensors(COLUMN_LEN, DATA_PIN);
 
 volatile bool button0 = false;
