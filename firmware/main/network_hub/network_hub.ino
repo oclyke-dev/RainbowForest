@@ -31,12 +31,6 @@ void IRAM_ATTR button0ISR() {
   button0 = true;
 }
 
-void random_cart( void ){
-  cart.col = random(0, STAFF_COLS);
-  cart.row = random(0, STAFF_ROWS);
-  cart.val = random(0, STAFF_VALS);
-}
-
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
   BRIDGE_PORT.begin(BRIDGE_BAUD);
@@ -55,10 +49,6 @@ void setup() {
 }
 
 void loop() {
-  random_cart();
-  cartBridge.send(&cart);
-  delay(200);
-
   if(button0){
     DEBUG_PORT.println("button0 released");
     button0 = false;
