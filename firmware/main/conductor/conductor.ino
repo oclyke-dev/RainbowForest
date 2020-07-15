@@ -3,9 +3,12 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+// BOARD: Teensy 3.x series
+
 #include "src/components/staff/staff.h"
 #include "src/components/uart_bridge/uart_bridge.h"
 #include "src/components/cart/cart.h"
+#include "src/components/cat/cat.h"
 
 #include "src/components/configuration/configuration.h"
 
@@ -16,13 +19,27 @@
 #define BRIDGE_PORT Serial1
 #define BRIDGE_BAUD (115200)
 UARTBridge <cart_t> cartBridge(BRIDGE_PORT);
+UARTBridge <cat_t> catBridge(BRIDGE_PORT);
 cart_t cart;
+cat_t cat;
 
 IntervalTimer playbackTimer;
 bool playbackRunning = true;
 
 typedef uint8_t staff_data_t;
 Staff <staff_data_t> staff;
+
+void randomCat( void ){
+  cat.col = random(0, STAFF_COLS);
+  cat.row = random(0, STAFF_ROWS);
+
+  cat.rL = random(0, 0x10);
+  cat.rH = random(0, 0x10);
+  cat.gL = random(0, 0x10);
+  cat.gH = random(0, 0x10);
+  cat.bL = random(0, 0x10);
+  cat.bH = random(0, 0x10);
+}
 
 void onCartReception(cart_t* cart, void* args){
   staff[cart->col][cart->row] = cart->val;
@@ -67,7 +84,15 @@ void setup() {
 }
 
 void loop() {
-
   cartBridge.check();
 
+  // demo how to set the color of sensor node leds
+  static uint32_t sendRandomCatTime = 0;
+  if(millis() > sendRandomCatTime){
+    randomCat();
+    cat.col = 0;
+    cat.row = random(0, STAFF_ROWS);
+    catBridge.send(&cat);
+    sendRandomCatTime = millis() + 1000;
+  }
 }

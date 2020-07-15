@@ -7,6 +7,7 @@
 
 #include "src/components/uart_bridge/uart_bridge.h"
 #include "src/components/cart/cart.h"
+#include "src/components/cat/cat.h"
 
 #include "src/components/configuration/configuration.h"
 
@@ -20,15 +21,28 @@
 #define BRIDGE_PORT Serial1
 #define BRIDGE_BAUD (115200)
 UARTBridge <cart_t> cartBridge(BRIDGE_PORT);
+UARTBridge <cat_t> catBridge(BRIDGE_PORT);
 cart_t cart;
+cat_t cat;
 
 IPAddress IP;
 WiFiUDP udp;
 AsyncServer server(NETWORK_TCP_PORT);
 
+AsyncClient* column_clients[STAFF_COLS];
+
 volatile bool button0 = false;
 void IRAM_ATTR button0ISR() {
   button0 = true;
+}
+
+void onCatReception(cat_t* cat, void* args){
+  AsyncClient* client = column_clients[cat->col];
+  if(client){
+    DEBUG_PORT.print("Passed cat along to column: ");
+    DEBUG_PORT.println(cat->col);
+    client->write((const char*)cat, (sizeof(cat_t)/sizeof(uint8_t)));
+  }
 }
 
 void setup() {
@@ -37,6 +51,8 @@ void setup() {
 
   pinMode(0, INPUT_PULLUP);
   attachInterrupt(0, button0ISR, RISING);
+
+  catBridge.onReceive(onCatReception, NULL);
 
   WiFi.softAP(NETWORK_SSID, NETWORK_PASSWORD);
   IP = WiFi.softAPIP();
@@ -49,6 +65,7 @@ void setup() {
 }
 
 void loop() {
+  catBridge.check();
   if(button0){
     DEBUG_PORT.println("button0 released");
     button0 = false;

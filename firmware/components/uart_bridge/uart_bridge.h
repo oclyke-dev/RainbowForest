@@ -107,6 +107,8 @@ template <class UARTBridgeDataType_t> UARTBridgeStatus_t UARTBridge<UARTBridgeDa
     const uint32_t data_len = (sizeof(UARTBridgeDataType_t)/sizeof(uint8_t));
     uint8_t* pdata = (uint8_t*)&cart;
 
+    // Serial.println(_stream->available());
+
     if(_stream->available() < (data_len + 3)){ return BRIDGE_ERR_UNDERFLOW; }
     
     resetDiv();

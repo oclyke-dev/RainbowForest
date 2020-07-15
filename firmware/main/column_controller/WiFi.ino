@@ -23,6 +23,30 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
   // todo: parse this data to know what LEDs to light up
 //  *(node) = CRGB(255, 0, 0); // G R B
+
+  if(len > (sizeof(cat_t)/sizeof(uint8_t))){
+    len = (sizeof(cat_t)/sizeof(uint8_t));
+  }
+  memcpy((void*)&cat, data, len);
+
+  uint8_t r = ((cat.rH << 4) | (cat.rL & 0x0F));
+  uint8_t g = ((cat.gH << 4) | (cat.gL & 0x0F));
+  uint8_t b = ((cat.bH << 4) | (cat.bL & 0x0F));
+
+  DEBUG_PORT.print("cat received: col: ");
+  DEBUG_PORT.print(cat.col);
+  DEBUG_PORT.print(", row: ");
+  DEBUG_PORT.print(cat.row);
+  DEBUG_PORT.print(", rgb: [");
+  DEBUG_PORT.print(r);
+  DEBUG_PORT.print(", ");
+  DEBUG_PORT.print(g);
+  DEBUG_PORT.print(", ");
+  DEBUG_PORT.print(b);
+  DEBUG_PORT.print("]");
+  DEBUG_PORT.println();
+
+  *(sensors[cat.row]) = CRGB(g, r, b);
 }
 
 void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){

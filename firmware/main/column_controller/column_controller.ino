@@ -5,6 +5,7 @@
 
 // BOARD: Adafruit ESP32 Feather
 
+#include "src/components/cat/cat.h"
 #include "src/components/cart/cart.h"
 #include "src/components/sensor/sensor.h"
 #include "src/components/configuration/configuration.h"
@@ -16,7 +17,7 @@
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
 
-#define CONTROLLER_COLUMN (15) // indicates which column this controller reads
+#define CONTROLLER_COLUMN (0) // indicates which column this controller reads
 
 #define DATA_PIN 18
 #define COLUMN_LEN (STAFF_ROWS)
@@ -32,6 +33,7 @@ AsyncClient client;
 
 volatile bool pending = true;
 cart_t cart;
+cat_t cat;
 
 void IRAM_ATTR button0ISR() {
   button0 = true;
