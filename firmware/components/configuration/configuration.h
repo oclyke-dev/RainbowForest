@@ -11,6 +11,7 @@
 #define STAFF_COLS (16)
 #define STAFF_ROWS (7)
 #define STAFF_VALS (5)
+typedef uint8_t staff_data_t;
 
 #define STAFF_VAL_NONE (0)
 #define STAFF_VAL_RED (1)

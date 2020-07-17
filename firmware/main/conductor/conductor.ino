@@ -25,7 +25,6 @@ cat_t cat;
 IntervalTimer playbackTimer;
 bool playbackRunning = true;
 
-typedef uint8_t staff_data_t;
 Staff <staff_data_t> staff;
 
 void randomCat( void ){

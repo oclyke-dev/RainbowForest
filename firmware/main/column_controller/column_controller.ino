@@ -7,6 +7,7 @@
 
 #include "src/components/cat/cat.h"
 #include "src/components/cart/cart.h"
+#include "src/components/staff/staff.h"
 #include "src/components/sensor/sensor.h"
 #include "src/components/configuration/configuration.h"
 
@@ -22,6 +23,8 @@
 #define DATA_PIN 18
 #define COLUMN_LEN (STAFF_ROWS)
 SensorString sensors(COLUMN_LEN, DATA_PIN);
+
+Staff <staff_data_t> staff;
 
 volatile bool button0 = false;
 volatile bool wifi_connected = false;
@@ -45,6 +48,9 @@ void setup() {
   pinMode(0, INPUT_PULLUP);
   attachInterrupt(0, button0ISR, RISING);
 
+  staff.setDebugStream(DEBUG_PORT);
+  staff.setSize(1, STAFF_ROWS);
+
   memset((void*)&cart, 0x00, (sizeof(cart_t)/sizeof(uint8_t)));
   cart.col = CONTROLLER_COLUMN;
 
@@ -64,6 +70,8 @@ void sendRV(uint8_t row, uint8_t val){
 }
 
 void detectAndTransmit(SensorNode* node, size_t idx, void* args){
+  bool first_update = *((bool*)args);
+  
   node->read();
   
   rgb_f_t rgb;
@@ -76,7 +84,14 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   
   size_t val;
   if(COLOR_DETECT_OK == detectedColor(&rgb, &val)){
-    sendRV(idx, val);
+    if((val != staff[0][idx]) || (first_update)){
+      staff[0][idx] = (staff_data_t)val;
+      sendRV(idx, val);
+      DEBUG_PORT.print("(X) ");
+      if(first_update){
+        DEBUG_PORT.print("(F) ");
+      }
+    }
     DEBUG_PORT.print(detectable_colors[val].name);
   }else{
     DEBUG_PORT.print("unknown");
@@ -93,10 +108,14 @@ void updateSensors( void* args ){
   SensorStatus_e retval = sensors.begin();
   DEBUG_PORT.print("sensors.begin() returned: "); DEBUG_PORT.println(retval);
 
+  bool first_update = true;
   while(1){
     DEBUG_PORT.print("Column: [");
-    sensors.forEachRandOrder(detectAndTransmit);
+    sensors.forEachRandOrder(detectAndTransmit, &first_update);
     DEBUG_PORT.println("]");
+    if(first_update){
+      first_update = false;
+    }
   }
 }
 
