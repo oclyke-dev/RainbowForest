@@ -23,7 +23,8 @@ cart_t cart;
 cat_t cat;
 
 IntervalTimer playbackTimer;
-bool playbackRunning = true;
+volatile bool playNext = false;
+volatile bool playbackRunning = true;
 
 Staff <staff_data_t> staff;
 
@@ -41,24 +42,11 @@ void randomCat( void ){
 
 void onCartReception(cart_t* cart, void* args){
   staff[cart->col][cart->row] = cart->val;
-//  staff.showStaffDebug();
 }
 
 void playColumn( void ){
-  static volatile uint32_t playbackColumn = 0;
   if(playbackRunning){
-    staff_data_t* data = staff[playbackColumn];
-  
-    for(uint32_t indi = 0; indi < STAFF_ROWS; indi++){
-      DEBUG_PORT.print(*(data + indi));
-      DEBUG_PORT.print(" ");
-    }
-    DEBUG_PORT.println();
-  
-    playbackColumn++;
-    if(playbackColumn >= STAFF_COLS){
-      playbackColumn = 0;
-    }
+    playNext = true;
   }
 }
 
@@ -80,13 +68,16 @@ void setup() {
 void loop() {
   cartBridge.check();
 
-  // demo how to set the color of sensor node leds
-  static uint32_t sendRandomCatTime = 0;
-  if(millis() > sendRandomCatTime){
-    randomCat();
-    cat.col = 0;
-    cat.row = random(0, STAFF_ROWS);
-    catBridge.send(&cat);
-    sendRandomCatTime = millis() + 1000;
+  if(playbackRunning && playNext){
+    playNext = false;
+    static uint32_t column = 0;
+    DEBUG_PORT.print("Playing column: ");
+    DEBUG_PORT.print(column);
+    DEBUG_PORT.println();
+
+    column++;
+    if(column >= STAFF_COLS){
+      column = 0;
+    }
   }
 }
