@@ -10,7 +10,7 @@ SensorString sensors(COLUMN_LEN, DATA_PIN);
 
 uint32_t errors = 0x00;
 
-void blinkAndRead(SensorNode* node, size_t idx, void* args){
+void readAndReport(SensorNode* node, size_t idx, void* args){
   node->read();
 
   rgb_f_t rgb;
@@ -36,7 +36,7 @@ void testString( void ){
   errors = 0x00;
   DEBUG_PORT.print("Column: [");
   uint32_t tStart = millis();
-  sensors.forEach(blinkAndRead);
+  sensors.forEach(readAndReport);
   uint32_t tStop = millis();
   DEBUG_PORT.println("]");
   uint32_t took = (tStop - tStart);
