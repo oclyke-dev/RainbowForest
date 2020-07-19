@@ -1,8 +1,11 @@
 # components within main programs
 firmware/main/*/src/components/*
 
-# components within prototyping programs
-firmware/prototyping/*/src/components/*
+# components within utility programs
+firmware/utility/*/src/components/*
+
+# prototype sketches
+firmware/prototyping/*
 
 # MacOS
 .DS_Store
