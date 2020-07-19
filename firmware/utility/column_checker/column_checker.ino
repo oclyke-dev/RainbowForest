@@ -33,6 +33,7 @@ void blinkAndRead(SensorNode* node, size_t idx, void* args){
 }
 
 void testString( void ){
+  errors = 0x00;
   DEBUG_PORT.print("Column: [");
   uint32_t tStart = millis();
   sensors.forEach(blinkAndRead);
