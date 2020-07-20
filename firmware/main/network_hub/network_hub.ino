@@ -37,10 +37,13 @@ void IRAM_ATTR button0ISR() {
 }
 
 void onCatReception(cat_t* cat, void* args){
+  if(cat->col >= STAFF_COLS){
+    DEBUG_PORT.println("received an invalid cat");
+    return;
+  }
+  
   AsyncClient* client = column_clients[cat->col];
   if(client){
-    DEBUG_PORT.print("Passed cat along to column: ");
-    DEBUG_PORT.println(cat->col);
     client->write((const char*)cat, (sizeof(cat_t)/sizeof(uint8_t)));
   }
 }
