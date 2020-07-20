@@ -19,10 +19,7 @@ typedef uint8_t staff_data_t;
 #define STAFF_VAL_GREEN (3)
 #define STAFF_VAL_CYAN (4)
 #define STAFF_VAL_BLUE (5)
-
-
-#define PLAYBACK_PERIOD_DEFAULT (500000)
-
+ 
 #define NETWORK_TCP_PORT (80)
 #define NETWORK_UDP_PORT (3333)
 #define NETWORK_UDP_ADDRESS "255.255.255.255"
