@@ -19,6 +19,23 @@ typedef uint8_t staff_data_t;
 #define STAFF_VAL_GREEN (3)
 #define STAFF_VAL_CYAN (4)
 #define STAFF_VAL_BLUE (5)
+
+#define INSTRUMENT_GUITAR STAFF_VAL_RED
+#define INSTRUMENT_TRUMPET STAFF_VAL_YELLOW
+#define INSTRUMENT_FLUTE STAFF_VAL_GREEN
+#define INSTRUMENT_DRUMS STAFF_VAL_CYAN
+#define INSTRUMENT_PIANO STAFF_VAL_BLUE
+
+#define NOTE_C (0)
+#define NOTE_D (1)
+#define NOTE_E (2)
+#define NOTE_F (3)
+#define NOTE_G (4)
+#define NOTE_A (5)
+#define NOTE_B (6)
+
+#define DRUM_BASS_KICK NOTE_C
+#define DRUM_HI_HAT NOTE_D
  
 #define NETWORK_TCP_PORT (80)
 #define NETWORK_UDP_PORT (3333)

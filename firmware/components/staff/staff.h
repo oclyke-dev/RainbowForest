@@ -178,7 +178,6 @@ template <class StaffDataType_t> uint32_t Staff<StaffDataType_t>::indexOf(uint32
 }
 
 template <class StaffDataType_t> StaffDataType_t* Staff<StaffDataType_t>::operator[](uint32_t col){
-    StaffStatus_e status = STAFF_NOM;
     if(col >= _cols){ 
         report(STAFF_ERR_OUTBOUNDS); 
         return (StaffDataType_t*)0;
