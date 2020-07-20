@@ -5,6 +5,7 @@
 
 /*
 // todo: 
+// - handle example request buttons
 // - use a hardware watchdog timer to cover the worst crashes of all
 */
 
