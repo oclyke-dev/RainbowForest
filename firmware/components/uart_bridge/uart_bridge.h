@@ -109,7 +109,7 @@ template <class UARTBridgeDataType_t> UARTBridgeStatus_t UARTBridge<UARTBridgeDa
 
     // Serial.println(_stream->available());
 
-    if(_stream->available() < (data_len + 3)){ return BRIDGE_ERR_UNDERFLOW; }
+    if(_stream->available() < (int)(data_len + 3)){ return BRIDGE_ERR_UNDERFLOW; }
     
     resetDiv();
 
