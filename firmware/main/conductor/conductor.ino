@@ -81,6 +81,8 @@ Staff <staff_data_t> staff;
 volatile bool playNext = false;
 uint8_t currentColumn = 0;
 
+#define PLAYBACK_BPM_MAX (180) //BPM of 180 333333
+#define PLAYBACK_BPM_MIN (60) //BPM of 60 1000000
 uint8_t bpm;//Should be mapped between 60 and 180
 
 String instrument, note, sound;
@@ -95,6 +97,7 @@ void onCartReception(cart_t* cart, void* args){
 
 static volatile uint32_t playbackColumn = 0;
 
+/***
 void playbuttonPress(){
   static uint32_t debounce = 0;
   uint32_t currentTime = millis();  
@@ -104,6 +107,7 @@ void playbuttonPress(){
     //playNext = true;
   }
 }
+***/
 
 void playbackISR( void ){
 
@@ -133,7 +137,7 @@ void playbackISR( void ){
     }
   
 
-  //playNext = true;
+  playNext = true;
 
   }
   
@@ -145,10 +149,12 @@ void random_cart( void ){
   cart.val = random(0, 6);   
 }
 
+/***
 int BPMconverter(uint8_t bpm){
   float temp = bpm;
   return 1000000/(temp/60);
 }
+***/
 
 void playColumn(int column){
 
@@ -215,13 +221,16 @@ void playColumn(int column){
       
       //turning string into a char array to pass into the teensy play function
       sound.toCharArray(fileName, 13);
+
+      
       
       //sending the file name to the appropriate .WAV player
       if(indi == 0){
         if (playSdWav1.isPlaying() == false) {
 
           playSdWav1.play(fileName);
- 
+          DEBUG_PORT.print("Playing: ");
+          DEBUG_PORT.println(fileName);
         }
       }
       
@@ -229,35 +238,40 @@ void playColumn(int column){
         if (playSdWav2.isPlaying() == false) {
           
           playSdWav2.play(fileName);
-          
+          DEBUG_PORT.print("Playing: ");
+          DEBUG_PORT.println(fileName);
         }
       }
       else if(indi == 2){
         if (playSdWav3.isPlaying() == false) {
           
           playSdWav3.play(fileName);
-          
+          DEBUG_PORT.print("Playing: ");
+          DEBUG_PORT.println(fileName);
         }
       }
       else if(indi == 3){
         if (playSdWav4.isPlaying() == false) {
           
           playSdWav4.play(fileName);
-          
+          DEBUG_PORT.print("Playing: ");
+          DEBUG_PORT.println(fileName);
         }
       }
       else if(indi == 4){
         if (playSdWav5.isPlaying() == false) {
           
           playSdWav5.play(fileName);
-          
+          DEBUG_PORT.print("Playing: ");
+          DEBUG_PORT.println(fileName);
         }
       }
       else if(indi == 5){
         if (playSdWav6.isPlaying() == false) {
           
           playSdWav6.play(fileName);
-          
+          DEBUG_PORT.print("Playing: ");
+          DEBUG_PORT.println(fileName);
         }
       }
       else if(indi == 6){
@@ -267,7 +281,8 @@ void playColumn(int column){
         if (playSdWav7.isPlaying() == false) {
           
           playSdWav7.play(fileName);
-          
+          DEBUG_PORT.print("Playing: ");
+          DEBUG_PORT.println(fileName);
         }
       }
 
@@ -331,7 +346,7 @@ void setup() {
 
   pinMode(PLAY_BUTTON_PIN, INPUT_PULLUP);
 
-  attachInterrupt(digitalPinToInterrupt(PLAY_BUTTON_PIN), playbuttonPress, FALLING);
+  //attachInterrupt(digitalPinToInterrupt(PLAY_BUTTON_PIN), playbuttonPress, FALLING);
 }
 
 void loop() {
@@ -341,10 +356,10 @@ void loop() {
  //playbackTimer.update(bpm);//playbackTimer.update() sets a new interval 
   
   if(playNext){
-    //playNext = false;
+    playNext = false;
     playColumn(currentColumn++);
-    if(currentColumn == 15){
-      playNext = false;
-    }
+   // if(currentColumn == 15){
+   //   playNext = false;
+   // }
   }
 }
