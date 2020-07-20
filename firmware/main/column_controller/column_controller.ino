@@ -14,11 +14,15 @@
 #include "WiFi.h"
 #include "WiFiUdp.h"
 #include "AsyncTCP.h" // https://github.com/me-no-dev/AsyncTCP
+#include "Preferences.h"
 
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
 
 #define CONTROLLER_COLUMN (0) // indicates which column this controller reads
+#define PREF_KEY_CONTROLLER_COL "column"
+
+#define PREF_NAMESPACE "rf_cc"
 
 #define DATA_PIN 18
 #define COLUMN_LEN (STAFF_ROWS)
@@ -38,12 +42,24 @@ volatile bool pending = true;
 cart_t cart;
 cat_t cat;
 
+Preferences preferences;
+
+void setColumnNumber( uint8_t col ){
+  if(col >= STAFF_COLS){ return; }
+  cart.col = col;
+  preferences.putUInt(PREF_KEY_CONTROLLER_COL, cart.col);
+  DEBUG_PORT.print("Set column to ");
+  DEBUG_PORT.println(cart.col);
+}
+
 void IRAM_ATTR button0ISR() {
   button0 = true;
 }
 
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
+
+  preferences.begin(PREF_NAMESPACE, false);
 
   pinMode(0, INPUT_PULLUP);
   attachInterrupt(0, button0ISR, RISING);
@@ -52,7 +68,11 @@ void setup() {
   staff.setSize(1, STAFF_ROWS);
 
   memset((void*)&cart, 0x00, (sizeof(cart_t)/sizeof(uint8_t)));
-  cart.col = CONTROLLER_COLUMN;
+  cart.col = preferences.getUInt(PREF_KEY_CONTROLLER_COL, CONTROLLER_COLUMN);
+
+  DEBUG_PORT.print("Column Controller (");
+  DEBUG_PORT.print(cart.col);
+  DEBUG_PORT.println(")");
 
   WiFi.onEvent(WiFiEvent);
   setupClient();
@@ -129,6 +149,7 @@ void loop() {
       if(cart.col >= STAFF_COLS){
         cart.col = 0;
       }
+      setColumnNumber(cart.col);
       for(size_t idx = 0; idx < COLUMN_LEN; idx++){
         SensorNode* node = sensors[idx];
         *(node) = (cart.col & (0x01 << idx)) ? CRGB(127, 127, 127) : CRGB(0, 0, 0);
