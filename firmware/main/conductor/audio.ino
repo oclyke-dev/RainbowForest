@@ -3,6 +3,11 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+/*
+// todo: 
+// - use a hardware watchdog timer to cover the worst crashes of all
+*/
+
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
