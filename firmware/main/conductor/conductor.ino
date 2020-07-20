@@ -72,10 +72,9 @@ UARTBridge <cart_t> cartBridge(BRIDGE_PORT);
 cart_t cart;
 
 IntervalTimer playbackTimer;
+volatile bool playNext = false;
+volatile bool playbackRunning = true;
 
-bool playbackRunning = true;
-
-typedef uint8_t staff_data_t;
 Staff <staff_data_t> staff;
 
 volatile bool playNext = false;
@@ -92,7 +91,6 @@ char fileName[13];
 
 void onCartReception(cart_t* cart, void* args){
   staff[cart->col][cart->row] = cart->val;
-
 }
 
 static volatile uint32_t playbackColumn = 0;
@@ -111,36 +109,10 @@ void playbuttonPress(){
 
 void playbackISR( void ){
 
-  random_cart();
-  
-  staff[playbackColumn][cart.row] = cart.val;
+void playColumn( void ){
   if(playbackRunning){
-    staff_data_t* data = staff[playbackColumn];
-    
-    for(uint32_t indi = 0; indi < STAFF_ROWS; indi++){   
-      
-      DEBUG_PORT.print(*(data + indi));
-      DEBUG_PORT.print(" ");
-    }
-
-   
-    DEBUG_PORT.println();
-    DEBUG_PORT.print(playbackColumn);
-    DEBUG_PORT.print(" ");
-    DEBUG_PORT.print(AudioProcessorUsage());  
-    DEBUG_PORT.println();
-    
-    
-    playbackColumn++;
-    if(playbackColumn >= STAFF_COLS){
-      playbackColumn = 0;
-    }
-  
-
-  playNext = true;
-
+    playNext = true;
   }
-  
 }
 
 void random_cart( void ){

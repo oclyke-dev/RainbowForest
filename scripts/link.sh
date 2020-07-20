@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DIR+=/..
 
 components="cart cat configuration sensor staff uart_bridge"
-programs="column_controller network_hub conductor"
+programs="main/column_controller main/network_hub main/conductor utility/column_checker"
 
 for program in $programs
 do
@@ -12,6 +12,6 @@ do
     mkdir -p $DIR/firmware/main/$program/src/components
     for component in $components
     do
-        ln -s $DIR/firmware/components/$component $DIR/firmware/main/$program/src/components/$component
+        ln -s $DIR/firmware/components/$component $DIR/firmware/$program/src/components/$component
     done
 done
