@@ -44,6 +44,9 @@ typedef uint8_t staff_data_t;
 #define NETWORK_SSID "RainbowNetESP32"
 #define NETWORK_PASSWORD "ujywwjtw"
 
+#define COMMAND_REQ_FULL_UPDATE (STAFF_ROWS + 1)
+#define COMMAND_SET_COLUMN_COLOR (STAFF_ROWS + 2)
+
 // #define DETECTABLE_COLORS_LENGTH (STAFF_VALS + 1)
 extern const color_definition_t detectable_colors[];
 bool detectedColor(const rgb_f_t* rgb, size_t* idx);

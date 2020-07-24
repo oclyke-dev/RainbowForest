@@ -71,20 +71,26 @@ void onCartReception(cart_t* cart, void* args){
   }
 }
 
-void setSensorHSV( CHSV hsv, staff_data_t col, staff_data_t row ){
+void setColumnHSV( CHSV hsv, staff_data_t col){
   CRGB rgb;
   hsv2rgb_rainbow( hsv, rgb);
+  
   setSensorRGB(rgb, col, row);
 }
 
-void setSensorRGB( CRGB rgb, staff_data_t col, staff_data_t row ){ 
+void setColumnRGB( CRGB rgb, staff_data_t col){ 
   cat.col = col;
-  cat.row = row;
+  cat.row = COMMAND_SET_COLUMN_COLOR;
   cat.rH = (rgb.r >> 4);
   cat.rL = (rgb.r & 0x0F);
   cat.gH = (rgb.g >> 4);
   cat.gL = (rgb.g & 0x0F);
   cat.bH = (rgb.b >> 4);
   cat.bL = (rgb.b & 0x0F);
+  catBridge.send(&cat);
+}
+
+void requestFullUpdate( void ){
+  cat.row = COMMAND_REQ_FULL_UPDATE;
   catBridge.send(&cat);
 }

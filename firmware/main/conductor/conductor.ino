@@ -67,6 +67,8 @@ void setup() {
   DEBUG_PORT.print("Started with settings: running: ");
   DEBUG_PORT.print(playbackRunning);
   DEBUG_PORT.println();
+
+  requestFullUpdate();
 }
 
 void loop() {
@@ -95,23 +97,7 @@ void loop() {
     } 
   
     if(playNext){
-      playNext = false;
-      
-      static uint8_t note = NOTE_C;
-      static uint8_t inst = INSTRUMENT_TRUMPET;
-      for(size_t note = NOTE_C; note <= NOTE_B; note++){
-        staff[playbackColumn][note] = STAFF_VAL_NONE;
-        staff[playbackColumn][note] = random(INSTRUMENT_GUITAR, INSTRUMENT_PIANO+1);
-      }
-  
-//      cart.col = playbackColumn;
-//      cart.row = random(0, STAFF_ROWS);
-//      cart.val = STAFF_VAL_NONE;
-//      if(cart.col == 15){
-//        cart.val = random(1, INSTRUMENT_PIANO+1);
-//      }
-//      staff[cart.col][cart.row] = cart.val;
-      
+      playNext = false;   
       playColumn(playbackColumn++);
       if(playbackColumn >= STAFF_COLS){
         playbackColumn = 0;

@@ -38,6 +38,8 @@ IPAddress ServerIP;
 WiFiUDP udp;
 AsyncClient client;
 
+bool full_update = true;
+
 volatile bool pending = true;
 cart_t cart;
 cat_t cat;
@@ -90,8 +92,8 @@ void sendRV(uint8_t row, uint8_t val){
 }
 
 void detectAndTransmit(SensorNode* node, size_t idx, void* args){
-  bool first_update = *((bool*)args);
-  
+  bool full_update = *((bool*)args);
+
   node->read();
   
   rgb_f_t rgb;
@@ -104,11 +106,11 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   
   size_t val;
   if(COLOR_DETECT_OK == detectedColor(&rgb, &val)){
-    if((val != staff[0][idx]) || (first_update)){
+    if((val != staff[0][idx]) || (full_update)){
       staff[0][idx] = (staff_data_t)val;
       sendRV(idx, val);
       DEBUG_PORT.print("(X) ");
-      if(first_update){
+      if(full_update){
         DEBUG_PORT.print("(F) ");
       }
     }
@@ -120,6 +122,10 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   DEBUG_PORT.print(", ");
 
   delay(esp_random() & (uint32_t)0x0000000F);
+
+  if(full_update){
+    full_update = false;
+  }
 }
 
 void updateSensors( void* args ){
@@ -128,14 +134,10 @@ void updateSensors( void* args ){
   SensorStatus_e retval = sensors.begin();
   DEBUG_PORT.print("sensors.begin() returned: "); DEBUG_PORT.println(retval);
 
-  bool first_update = true;
   while(1){
     DEBUG_PORT.print("Column: [");
-    sensors.forEachRandOrder(detectAndTransmit, &first_update);
+    sensors.forEachRandOrder(detectAndTransmit, &full_update);
     DEBUG_PORT.println("]");
-    if(first_update){
-      first_update = false;
-    }
   }
 }
 

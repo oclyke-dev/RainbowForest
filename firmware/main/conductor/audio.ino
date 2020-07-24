@@ -173,18 +173,16 @@ uint32_t audio_watchdog( void ){
 }
 
 void showPlayHead( uint8_t col ){
-  uint8_t prev_col = col - 1;
+  int8_t prev_col = col - 1;
   if(col == 0){
-    prev_col = 15;
+    prev_col = (STAFF_COLS-1);
   }
-  CHSV hsv((((float)col)/((float)STAFF_COLS)) * 255, 255, 255);
+
   CRGB rgb(0, 0, 0);
-  for(size_t note = 0; note < STAFF_ROWS; note++){
-//    CHSV hsv((((float)note)/((float)STAFF_ROWS)) * 255, 255, 255);
-//    CRGB rgb(0, 0, 0);
-    setSensorHSV(hsv, col, note);
-    setSensorRGB(rgb, prev_col, note);
-  }
+  setColumnRGB(rgb, prev_col);
+  
+  CHSV hsv((((float)col)/((float)STAFF_COLS)) * 255, 255, 255);
+  setColumnHSV(hsv, col);
 }
 
 void playColumn( uint8_t col ){  

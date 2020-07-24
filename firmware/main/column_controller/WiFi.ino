@@ -20,6 +20,32 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
   pending = false;
 }
 
+void setColorFromCat(SensorNode* node, size_t idx, void* args){
+  uint8_t r = ((cat.rH << 4) | (cat.rL & 0x0F));
+  uint8_t g = ((cat.gH << 4) | (cat.gL & 0x0F));
+  uint8_t b = ((cat.bH << 4) | (cat.bL & 0x0F));
+  
+  *(node) = CRGB(g, r, b);
+}
+
+void handleCat( void ){
+  if(cat.row == COMMAND_REQ_FULL_UPDATE){
+    full_update = true;
+    return;
+  }
+  
+  if(cat.row == COMMAND_SET_COLUMN_COLOR){
+    sensors.forEach(setColorFromCat, NULL);
+    return;
+  }
+  
+  uint8_t r = ((cat.rH << 4) | (cat.rL & 0x0F));
+  uint8_t g = ((cat.gH << 4) | (cat.gL & 0x0F));
+  uint8_t b = ((cat.bH << 4) | (cat.bL & 0x0F));
+  
+  *(sensors[cat.row]) = CRGB(g, r, b);
+}
+
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
   const size_t cat_len = (sizeof(cat_t)/sizeof(uint8_t));
   size_t handled = 0;
@@ -27,10 +53,7 @@ void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
     len -= cat_len;
     handled += cat_len;
     memcpy((void*)&cat, (void*)(((uint8_t*)data + handled)), cat_len);
-    uint8_t r = ((cat.rH << 4) | (cat.rL & 0x0F));
-    uint8_t g = ((cat.gH << 4) | (cat.gL & 0x0F));
-    uint8_t b = ((cat.bH << 4) | (cat.bL & 0x0F));
-    *(sensors[cat.row]) = CRGB(g, r, b);
+    handleCat();
   }
 }
 
