@@ -74,7 +74,7 @@ void setColumnHSV( CHSV hsv, staff_data_t col){
 }
 
 void setColumnRGB( CRGB rgb, staff_data_t col){ 
-  cat.col = STAFF_COLS;
+  cat.col = col;
   cat.row = COMMAND_SET_COLUMN_COLOR;
   cat.rH = (rgb.r >> 4);
   cat.rL = (rgb.r & 0x0F);

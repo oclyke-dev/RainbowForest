@@ -37,15 +37,33 @@ void IRAM_ATTR button0ISR() {
 }
 
 void onCatReception(cat_t* cat, void* args){
-  if(cat->col >= STAFF_COLS){
-    DEBUG_PORT.println("received an invalid cat");
-    return;
+  if(cat->col < STAFF_COLS){
+    AsyncClient* client = column_clients[cat->col];
+    if(client){
+      DEBUG_PORT.print("conductor --> column[");
+      DEBUG_PORT.print(cat->col);
+      DEBUG_PORT.print("] (client 0x");
+      printHex8(&DEBUG_PORT, (uint32_t)client);
+      DEBUG_PORT.print("), {");
+      DEBUG_PORT.print(" col: ");
+      DEBUG_PORT.print(cat->col);
+      DEBUG_PORT.print(", row: ");
+      DEBUG_PORT.print(cat->row);
+      DEBUG_PORT.print(", r: ");
+      DEBUG_PORT.print(cat->rH << 4 | cat->rL & 0x0F);
+      DEBUG_PORT.print(", g: ");
+      DEBUG_PORT.print(cat->gH << 4 | cat->gL & 0x0F);
+      DEBUG_PORT.print(", b: ");
+      DEBUG_PORT.print(cat->bH << 4 | cat->bL & 0x0F);
+      DEBUG_PORT.print(" }");
+      DEBUG_PORT.println();
+      
+      client->write((const char*)cat, (sizeof(cat_t)/sizeof(uint8_t)));
+      return;
+    }
   }
-  
-  AsyncClient* client = column_clients[cat->col];
-  if(client){
-    client->write((const char*)cat, (sizeof(cat_t)/sizeof(uint8_t)));
-  }
+
+  DEBUG_PORT.println("received an invalid cat");
 }
 
 void setup() {
@@ -73,4 +91,40 @@ void loop() {
     DEBUG_PORT.println("button0 released");
     button0 = false;
   }
+
+//  if(Serial.available()){
+//    char command = Serial.read();
+//    if(command == 'r'){
+//      cat.col = 15;
+//      cat.row = COMMAND_REQ_FULL_UPDATE;
+//      cat.rH = 0;
+//      cat.rL = 0;
+//      cat.gH = 0;
+//      cat.gL = 0;
+//      cat.bH = 0;
+//      cat.bL = 0;
+//      onCatReception(&cat, NULL);
+//    }else if(command == 's'){
+//      cat.col = 15;
+//      cat.row = COMMAND_SET_COLUMN_COLOR;
+//      cat.rH = 0x0F;
+//      cat.rL = 0x0F;
+//      cat.gH = 0;
+//      cat.gL = 0;
+//      cat.bH = 0;
+//      cat.bL = 0;
+//      onCatReception(&cat, NULL);
+//    }else if(command == 'i'){
+//      cat.col = 15;
+//      cat.row = 3;
+//      cat.rH = 0;
+//      cat.rL = 0;
+//      cat.gH = 0x08;
+//      cat.gL = 0x0F;
+//      cat.bH = 0x0A;
+//      cat.bL = 0x0F;
+//      onCatReception(&cat, NULL);
+//    }
+//    
+//  }
 }

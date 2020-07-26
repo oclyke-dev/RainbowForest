@@ -31,8 +31,24 @@ void handleClientError(void* args, AsyncClient* client, int8_t error){
 
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
   memcpy((void*)&cart, data, len);
-  column_clients[cart.col] = client;
-  cartBridge.send(&cart);
+  if(cart.col < STAFF_COLS){
+    DEBUG_PORT.print("column[");
+    DEBUG_PORT.print(cart.col);
+    DEBUG_PORT.print("] (client 0x");
+    printHex8(&DEBUG_PORT, (uint32_t)client);
+    DEBUG_PORT.print(") --> conductor , {");
+    DEBUG_PORT.print(" col: ");
+    DEBUG_PORT.print(cart.col);
+    DEBUG_PORT.print(", row: ");
+    DEBUG_PORT.print(cart.row);
+    DEBUG_PORT.print(", val: ");
+    DEBUG_PORT.print(cart.val);
+    DEBUG_PORT.print(" }");
+    DEBUG_PORT.println();
+    
+    column_clients[cart.col] = client;
+    cartBridge.send(&cart);
+  }
 }
 
 void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){

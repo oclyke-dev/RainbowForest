@@ -29,30 +29,66 @@ void setColorFromCat(SensorNode* node, size_t idx, void* args){
 }
 
 void handleCat( void ){
+  uint8_t r = ((cat.rH << 4) | (cat.rL & 0x0F));
+  uint8_t g = ((cat.gH << 4) | (cat.gL & 0x0F));
+  uint8_t b = ((cat.bH << 4) | (cat.bL & 0x0F));
+
+  DEBUG_PORT.println();
+  DEBUG_PORT.print("Handling CAT. { col: ");
+  DEBUG_PORT.print(cat.col);
+  DEBUG_PORT.print(", row: ");
+  DEBUG_PORT.print(cat.row);
+  DEBUG_PORT.print(" } ");
+  
   if(cat.row == COMMAND_REQ_FULL_UPDATE){
+    DEBUG_PORT.println(" Full Update Requested");
+    
     full_update = true;
     return;
   }
   
   if(cat.row == COMMAND_SET_COLUMN_COLOR){
+    DEBUG_PORT.print(" Column Color Set: {");
+    DEBUG_PORT.print(" r: ");
+    DEBUG_PORT.print(r);
+    DEBUG_PORT.print(", g: ");
+    DEBUG_PORT.print(g);
+    DEBUG_PORT.print(", b: ");
+    DEBUG_PORT.print(b);
+    DEBUG_PORT.println();
+    
     sensors.forEach(setColorFromCat, NULL);
     return;
   }
-  
-  uint8_t r = ((cat.rH << 4) | (cat.rL & 0x0F));
-  uint8_t g = ((cat.gH << 4) | (cat.gL & 0x0F));
-  uint8_t b = ((cat.bH << 4) | (cat.bL & 0x0F));
-  
-  *(sensors[cat.row]) = CRGB(g, r, b);
+
+  DEBUG_PORT.print(" individual color set: {");
+  if((cat.col < STAFF_COLS) && (cat.row < STAFF_ROWS)){
+    DEBUG_PORT.print(" r: ");
+    DEBUG_PORT.print(r);
+    DEBUG_PORT.print(", g: ");
+    DEBUG_PORT.print(g);
+    DEBUG_PORT.print(", b: ");
+    DEBUG_PORT.print(b);
+    DEBUG_PORT.println();
+
+    *(sensors[cat.row]) = CRGB(g, r, b);
+    return;
+  }
+
+  DEBUG_PORT.println(" unrecognized CAT");
 }
 
 void handleClientData(void* args, AsyncClient* client, void *data, size_t len){
   const size_t cat_len = (sizeof(cat_t)/sizeof(uint8_t));
-  size_t handled = 0;
-  while(len >= cat_len){
-    len -= cat_len;
-    handled += cat_len;
-    memcpy((void*)&cat, (void*)(((uint8_t*)data + handled)), cat_len);
+
+//  DEBUG_PORT.print("received data: { len: ");
+//  DEBUG_PORT.print(len);
+//  DEBUG_PORT.print(", cat_len: ");
+//  DEBUG_PORT.print(cat_len);
+//  DEBUG_PORT.println();
+
+  if(len == cat_len){
+    memcpy((void*)&cat, data, cat_len);
     handleCat();
   }
 }
@@ -131,6 +167,7 @@ void connectToServer( void ){
       client_connected = client.connect(ServerIP, NETWORK_TCP_PORT);
     }
   }
+  digitalWrite(STATUS_LED, HIGH);
   udp.stop();
 }
 
@@ -154,4 +191,12 @@ void WiFiEvent(WiFiEvent_t event){
       DEBUG_PORT.println(event);
       break;
   }
+}
+
+void sendRV(uint8_t row, uint8_t val){
+  while(pending){};
+  cart.row = row;
+  cart.val = val;
+  client.write((const char*)&cart, (sizeof(cart_t)/sizeof(uint8_t)));
+  pending = true;
 }
