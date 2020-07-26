@@ -28,11 +28,6 @@ void playbackISR( void ){
   playNext = true;
 }
 
-void requestFullUpdate( void ){
-  cat.col = STAFF_COLS;
-  catBridge.send(&cat);
-}
-
 void setBPM( uint8_t bpm ){
   playbackTimer.update(BPM2USPERIOD(bpm));
   if(bpm != tempo.getVal()){
@@ -75,11 +70,11 @@ void setColumnHSV( CHSV hsv, staff_data_t col){
   CRGB rgb;
   hsv2rgb_rainbow( hsv, rgb);
   
-  setSensorRGB(rgb, col, row);
+  setColumnRGB(rgb, col);
 }
 
 void setColumnRGB( CRGB rgb, staff_data_t col){ 
-  cat.col = col;
+  cat.col = STAFF_COLS;
   cat.row = COMMAND_SET_COLUMN_COLOR;
   cat.rH = (rgb.r >> 4);
   cat.rL = (rgb.r & 0x0F);
