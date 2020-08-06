@@ -62,7 +62,7 @@ void setup() {
 
   playbackTimer.begin(playbackISR, BPM2USPERIOD(DEF_BPM));
   
-  restore_settings();
+//  restore_settings();
   
   DEBUG_PORT.print("Started with settings: running: ");
   DEBUG_PORT.print(playbackRunning);
