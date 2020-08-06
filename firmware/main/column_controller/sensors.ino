@@ -13,27 +13,41 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   rgb.g = rgbElemByUI16(node->getGreen());
   rgb.b = rgbElemByUI16(node->getBlue());
 
-  DEBUG_PORT.print(idx);
-  DEBUG_PORT.print(": ");
+  prev_staff[0][idx] = staff[0][idx]; // store last staff value
   
   size_t val;
   if(COLOR_DETECT_OK == detectedColor(&rgb, &val)){
-    if((val != staff[0][idx]) || (force_update)){
-      staff[0][idx] = (staff_data_t)val;
-      sendRV(idx, val);
+    detection_ok_staff[0][idx] = true;
+    staff[0][idx] = (staff_data_t)val;
+    if((staff[0][idx] != prev_staff[0][idx]) || (force_update)){
+      sendRV(idx, staff[0][idx]);
+    }
+  }else{
+    detection_ok_staff[0][idx] = false;
+  }
+
+  delay(esp_random() & (uint32_t)0x0000003F);
+}
+
+void printInfo(SensorNode* node, size_t idx, void* args){
+  bool force_update = *((bool*)args);
+  
+  DEBUG_PORT.print(idx);
+  DEBUG_PORT.print(": ");
+
+  if(detection_ok_staff[0][idx]){
+    if((staff[0][idx] != prev_staff[0][idx]) || (force_update)){
       DEBUG_PORT.print("(X) ");
       if(force_update){
         DEBUG_PORT.print("(F) ");
       }
     }
-    DEBUG_PORT.print(detectable_colors[val].name);
+    DEBUG_PORT.print(detectable_colors[staff[0][idx]].name);
   }else{
     DEBUG_PORT.print("unknown");
   }
 
   DEBUG_PORT.print(", ");
-
-  delay(esp_random() & (uint32_t)0x0000003F);
 }
 
 void updateSensors( void* args ){
@@ -43,12 +57,16 @@ void updateSensors( void* args ){
   DEBUG_PORT.print("sensors.begin() returned: "); DEBUG_PORT.println(retval);
 
   while(1){
-    DEBUG_PORT.print("Column: [");
+    
     bool was_updated = full_update;
     sensors.forEachRandOrder(detectAndTransmit, &full_update);
+
+    DEBUG_PORT.print("Column: [ ");
+    sensors.forEach(printInfo, &full_update);
+    DEBUG_PORT.println("]");
+    
     if(was_updated){
       full_update = false;
     }
-    DEBUG_PORT.println("]");
   }
 }

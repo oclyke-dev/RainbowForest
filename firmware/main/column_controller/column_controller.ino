@@ -27,6 +27,8 @@
 SensorString sensors(COLUMN_LEN, DATA_PIN);
 
 Staff <staff_data_t> staff;
+Staff <staff_data_t> prev_staff;
+Staff <bool> detection_ok_staff;
 
 volatile bool button0 = false;
 volatile bool wifi_connected = false;
@@ -64,6 +66,8 @@ void setup() {
 
   staff.setDebugStream(DEBUG_PORT);
   staff.setSize(1, STAFF_ROWS);
+  prev_staff.setSize(1, STAFF_ROWS);
+  detection_ok_staff.setSize(1, STAFF_ROWS);
 
   memset((void*)&cart, 0x00, (sizeof(cart_t)/sizeof(uint8_t)));
   setColumnNumber(CONTROLLER_COLUMN);
