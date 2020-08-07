@@ -59,10 +59,10 @@ void updateSensors( void* args ){
   while(1){
     
     bool was_updated = full_update;
-    sensors.forEachRandOrder(detectAndTransmit, &full_update);
+    sensors.forEachRandOrder(detectAndTransmit, (void*)&full_update);
 
     DEBUG_PORT.print("Column: [ ");
-    sensors.forEach(printInfo, &full_update);
+    sensors.forEach(printInfo, (void*)&full_update);
     DEBUG_PORT.println("]");
     
     if(was_updated){
