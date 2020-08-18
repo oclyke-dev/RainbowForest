@@ -85,6 +85,18 @@ void setColumnRGB( CRGB rgb, staff_data_t col){
   catBridge.send(&cat);
 }
 
+void setRGB( CRGB rgb, staff_data_t row, staff_data_t col ){
+  cat.col = col;
+  cat.row = row;
+  cat.rH = (rgb.r >> 4);
+  cat.rL = (rgb.r & 0x0F);
+  cat.gH = (rgb.g >> 4);
+  cat.gL = (rgb.g & 0x0F);
+  cat.bH = (rgb.b >> 4);
+  cat.bL = (rgb.b & 0x0F);
+  catBridge.send(&cat);
+}
+
 void requestFullUpdate( void ){
   cat.row = COMMAND_REQ_FULL_UPDATE;
   catBridge.send(&cat);
