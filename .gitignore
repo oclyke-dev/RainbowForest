@@ -1,3 +1,6 @@
+# network config (secrets)
+firmware/components/configuration/network_config.h
+
 # components within main programs
 firmware/main/*/src/components/*
 
