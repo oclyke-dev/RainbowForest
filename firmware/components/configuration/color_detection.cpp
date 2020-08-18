@@ -145,27 +145,27 @@ bool colorIndexByRGB(const rgb_f_t* rgb, size_t* idx, const color_definition_t* 
   if(!colors){ return COLOR_DETECT_ERR; }
   if(!idx){ return COLOR_DETECT_ERR; }
 
-  // Serial.println(num_colors);
+   Serial.println(num_colors);
 
-  // Serial.print("rgb: [");
-  // Serial.print(rgb->r);
-  // Serial.print(", ");
-  // Serial.print(rgb->g);
-  // Serial.print(", ");
-  // Serial.print(rgb->b);
-  // Serial.print("]");
-  // Serial.println();
+   Serial.print("rgb: [");
+   Serial.print(rgb->r);
+   Serial.print(", ");
+   Serial.print(rgb->g);
+   Serial.print(", ");
+   Serial.print(rgb->b);
+   Serial.print("]");
+   Serial.println();
 
   hsv_f_t hsv = rgbToHsv(rgb);
 
-  // Serial.print("hsv: [");
-  // Serial.print(hsv.h);
-  // Serial.print(", ");
-  // Serial.print(hsv.s * (3.0f / 2.0f));
-  // Serial.print(", ");
-  // Serial.print(hsv.v * (3.0f / 4.0f));
-  // Serial.print("]");
-  // Serial.println();
+   Serial.print("hsv: [");
+   Serial.print(hsv.h);
+   Serial.print(", ");
+   Serial.print(hsv.s * (3.0f / 2.0f));
+   Serial.print(", ");
+   Serial.print(hsv.v * (3.0f / 4.0f));
+   Serial.print("]");
+   Serial.println();
 
   double min_dh = 720.0f;
   double mag = rgbToMagnitude(rgb);
@@ -176,6 +176,7 @@ bool colorIndexByRGB(const rgb_f_t* rgb, size_t* idx, const color_definition_t* 
     color_definition_t def = *(colors + color);
 
     if(mag < def.min_mag){ continue; }
+    if(mag > def.max_mag){ continue; }
 
     double dh = abs(hsv.h - def.hue);
     if(dh > 180.0f){

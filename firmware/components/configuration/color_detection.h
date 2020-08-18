@@ -13,6 +13,7 @@
 
 typedef struct _color_definition_t {
   double min_mag;
+  double max_mag;
   double hue;
   const char* name;
   size_t staff_val;
