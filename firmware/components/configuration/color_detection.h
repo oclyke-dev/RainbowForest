@@ -15,6 +15,8 @@ typedef struct _color_definition_t {
   double min_mag;
   double max_mag;
   double hue;
+  double min_hue;
+  double max_hue;
   const char* name;
   size_t staff_val;
 } color_definition_t;
