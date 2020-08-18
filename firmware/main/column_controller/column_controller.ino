@@ -76,6 +76,9 @@ void setup() {
   DEBUG_PORT.print(cart.col);
   DEBUG_PORT.println(")");
 
+  // startup delay based on column number
+  delay(1000 * CONTROLLER_COLUMN);
+
   WiFi.onEvent(WiFiEvent);
   setupClient();
   connectToServer();
