@@ -6,6 +6,7 @@
 #ifndef _RF_COMPONENT_CONFIGURATION_H_
 #define _RF_COMPONENT_CONFIGURATION_H_
 
+#include "network_config.h" // this file contains secrets - you must implement it yourself - define NETWORK_SSID and NETWORK_PASSWORD
 #include "color_detection.h"
 
 #define STAFF_COLS (16)
@@ -41,8 +42,6 @@ typedef uint8_t staff_data_t;
 #define NETWORK_UDP_PORT (3333)
 #define NETWORK_UDP_ADDRESS "255.255.255.255"
 #define NETWORK_UDP_BROADCAST_PERIOD (500)
-#define NETWORK_SSID "RainbowNetESP32"
-#define NETWORK_PASSWORD "ujywwjtw"
 
 #define COMMAND_REQ_FULL_UPDATE (STAFF_ROWS + 1)
 #define COMMAND_SET_COLUMN_COLOR (STAFF_ROWS + 2)

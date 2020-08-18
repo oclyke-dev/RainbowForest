@@ -50,11 +50,11 @@ void onCatReception(cat_t* cat, void* args){
       DEBUG_PORT.print(", row: ");
       DEBUG_PORT.print(cat->row);
       DEBUG_PORT.print(", r: ");
-      DEBUG_PORT.print(cat->rH << 4 | cat->rL & 0x0F);
+      DEBUG_PORT.print(((cat->rH) << 4) | ((cat->rL) & 0x0F));
       DEBUG_PORT.print(", g: ");
-      DEBUG_PORT.print(cat->gH << 4 | cat->gL & 0x0F);
+      DEBUG_PORT.print(((cat->gH) << 4) | ((cat->gL) & 0x0F));
       DEBUG_PORT.print(", b: ");
-      DEBUG_PORT.print(cat->bH << 4 | cat->bL & 0x0F);
+      DEBUG_PORT.print(((cat->bH) << 4) | ((cat->bL) & 0x0F));
       DEBUG_PORT.print(" }");
       DEBUG_PORT.println();
       
@@ -75,8 +75,20 @@ void setup() {
 
   catBridge.onReceive(onCatReception, NULL);
 
-  WiFi.softAP(NETWORK_SSID, NETWORK_PASSWORD);
-  IP = WiFi.softAPIP();
+  WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
+
+  DEBUG_PORT.print("Connecting to WiFi: ");
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        DEBUG_PORT.print(".");
+    }
+
+    DEBUG_PORT.println("");
+    DEBUG_PORT.println("WiFi connected");
+    DEBUG_PORT.println("IP address: ");
+    DEBUG_PORT.println(WiFi.localIP());
+  
+  IP = WiFi.localIP();
 
   server.onClient(handleClientConnected, NULL);
   server.begin();
