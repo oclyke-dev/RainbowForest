@@ -37,15 +37,12 @@ typedef uint8_t staff_data_t;
 #define DRUM_BASS_KICK NOTE_C
 #define DRUM_HI_HAT NOTE_D
  
-#define NETWORK_MESH_PORT (5555)
+#define NETWORK_TCP_PORT (80)
 #define NETWORK_UDP_PORT (3333)
 #define NETWORK_UDP_ADDRESS "255.255.255.255"
 #define NETWORK_UDP_BROADCAST_PERIOD (500)
 #define NETWORK_SSID "RainbowNetESP32"
 #define NETWORK_PASSWORD "ujywwjtw"
-
-#define NETWORK_HUB_NAME "network_hub"
-#define COLUMN_CONTROLLER_PREFIX "column_controller"
 
 #define COMMAND_REQ_FULL_UPDATE (STAFF_ROWS + 1)
 #define COMMAND_SET_COLUMN_COLOR (STAFF_ROWS + 2)
