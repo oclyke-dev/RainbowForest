@@ -69,6 +69,7 @@ void setup() {
   DEBUG_PORT.println();
 
   requestFullUpdate();
+
 }
 
 void loop() {

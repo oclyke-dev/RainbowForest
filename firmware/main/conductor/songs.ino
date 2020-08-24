@@ -38,19 +38,19 @@ void show_song(staff_data_t* song){
 }
 
 void clear_song(void){
-  for all elements set color to black
+  show_song(clearStaff);
 }
 
-//staff_data_t BLANK-TEMPLATE[SONG_ELEMENTS] = {
-///*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-///* 6 (B) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-///* 5 (A) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-///* 4 (G) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-///* 3 (F) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-///* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-///* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-///* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
-//}
+staff_data_t clearStaff[SONG_ELEMENTS] = {
+/*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
+/* 6 (B) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+/* 5 (A) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+/* 4 (G) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+/* 3 (F) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+/* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+/* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+/* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
+}
 
 staff_data_t axelf[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
