@@ -20,7 +20,12 @@ void show_song(staff_data_t* song){
 
     switch(song[idx]){
       case: STAFF_VAL_RED : color = CRGB(255, 0, 0); break;
+      case: STAFF_VAL_YELLOW : color = CRGB(255,255,0); break;
+      case: STAFF_VAL_GREEN : color = CRGB(0, 255, 0); break;
+      case: STAFF_VAL_BLUE : color = CRGB(0, 0, 255); break;
+      
       // case yellow
+      
       // case green
       default :
       case STAFF_VAL_NONE :
