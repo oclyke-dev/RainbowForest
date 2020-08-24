@@ -117,10 +117,3 @@ staff_data_t jurassicPark[SONG_ELEMENTS] = {
 /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
 }
-
-show_song(jurassicPark);
-//show_song(somewhereOverTheRainbow);
-show_song(pokemonLevelUp);
-show_song(funkytown);
-show_song(miiShopChannel);
-show_song(axelf);
