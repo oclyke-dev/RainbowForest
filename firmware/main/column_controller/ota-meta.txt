@@ -1,0 +1,5 @@
+FILE=/not/sure/yet.bin
+MAJOR=0
+MINOR=0
+PATCH=1
+INTERVAL=10
