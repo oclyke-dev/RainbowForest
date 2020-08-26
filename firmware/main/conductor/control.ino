@@ -85,7 +85,7 @@ void setColumnRGB( CRGB rgb, staff_data_t col){
   catBridge.send(&cat);
 }
 
-void setRGB( CRGB rgb, staff_data_t row, staff_data_t col ){
+void setNodeRGB( CRGB rgb, staff_data_t row, staff_data_t col ){
   cat.col = col;
   cat.row = row;
   cat.rH = (rgb.r >> 4);

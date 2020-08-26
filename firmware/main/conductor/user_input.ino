@@ -27,23 +27,53 @@ void input_setup( void ){
 }
 
 void isrButton1( void ){
-  
+  static uint32_t debounce = 0;
+  uint32_t now = millis();
+  if(now >= debounce){
+    debounce += 250;
+    DEBUG_PORT.println("button1 (example song 1)");
+    show_song(jurassicPark);
+  }
 }
 
 void isrButton2( void ){
-  
+  static uint32_t debounce = 0;
+  uint32_t now = millis();
+  if(now >= debounce){
+    debounce += 250;
+    DEBUG_PORT.println("button1 (jurassic park)");
+    show_song(jurassicPark);
+  }
 }
 
 void isrButton3( void ){
-  
+  static uint32_t debounce = 0;
+  uint32_t now = millis();
+  if(now >= debounce){
+    debounce += 250;
+    DEBUG_PORT.println("button1 (pokemonLevelUp)");
+    show_song(pokemonLevelUp);
+  }
 }
 
 void isrButton4( void ){
-  
+  static uint32_t debounce = 0;
+  uint32_t now = millis();
+  if(now >= debounce){
+    debounce += 250;
+    DEBUG_PORT.println("button1 (funkytown)");
+    show_song(funkytown);
+  } 
 }
 
 void isrButton5( void ){
-  
+  static uint32_t debounce = 0;
+  uint32_t now = millis();
+  if(now >= debounce){
+    debounce += 250;
+    DEBUG_PORT.println("button1 (miiShopChannel)");
+    show_song(miiShopChannel);
+  }
 }
 
 void isrButton6( void ){  // play / pause
