@@ -1,5 +1,0 @@
-FILE=/oclyke/RainbowForest/blob/master/firmware/main/column_controller/app.bin?raw=true
-MAJOR=0
-MINOR=0
-PATCH=1
-INTERVAL=10
