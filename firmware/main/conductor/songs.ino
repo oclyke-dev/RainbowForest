@@ -6,24 +6,26 @@
 
 const staff_data_t T = INSTRUMENT_TRUMPET;
 const staff_data_t F = INSTRUMENT_FLUTE;
-const staff_data_t D = INSTRUMENT_DRUM;
+//const staff_data_t D = INSTRUMENT_DRUM;
 const staff_data_t P = INSTRUMENT_PIANO;
 const staff_data_t G = INSTRUMENT_GUITAR;
 const staff_data_t N = STAFF_VAL_NONE;
 
+int row, col;
+
 void show_song(staff_data_t* song){
-  for(size_t idx = 0; idx < SONG_ELEMENTS){
+  for(size_t idx = 0; idx < SONG_ELEMENTS; idx++){
     row = SONG_IND_TO_ROW(idx);
     col = SONG_IND_TO_COL(idx);
 
     CRGB color(0, 0, 0);
 
     switch(song[idx]){
-      case: STAFF_VAL_RED : color = CRGB(255, 0, 0); break;
-      case: STAFF_VAL_YELLOW : color = CRGB(255,255,0); break;
-      case: STAFF_VAL_GREEN : color = CRGB(0, 255, 0); break;
-      case: STAFF_VAL_BLUE : color = CRGB(0, 0, 255); break;
-      case: STAFF_VAL_CYAN : color = CRGB(0, 255, 255); break;
+      case STAFF_VAL_RED : color = CRGB(255, 0, 0); break;
+      case STAFF_VAL_YELLOW : color = CRGB(255,255,0); break;
+      case STAFF_VAL_GREEN : color = CRGB(0, 255, 0); break;
+      case STAFF_VAL_BLUE : color = CRGB(0, 0, 255); break;
+      case STAFF_VAL_CYAN : color = CRGB(0, 255, 255); break;
       
 
       default :
@@ -37,10 +39,6 @@ void show_song(staff_data_t* song){
   }
 }
 
-void clear_song(void){
-  show_song(clearStaff);
-}
-
 staff_data_t clearStaff[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
 /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
@@ -50,7 +48,7 @@ staff_data_t clearStaff[SONG_ELEMENTS] = {
 /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
-}
+};
 
 staff_data_t axelf[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
@@ -61,7 +59,7 @@ staff_data_t axelf[SONG_ELEMENTS] = {
 /* 2 (E) */  T, N, N, N, T, N, N, N, T, N, N, N, T, N, N, N,
 /* 1 (D) */  N, N, N, N, N, N, N, T, N, N, N, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, T, N, N, 
-}
+};
 
 staff_data_t pokemonLevelUp[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
@@ -72,9 +70,9 @@ staff_data_t pokemonLevelUp[SONG_ELEMENTS] = {
 /* 2 (E) */  N, N, G, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
-}
+};
 
-staff_data_t funkyTown[SONG_ELEMENTS] = {
+staff_data_t funkytown[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
 /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, F, N, N, N, N, N,
 /* 5 (A) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
@@ -83,7 +81,7 @@ staff_data_t funkyTown[SONG_ELEMENTS] = {
 /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 1 (D) */  N, N, N, N, N, F, N, F, N, N, N, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, N, N, N, N, N, F, N, N, N, N, N, N, 
-}
+};
 
 staff_data_t miiShopChannel[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
@@ -94,7 +92,7 @@ staff_data_t miiShopChannel[SONG_ELEMENTS] = {
 /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 1 (D) */  N, N, N, P, N, N, N, N, P, P, P, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
-}
+};
 
 staff_data_t somewhereOverTheRainbow[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
@@ -105,7 +103,7 @@ staff_data_t somewhereOverTheRainbow[SONG_ELEMENTS] = {
 /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, F, N, N, N, N, N, N, N, N, N, F, N, 
-}
+};
 
 staff_data_t jurassicPark[SONG_ELEMENTS] = {
 /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
@@ -116,4 +114,8 @@ staff_data_t jurassicPark[SONG_ELEMENTS] = {
 /* 2 (E) */  N, N, N, N, N, N, T, N, N, N, N, N, N, N, T, N,
 /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
 /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
+};
+
+void clear_song(void){
+  show_song(clearStaff);
 }
