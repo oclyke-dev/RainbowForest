@@ -93,11 +93,11 @@ AudioConnection stage3CordRight(postMixerRight, 0, i2s1, 1);
 
 #define NUM_SOUNDS (STAFF_VALS * STAFF_ROWS)
 const char* sounds[NUM_SOUNDS] = {
-  "gC.wav", "gD.wav", "gE.wav", "gF.wav", "gG.wav", "gA.wav", "gB.wav",
-  "tC.wav", "tD.wav", "tE.wav", "tF.wav", "tG.wav", "tA.wav", "tB.wav",
-  "fC.wav", "fD.wav", "fE.wav", "fF.wav", "fG.wav", "fA.wav", "fB.wav",
-  "dC.wav", "dD.wav", "dE.wav", "dF.wav", "dG.wav", "dA.wav", "dB.wav",
-  "gC.wav", "gD.wav", "gE.wav", "gF.wav", "gG.wav", "gA.wav", "gB.wav",
+  "gC.wav", "gD.wav", "gE.wav", "gF.wav", "gG.wav", "gA2.wav", "gB2.wav",
+  "tC.wav", "tD.wav", "tE.wav", "tF.wav", "tG.wav", "tA2.wav", "tB2.wav",
+  "fC.wav", "fD.wav", "fE.wav", "fF.wav", "fG.wav", "fA2.wav", "fB2.wav",
+  "dC.wav", "dD.wav", "dE.wav", "dF.wav", "dG.wav", "dA2.wav", "dB2.wav",
+  "gC.wav", "gD.wav", "gE.wav", "gF.wav", "gG.wav", "gA2.wav", "gB2.wav",
 };
 #define SOUND(I, N) sounds[(STAFF_ROWS * (I - INSTRUMENT_GUITAR)) + N]
 
