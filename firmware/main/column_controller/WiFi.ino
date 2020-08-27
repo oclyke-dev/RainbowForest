@@ -2,8 +2,7 @@ void handleClientDisconnect(void* args, AsyncClient* client){
   DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
   DEBUG_PORT.println(" disconnected!");
-  while(!client->freeable()){};
-  client->free();
+  ESP.restart();  // restart to reconnect
 }
 
 void handleClientAck(void* args, AsyncClient* client, size_t len, uint32_t time){
@@ -104,6 +103,8 @@ void handleClientTimeout(void* args, AsyncClient* client, uint32_t time){
   DEBUG_PORT.print((pending) ? "true" : "false");
 
   DEBUG_PORT.println();
+
+  ESP.restart();  // restart to reconnect
 }
 
 void handleClientConnected(void* args, AsyncClient* client){

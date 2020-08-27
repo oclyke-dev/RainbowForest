@@ -70,25 +70,35 @@ void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
   BRIDGE_PORT.begin(BRIDGE_BAUD);
 
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
+
   pinMode(0, INPUT_PULLUP);
   attachInterrupt(0, button0ISR, RISING);
 
   catBridge.onReceive(onCatReception, NULL);
 
+  WiFi.onEvent(WiFiEvent);
   WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
 
   DEBUG_PORT.print("Connecting to WiFi: ");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        DEBUG_PORT.print(".");
-    }
 
-    DEBUG_PORT.println("");
-    DEBUG_PORT.println("WiFi connected");
-    DEBUG_PORT.println("IP address: ");
-    DEBUG_PORT.println(WiFi.localIP());
+  while(WiFi.status() != WL_CONNECTED){
+    static uint32_t connect_wifi = 0;
+    if(millis() >= connect_wifi){
+      DEBUG_PORT.print("Waiting to connect to SSID: ");
+      DEBUG_PORT.println(NETWORK_SSID);
+      connect_wifi = millis() + 2000;
+    }
+  }
+
+  DEBUG_PORT.println("");
+  DEBUG_PORT.println("WiFi connected");
+  DEBUG_PORT.println("IP address: ");
+  DEBUG_PORT.println(WiFi.localIP());
   
   IP = WiFi.localIP();
+  digitalWrite(13, HIGH);
 
   server.onClient(handleClientConnected, NULL);
   server.begin();

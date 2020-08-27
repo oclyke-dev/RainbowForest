@@ -7,8 +7,6 @@ void handleClientDisconnect(void* args, AsyncClient* client){
   DEBUG_PORT.print("Client 0x");
   DEBUG_PORT.print((uint32_t)client, HEX);
   DEBUG_PORT.println(" disconnected!");
-  while(!client->freeable()){};
-  client->free();
 }
 
 void handleClientAck(void* args, AsyncClient* client, size_t len, uint32_t time){
@@ -79,4 +77,22 @@ void broadcastIP( void * params ){
     delay(NETWORK_UDP_BROADCAST_PERIOD);
   }
   vTaskDelete( NULL );
+}
+
+void WiFiEvent(WiFiEvent_t event){
+  switch(event) {
+    case SYSTEM_EVENT_STA_GOT_IP:
+      IP = WiFi.localIP();
+      DEBUG_PORT.print("WiFi connected! IP address: ");
+      DEBUG_PORT.println(IP);  
+      break;
+    case SYSTEM_EVENT_STA_DISCONNECTED:
+      DEBUG_PORT.println("WiFi lost connection");
+      ESP.restart();  // restart to reconnect
+      break;
+    default: 
+      DEBUG_PORT.print("Unhandled WiFi Event: ");
+      DEBUG_PORT.println(event);
+      break;
+  }
 }

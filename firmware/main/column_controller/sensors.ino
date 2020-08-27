@@ -14,7 +14,8 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   rgb.b = rgbElemByUI16(node->getBlue());
 
   prev_staff[0][idx] = staff[0][idx]; // store last staff value
-  
+
+  // for normal operation detect colors based on sensor results
   size_t val;
   if(COLOR_DETECT_OK == detectedColor(&rgb, &val)){
     detection_ok_staff[0][idx] = true;
@@ -25,6 +26,13 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   }else{
     detection_ok_staff[0][idx] = false;
   }
+
+//  // for debugging generate random data
+//  staff[0][idx] = random(0, STAFF_VALS + 1);
+//  detection_ok_staff[0][idx] = true;
+//  if((staff[0][idx] != prev_staff[0][idx]) || (force_update)){
+//    sendRV(idx, staff[0][idx]);
+//  }
 
   delay(esp_random() & (uint32_t)0x0000003F);
 }
@@ -51,10 +59,6 @@ void printInfo(SensorNode* node, size_t idx, void* args){
 }
 
 void updateSensors( void* args ){
-
-  FastLED.addLeds<WS2811, DATA_PIN, RGB>(sensors.getControl(), sensors.getNumControlElements()); // have to add leds in main sketch before sensors.begin()
-  SensorStatus_e retval = sensors.begin();
-  DEBUG_PORT.print("sensors.begin() returned: "); DEBUG_PORT.println(retval);
 
   while(1){
     
