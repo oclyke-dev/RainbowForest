@@ -10,6 +10,9 @@ firmware/utility/*/src/components/*
 # prototype sketches
 firmware/prototyping/*
 
+# VSCode
+*.vscode
+
 # MacOS
 .DS_Store
 

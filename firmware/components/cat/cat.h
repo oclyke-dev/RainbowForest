@@ -10,7 +10,7 @@
 #include "stdint.h"
 
 typedef struct _cat_t {
-    // color address type
+    // color address type (also handles some basic commands)
     uint8_t col = 0;
     uint8_t row = 0;
     uint8_t rL = 0;
@@ -20,5 +20,7 @@ typedef struct _cat_t {
     uint8_t bL = 0;
     uint8_t bH = 0;
 } cat_t;
+
+void format_cat_special_command(uint8_t command, cat_t* cat);
 
 #endif // _RF_COMPONENT_CAT_H_
