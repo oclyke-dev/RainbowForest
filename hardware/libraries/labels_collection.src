@@ -1,10 +1,13 @@
-"(13)" -s 0.06
-"(user)" -s 0.06
-"(reset)" -s 0.06
+"B0" -s 0.06
+"B1" -s 0.06
+"PCA EN" -s 0.04
+"DOUT BYP" -s 0.04
+"NETWORK I2C" -s 0.04
+"COLUMN I2C" -s 0.04
+"TXO" -s 0.04
+"RXI" -s 0.04
+"NETWORK SCL" -s 0.04
+"NETWORK SDA" -s 0.04
 "5V" -s 0.075
 "[GND]" -s 0.075
 "oclyke.dev" -s 0.13 -f Roboto
-"[Rainbow Forest]" -s 0.12
-"Museum of Boulder" -s 0.1
-"Summer 2020" -s 0.06
-"'Playzeum'" -s 0.06
