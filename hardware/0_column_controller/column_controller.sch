@@ -5913,10 +5913,6 @@ meant to supply LED switching current</text>
 <wire x1="203.2" y1="167.64" x2="210.82" y2="167.64" width="0.1524" layer="91"/>
 <wire x1="210.82" y1="167.64" x2="210.82" y2="177.8" width="0.1524" layer="91"/>
 <pinref part="SUPPLY5" gate="G$1" pin="5V"/>
-<pinref part="U$13" gate="G$1" pin="AREF"/>
-<wire x1="203.2" y1="165.1" x2="210.82" y2="165.1" width="0.1524" layer="91"/>
-<wire x1="210.82" y1="165.1" x2="210.82" y2="167.64" width="0.1524" layer="91"/>
-<junction x="210.82" y="167.64"/>
 </segment>
 <segment>
 <pinref part="J3" gate="JP1" pin="3"/>
