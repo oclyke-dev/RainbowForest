@@ -5,12 +5,17 @@
 
 #include "sensor.h"
 
-SensorString::SensorString(size_t len, uint32_t data_pin ) : 
+SensorString::SensorString(size_t len, uint32_t data_pin, TwoWire* i2c ) : 
 _len(len),
-_data_pin(data_pin)
+_data_pin(data_pin),
+_sensor(i2c)
 {
     _num_control_elements = 2*_len;
     _control = new CRGB[_num_control_elements];
+    if(!_control){
+        _report(SENSOR_ERR_NOMEM);
+        return;
+    }
 
     _nodes = new SensorNode*[_len];
     if(!_nodes){

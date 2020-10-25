@@ -1,12 +1,19 @@
 #include "src/components/sensor/sensor.h"
 #include "src/components/configuration/configuration.h"
 
-#define DEBUG_PORT Serial
+#include <Wire.h>
+#include "wiring_private.h" // pinPeripheral() function
+
+#define DEBUG_PORT SerialUSB
 #define DEBUG_BAUD (115200)
 
-#define DATA_PIN 18
+#define COLUMN_SDA_PIN 4
+#define COLUMN_SCL_PIN 3
+TwoWire ColumnWire(&sercom0, COLUMN_SDA_PIN, COLUMN_SCL_PIN);
+
+#define DATA_PIN 6
 #define COLUMN_LEN (7)
-SensorString sensors(COLUMN_LEN, DATA_PIN);
+SensorString sensors(COLUMN_LEN, DATA_PIN, &ColumnWire);
 
 uint32_t errors = 0x00;
 
@@ -17,6 +24,9 @@ void readAndReport(SensorNode* node, size_t idx, void* args){
   rgb.r = rgbElemByUI16(node->getRed());
   rgb.g = rgbElemByUI16(node->getGreen());
   rgb.b = rgbElemByUI16(node->getBlue());
+
+  DEBUG_PORT.print("red: ");
+  DEBUG_PORT.print(node->getRed());
 
   DEBUG_PORT.print(idx);
   DEBUG_PORT.print(": ");
@@ -64,6 +74,10 @@ void testString( void ){
 
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
+
+  ColumnWire.begin();
+  pinPeripheral(COLUMN_SDA_PIN, PIO_SERCOM);
+  pinPeripheral(COLUMN_SCL_PIN, PIO_SERCOM);
 
   FastLED.addLeds<WS2811, DATA_PIN, RGB>(sensors.getControl(), sensors.getNumControlElements()); // have to add leds in main sketch before sensors.begin()
   SensorStatus_e retval = sensors.begin();

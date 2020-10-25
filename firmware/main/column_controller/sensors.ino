@@ -21,7 +21,7 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
     detection_ok_staff[0][idx] = true;
     staff[0][idx] = (staff_data_t)val;
     if((staff[0][idx] != prev_staff[0][idx]) || (force_update)){
-      sendRV(idx, staff[0][idx]);
+      setRowValue(idx, staff[0][idx]);
     }
   }else{
     detection_ok_staff[0][idx] = false;
@@ -31,10 +31,10 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
 //  staff[0][idx] = random(0, STAFF_VALS + 1);
 //  detection_ok_staff[0][idx] = true;
 //  if((staff[0][idx] != prev_staff[0][idx]) || (force_update)){
-//    sendRV(idx, staff[0][idx]);
+//    setRowValue(idx, staff[0][idx]);
 //  }
 
-  delay(esp_random() & (uint32_t)0x0000003F);
+  delay(random(64));
 }
 
 void printInfo(SensorNode* node, size_t idx, void* args){
@@ -58,7 +58,23 @@ void printInfo(SensorNode* node, size_t idx, void* args){
   DEBUG_PORT.print(", ");
 }
 
-void updateSensors( void* args ){
+void updateColors(SensorNode* node, size_t idx, void* args){
+  if(idx < (sizeof(register_map)/sizeof(uint8_t))){
+    size_t group_len = (sizeof(column_map_t)/sizeof(uint8_t));
+    uint8_t* p_base = (uint8_t*)(&register_map);
+    size_t offset = idx*group_len;
+    uint8_t* p_reg = p_base + offset;
+
+    uint8_t r = *(p_reg + 1);
+    uint8_t g = *(p_reg + 2);
+    uint8_t b = *(p_reg + 3);
+
+    //           G  R  B
+    *node = CRGB(g, r, b);
+  }
+}
+
+void updateSensors( void ){
 
   while(1){
     

@@ -6,13 +6,35 @@
 #ifndef _RF_COMPONENT_SENSOR_H_
 #define _RF_COMPONENT_SENSOR_H_
 
+// hacky fix for including <algorithm> on the SAMD21 Arduino platform
+#ifdef max
+#define pop_max max
+#undef max
+#endif
+
+#ifdef min
+#define pop_min min
+#undef min
+#endif
+// end hacky fix
+
 #include <algorithm>    // std::random_shuffle
 #include <cstdlib>      // std::rand, std::srand
+
+// hacky fix for including <algorithm> on the SAMD21 Arduino platform
+#ifdef pop_max
+#define max pop_max
+#endif
+
+#ifdef pop_min
+#define min pop_min
+#endif
+// end hacky fix
 
 #include "Arduino.h"
 #include "Wire.h"
 #include "FastLED.h"
-#include "SparkFunISL29125.h"
+#include "./../isl29125/isl29125.h"
 
 typedef enum {
   SENSOR_OK = 0,
@@ -80,7 +102,7 @@ private:
 
 protected:
 public:
-  SensorString(size_t len, uint32_t data_pin);
+  SensorString(size_t len, uint32_t data_pin, TwoWire* i2c);
   ~SensorString();
 
   SensorStatus_e status;

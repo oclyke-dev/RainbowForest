@@ -38,23 +38,7 @@ typedef uint8_t staff_data_t;
 #define DRUM_BASS_KICK NOTE_C
 #define DRUM_HI_HAT NOTE_D
 
-
-#define _I2C_NUMBER(num) I2C_NUM_##num
-#define I2C_NUMBER(num) _I2C_NUMBER(num)
-#define _WIRE_NUMBER(num) Wire##num
-#define WIRE_NUMBER(num) _WIRE_NUMBER(num)
-
-#define HUB_I2C_MODULE 1
-#define HUB_PERIPHERAL_I2C_NUM I2C_NUMBER(HUB_I2C_MODULE)
-#define HUB_CONTROLLER_WIRE_PORT WIRE_NUMBER(HUB_I2C_MODULE)
-#define HUB_I2C_SDA_PIN (14)
-#define HUB_I2C_SCL_PIN (32)
-
-#define TRISTATE_HUB_I2C_NEIGHBORS \
-  pinMode(12, INPUT); /* tri-state on the wrover footprint 14 (next to SCL1) */ \
-  pinMode(27, INPUT); /* tri-state on the wrover footprint 12 (next to SCL1) */ \
-  pinMode(33, INPUT); /* tri-state on the wrover footprint 6 (next to SDA1) */ \
-  pinMode(35, INPUT); /* tri-state on the wrover footprint 8 (next to SDA1) (note, this is a xtal input??) */
+#define NETWORK_ADDRESS_BY_COL(c) (c + 0x04)
 
 #define COMMAND_REQ_FULL_UPDATE (STAFF_ROWS + 1)
 #define COMMAND_SET_COLUMN_COLOR (STAFF_ROWS + 2)

@@ -4,8 +4,31 @@
 */
 
 #include "color_detection.h"
+
+// hacky fix for including <limits> on the SAMD21 Arduino platform
+#ifdef max
+#define pop_max max
+#undef max
+#endif
+
+#ifdef min
+#define pop_min min
+#undef min
+#endif
+// end hacky fix
+
 #include <math.h>
 #include <limits>
+
+// hacky fix for including <algorithm> on the SAMD21 Arduino platform
+#ifdef pop_max
+#define max pop_max
+#endif
+
+#ifdef pop_min
+#define min pop_min
+#endif
+// end hacky fix
 
 double rgbElemByUI16(uint16_t val){
   return ((double)val / 65535.0);

@@ -3,150 +3,236 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
-// BOARD: Adafruit ESP32 Feather
-
-#include "src/components/uart_bridge/uart_bridge.h"
-#include "src/components/cart/cart.h"
-#include "src/components/cat/cat.h"
+// BOARD: SparkFun SAMD21 Mini Breakout
 
 #include "src/components/configuration/configuration.h"
+#include "src/components/uart_bridge/uart_bridge.h"
+#include "src/components/staff/staff.h"
+#include "src/components/cart/cart.h"
+#include "src/components/cat/cat.h"
+#include "src/components/cmt/cmt.h"
 
-#include "WiFi.h"
-#include "WiFiUdp.h"
-#include "AsyncTCP.h" // https://github.com/me-no-dev/AsyncTCP
+#include <Wire.h>
+#include "wiring_private.h" // pinPeripheral() function
 
-#define DEBUG_PORT Serial
+#define LED0 A0
+#define LED1 A3
+#define LED2 8
+#define LED3 9
+
+#define BUTTON0 10
+#define BUTTON1 12
+
+#define RAND_PIN A1
+
+#define DEBUG_PORT SerialUSB
 #define DEBUG_BAUD (115200)
 
-#define BRIDGE_PORT Serial1
+#define BRIDGE_PORT Serial
 #define BRIDGE_BAUD (115200)
 UARTBridge <cart_t> cartBridge(BRIDGE_PORT);
 UARTBridge <cat_t> catBridge(BRIDGE_PORT);
 cart_t cart;
 cat_t cat;
+Staff <staff_data_t> staff;
 
-IPAddress IP;
-WiFiUDP udp;
-AsyncServer server(NETWORK_TCP_PORT);
+#define NETWORK_SDA_PIN 11
+#define NETWORK_SCL_PIN 13
+#define NETWORK_WIRE_IT_HANDLER SERCOM1_Handler
+TwoWire NetworkWire(&sercom1, NETWORK_SDA_PIN, NETWORK_SCL_PIN);
+#define NETWORK_ADDRESS_BY_COL(c) (c + 0x04)
 
-AsyncClient* column_clients[STAFF_COLS];
+volatile bool full_update_requested = true;
+bool full_update_sent = false;
 
 volatile bool button0 = false;
-void IRAM_ATTR button0ISR() {
+void button0ISR() {
+  button0 = true;
+}
+
+volatile bool button1 = false;
+void button1ISR() {
   button0 = true;
 }
 
 void onCatReception(cat_t* cat, void* args){
-  if(cat->col < STAFF_COLS){
-    AsyncClient* client = column_clients[cat->col];
-    if(client){
-      DEBUG_PORT.print("conductor --> column[");
-      DEBUG_PORT.print(cat->col);
-      DEBUG_PORT.print("] (client 0x");
-      printHex8(&DEBUG_PORT, (uint32_t)client);
-      DEBUG_PORT.print("), {");
-      DEBUG_PORT.print(" col: ");
-      DEBUG_PORT.print(cat->col);
-      DEBUG_PORT.print(", row: ");
-      DEBUG_PORT.print(cat->row);
-      DEBUG_PORT.print(", r: ");
-      DEBUG_PORT.print(((cat->rH) << 4) | ((cat->rL) & 0x0F));
-      DEBUG_PORT.print(", g: ");
-      DEBUG_PORT.print(((cat->gH) << 4) | ((cat->gL) & 0x0F));
-      DEBUG_PORT.print(", b: ");
-      DEBUG_PORT.print(((cat->bH) << 4) | ((cat->bL) & 0x0F));
-      DEBUG_PORT.print(" }");
-      DEBUG_PORT.println();
-      
-      client->write((const char*)cat, (sizeof(cat_t)/sizeof(uint8_t)));
-      return;
-    }
+  if(cat->col >= STAFF_COLS){
+    DEBUG_PORT.println("received an invalid cat");
+    return;
   }
 
-  DEBUG_PORT.println("received an invalid cat");
+  size_t node_data_size = (sizeof(column_map_t)/sizeof(uint8_t)); // note: if node_data_size * STAFF_ROWS > 32 you will need to use separate transmissions!
+  uint8_t r = ((cat->rH) << 4) | ((cat->rL) & 0x0F);              // reconstructed red component of color
+  uint8_t g = ((cat->gH) << 4) | ((cat->gL) & 0x0F);              // reconstructed green component of color
+  uint8_t b = ((cat->bH) << 4) | ((cat->bL) & 0x0F);              // reconstructed blue component of color
+
+  DEBUG_PORT.print("conductor --> column[");
+  DEBUG_PORT.print(cat->col);
+  DEBUG_PORT.print("]");
+  DEBUG_PORT.print(", {");
+  DEBUG_PORT.print(" col: ");
+  DEBUG_PORT.print(cat->col);
+  DEBUG_PORT.print(", row: ");
+  DEBUG_PORT.print(cat->row);
+  DEBUG_PORT.print(", r: ");
+  DEBUG_PORT.print(r);
+  DEBUG_PORT.print(", g: ");
+  DEBUG_PORT.print(g);
+  DEBUG_PORT.print(", b: ");
+  DEBUG_PORT.print(b);
+  DEBUG_PORT.print(" }");
+  DEBUG_PORT.println();
+
+  if(cat->row == COMMAND_REQ_FULL_UPDATE){
+    DEBUG_PORT.println("Full Update Requested!");
+    full_update_requested = true;
+    return;
+  }
+
+  if(cat->row == COMMAND_SET_COLUMN_COLOR){
+    DEBUG_PORT.println("Column Color Set Requested!");
+    NetworkWire.beginTransmission(NETWORK_ADDRESS_BY_COL(cat->col));
+    NetworkWire.write(0);                                             // begin at register 0
+    for(size_t node_idx = 0; node_idx < STAFF_ROWS; node_idx++){
+      NetworkWire.write(0x00);                                        // dummy write to the read-only value reg
+      NetworkWire.write(r);                                           // write red
+      NetworkWire.write(g);                                           // write green
+      NetworkWire.write(b);                                           // write blue
+    }
+    NetworkWire.endTransmission();
+    return;
+  }
+
+  if((cat->col < STAFF_COLS) && (cat->row < STAFF_ROWS)){
+    DEBUG_PORT.println("Individual Color Set Requested!");
+    NetworkWire.beginTransmission(NETWORK_ADDRESS_BY_COL(cat->col));
+    NetworkWire.write(node_data_size * cat->row);                      // begin at proper offset for row
+    NetworkWire.write(0x00);                                          // dummy write to the read-only value reg
+    NetworkWire.write(r);                                             // write red
+    NetworkWire.write(g);                                             // write green
+    NetworkWire.write(b);                                             // write blue
+    NetworkWire.endTransmission();
+    return;
+  }
+  
+  DEBUG_PORT.println("Unrecognized CAT...");
 }
 
 void setup() {
   DEBUG_PORT.begin(DEBUG_BAUD);
   BRIDGE_PORT.begin(BRIDGE_BAUD);
 
-  pinMode(13, OUTPUT);
-  digitalWrite(13, LOW);
+  pinMode(BUTTON0, INPUT_PULLUP);
+  pinMode(BUTTON1, INPUT_PULLUP);
+  attachInterrupt(BUTTON0, button0ISR, RISING);
+  attachInterrupt(BUTTON1, button1ISR, RISING);
 
-  pinMode(0, INPUT_PULLUP);
-  attachInterrupt(0, button0ISR, RISING);
+  pinMode(LED0, OUTPUT);
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
 
+  digitalWrite(LED0, HIGH);
+  digitalWrite(LED1, HIGH);
+  digitalWrite(LED2, HIGH);
+  digitalWrite(LED3, HIGH);
+
+  delay(250);
+
+  digitalWrite(LED0, LOW);
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
+
+  staff.setSize(STAFF_COLS, STAFF_ROWS);
+
+  NetworkWire.begin();
+  pinPeripheral(NETWORK_SDA_PIN, PIO_SERCOM);
+  pinPeripheral(NETWORK_SCL_PIN, PIO_SERCOM);
+  
   catBridge.onReceive(onCatReception, NULL);
 
-  WiFi.onEvent(WiFiEvent);
-  WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
-
-  DEBUG_PORT.print("Connecting to WiFi: ");
-
-  while(WiFi.status() != WL_CONNECTED){
-    static uint32_t connect_wifi = 0;
-    if(millis() >= connect_wifi){
-      DEBUG_PORT.print("Waiting to connect to SSID: ");
-      DEBUG_PORT.println(NETWORK_SSID);
-      connect_wifi = millis() + 2000;
-    }
-  }
-
-  DEBUG_PORT.println("");
-  DEBUG_PORT.println("WiFi connected");
-  DEBUG_PORT.println("IP address: ");
-  DEBUG_PORT.println(WiFi.localIP());
-  
-  IP = WiFi.localIP();
-  digitalWrite(13, HIGH);
-
-  server.onClient(handleClientConnected, NULL);
-  server.begin();
-  
-  udp.begin(IP, NETWORK_UDP_PORT);
-  xTaskCreate(broadcastIP, "broadcastIP", 10000, NULL, 1, NULL);
+  // prevent user input until setup is complete
+  button0 = false;
+  button1 = false;
 }
 
 void loop() {
+  sampleColumns();
+
   catBridge.check();
   if(button0){
     DEBUG_PORT.println("button0 released");
     button0 = false;
   }
+}
 
-//  if(Serial.available()){
-//    char command = Serial.read();
-//    if(command == 'r'){
-//      cat.col = 15;
-//      cat.row = COMMAND_REQ_FULL_UPDATE;
-//      cat.rH = 0;
-//      cat.rL = 0;
-//      cat.gH = 0;
-//      cat.gL = 0;
-//      cat.bH = 0;
-//      cat.bL = 0;
-//      onCatReception(&cat, NULL);
-//    }else if(command == 's'){
-//      cat.col = 15;
-//      cat.row = COMMAND_SET_COLUMN_COLOR;
-//      cat.rH = 0x0F;
-//      cat.rL = 0x0F;
-//      cat.gH = 0;
-//      cat.gL = 0;
-//      cat.bH = 0;
-//      cat.bL = 0;
-//      onCatReception(&cat, NULL);
-//    }else if(command == 'i'){
-//      cat.col = 15;
-//      cat.row = 3;
-//      cat.rH = 0;
-//      cat.rL = 0;
-//      cat.gH = 0x08;
-//      cat.gL = 0x0F;
-//      cat.bH = 0x0A;
-//      cat.bL = 0x0F;
-//      onCatReception(&cat, NULL);
-//    }
-//    
-//  }
+void sampleColumns( void ){
+  size_t node_data_size = (sizeof(column_map_t)/sizeof(uint8_t));
+  size_t bytes_per_column = node_data_size*STAFF_ROWS;                // note: if node_data_size * STAFF_ROWS > 32 you will need to use separate transmissions!
+  staff_data_t prev = 0x00;
+
+  full_update_sent = full_update_requested; // ensure that when a full update is requested at least one full cycle is captured
+  
+  bool success = true;
+
+  // sample through all the positions, if there is a change send it as a cart message to the conductor
+  for(size_t col = 0; col < STAFF_COLS; col++){
+    NetworkWire.beginTransmission(NETWORK_ADDRESS_BY_COL(col));
+    NetworkWire.write(0);
+    NetworkWire.endTransmission(false);
+    size_t bytes_received = NetworkWire.requestFrom(NETWORK_ADDRESS_BY_COL(col), bytes_per_column);
+    if(bytes_received != bytes_per_column){
+      while(NetworkWire.available()){ NetworkWire.read(); } // dump any straggler bytes
+      success = false;
+      DEBUG_PORT.print("error reading data from column: ");
+      DEBUG_PORT.print(col);
+      DEBUG_PORT.print(". time (ms): ");
+      DEBUG_PORT.print(millis());
+      DEBUG_PORT.println();
+      continue;                                             // continue to the next column (big failure)
+    }
+
+    for(size_t row = 0; row < STAFF_ROWS; row++){
+      staff_data_t current = NetworkWire.read();            // get the value for this row position
+      NetworkWire.read(); // r  (read out the color bytes so that the next row's value is next in line)
+      NetworkWire.read(); // g
+      NetworkWire.read(); // b
+
+      prev = staff[col][row];
+      staff[col][row] = current;
+
+      if((prev != current) || (full_update_requested)){     // send the current value if the value at this position has changed or a full update is requested
+        cart.col = col;
+        cart.row = row;
+        cart.val = current;
+
+        DEBUG_PORT.print("column[");
+        DEBUG_PORT.print(cart.col);
+        DEBUG_PORT.print("]");
+        DEBUG_PORT.print(" --> conductor , {");
+        DEBUG_PORT.print(" col: ");
+        DEBUG_PORT.print(cart.col);
+        DEBUG_PORT.print(", row: ");
+        DEBUG_PORT.print(cart.row);
+        DEBUG_PORT.print(", val: ");
+        DEBUG_PORT.print(cart.val);
+        DEBUG_PORT.print(" }");
+        DEBUG_PORT.println();
+
+        cartBridge.send(&cart);
+      }
+    }
+  }
+
+  if(full_update_sent){
+    full_update_sent = false;
+    full_update_requested = false;
+  }
+
+  if(success){
+    DEBUG_PORT.print("all columns read successfully. time (ms): ");
+    DEBUG_PORT.print(millis());
+    DEBUG_PORT.println();
+  }
 }

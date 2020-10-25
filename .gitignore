@@ -6,6 +6,7 @@ firmware/main/*/src/components/*
 
 # components within utility programs
 firmware/utility/*/src/components/*
+firmware/utility/*/*/src/components/*
 
 # prototype sketches
 firmware/prototyping/*
