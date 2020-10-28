@@ -6,9 +6,9 @@
 #define EEPROM_VALID_KEY (0xE3)
 
 void pause( void ){
-  setPlaybackRunning( false );
-  playButtonIllumination = false;
-  digitalWrite(PLAYPAUSE_PIN, playButtonIllumination);
+  // setPlaybackRunning( false );
+  // playButtonIllumination = false;
+  // digitalWrite(PLAYPAUSE_PIN, playButtonIllumination);
 }
 
 void play( void ){
@@ -60,9 +60,21 @@ void restore_settings( void ){
 
 void onCartReception(cart_t* cart, void* args){
   staff_data_t prev = staff[cart->col][cart->row];
+
   if(prev != cart->val){
+
+    DEBUG_PORT.print("received a cart! ");
+    DEBUG_PORT.print("{col: ");
+    DEBUG_PORT.print(cart->col);
+    DEBUG_PORT.print(", row: ");
+    DEBUG_PORT.print(cart->row);
+    DEBUG_PORT.print(", val: ");
+    DEBUG_PORT.print(cart->val);
+    DEBUG_PORT.print("}");
+    DEBUG_PORT.println();
+
     staff[cart->col][cart->row] = cart->val;
-    rest = millis() + (REST_INACTIVE_SEC * 1000);
+    rest_inactive = millis();
   }
 }
 

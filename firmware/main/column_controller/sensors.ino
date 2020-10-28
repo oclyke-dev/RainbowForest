@@ -3,6 +3,16 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+const size_t rolling_avg_len = 16;
+double mag_history[rolling_avg_len];
+
+void printHex4(Stream* stream, uint32_t val){
+  if(val < 0x1000){ stream->print(0); }
+  if(val < 0x100){ stream->print(0); }
+  if(val < 0x10){ stream->print(0); }
+  stream->print(val, HEX);
+}
+
 void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   bool force_update = *((bool*)args);
 
@@ -16,8 +26,9 @@ void detectAndTransmit(SensorNode* node, size_t idx, void* args){
   prev_staff[0][idx] = staff[0][idx]; // store last staff value
 
   // for normal operation detect colors based on sensor results
-  size_t val;
-  if(COLOR_DETECT_OK == detectedColor(&rgb, &val)){
+  size_t color_index;
+  if(COLOR_DETECT_OK == detectedColor(&rgb, &color_index)){
+    staff_data_t val = detectable_colors[color_index].staff_val;
     detection_ok_staff[0][idx] = true;
     staff[0][idx] = (staff_data_t)val;
     if((staff[0][idx] != prev_staff[0][idx]) || (force_update)){
@@ -43,14 +54,15 @@ void printInfo(SensorNode* node, size_t idx, void* args){
   DEBUG_PORT.print(idx);
   DEBUG_PORT.print(": ");
 
+  staff_data_t current = staff[0][idx];
   if(detection_ok_staff[0][idx]){
-    if((staff[0][idx] != prev_staff[0][idx]) || (force_update)){
+    if((current != prev_staff[0][idx]) || (force_update)){
       DEBUG_PORT.print("(X) ");
       if(force_update){
         DEBUG_PORT.print("(F) ");
       }
     }
-    DEBUG_PORT.print(detectable_colors[staff[0][idx]].name);
+    DEBUG_PORT.print(getColorNameByStaffValue(current));
   }else{
     DEBUG_PORT.print("unknown");
   }

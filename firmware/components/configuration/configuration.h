@@ -46,5 +46,6 @@ typedef uint8_t staff_data_t;
 // #define DETECTABLE_COLORS_LENGTH (STAFF_VALS + 1)
 extern const color_definition_t detectable_colors[];
 bool detectedColor(const rgb_f_t* rgb, size_t* idx);
+const char* getColorNameByStaffValue(staff_data_t val);
 
 #endif // _RF_COMPONENT_CONFIGURATION_H_

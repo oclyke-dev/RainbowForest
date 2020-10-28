@@ -28,7 +28,7 @@
 #define DEBUG_PORT SerialUSB
 #define DEBUG_BAUD (115200)
 
-#define BRIDGE_PORT Serial
+#define BRIDGE_PORT Serial1
 #define BRIDGE_BAUD (115200)
 UARTBridge <cart_t> cartBridge(BRIDGE_PORT);
 UARTBridge <cat_t> catBridge(BRIDGE_PORT);
@@ -42,6 +42,8 @@ Staff <staff_data_t> staff;
 TwoWire NetworkWire(&sercom1, NETWORK_SDA_PIN, NETWORK_SCL_PIN);
 #define NETWORK_ADDRESS_BY_COL(c) (c + 0x04)
 
+volatile bool cat_received = false;
+volatile bool cleanup_cat_received = false;
 volatile bool full_update_requested = true;
 bool full_update_sent = false;
 
@@ -56,6 +58,8 @@ void button1ISR() {
 }
 
 void onCatReception(cat_t* cat, void* args){
+  cat_received = true;
+
   if(cat->col >= STAFF_COLS){
     DEBUG_PORT.println("received an invalid cat");
     return;
@@ -165,6 +169,46 @@ void loop() {
     DEBUG_PORT.println("button0 released");
     button0 = false;
   }
+
+  if(cat_received){
+    digitalWrite(LED1, HIGH);
+    cat_received = false;
+    cleanup_cat_received = true;
+  }
+  if(cleanup_cat_received){
+    cleanup_cat_received = false;
+    digitalWrite(LED1, LOW);
+  }
+
+  // alive heartbeat
+  static bool led0_val = false;
+  digitalWrite(LED0, led0_val);
+  led0_val = !led0_val;
+
+  // static uint8_t col_to_set = 0;
+  // if(DEBUG_PORT.available()){
+  //   DEBUG_PORT.read();
+  //   cat.row = COMMAND_SET_COLUMN_COLOR;
+  //   cat.col = col_to_set;
+  //   cat.rH = 0x00;
+  //   cat.rL = 0x00;
+  //   cat.bH = 0x00;
+  //   cat.bL = 0x00;
+  //   cat.gH = 0x00;
+  //   cat.gL = 0x00;
+  //   onCatReception(&cat, NULL);
+  //   col_to_set++;
+  //   if(col_to_set >= STAFF_COLS){
+  //     col_to_set = 0;
+  //   }
+  // }
+
+  // uint32_t now = millis();
+  // static uint32_t debug_staff = 0;
+  // if((now - debug_staff) > 100){
+  //   debug_staff = now;
+  //   debugShowStaff();
+  // }
 }
 
 void sampleColumns( void ){
@@ -202,7 +246,9 @@ void sampleColumns( void ){
       prev = staff[col][row];
       staff[col][row] = current;
 
-      if((prev != current) || (full_update_requested)){     // send the current value if the value at this position has changed or a full update is requested
+      if(1){ // temporary
+      // if((prev != current) || (full_update_requested)){     // send the current value if the value at this position has changed or a full update is requested
+      
         cart.col = col;
         cart.row = row;
         cart.val = current;
@@ -231,8 +277,31 @@ void sampleColumns( void ){
   }
 
   if(success){
-    DEBUG_PORT.print("all columns read successfully. time (ms): ");
-    DEBUG_PORT.print(millis());
+    digitalWrite(LED3, HIGH);
+  }else{
+    digitalWrite(LED3, LOW);
+  }
+}
+
+
+
+void debugShowStaff( void ){
+
+  for(size_t idx = 0; idx < 100; idx++){
+    DEBUG_PORT.println();
+  }
+
+  for(size_t r = STAFF_ROWS; r > 0; r--){
+    size_t row = r-1;
+    DEBUG_PORT.print("row [");
+    DEBUG_PORT.print(row);
+    DEBUG_PORT.print("]: ");
+    for(size_t col = 0; col < STAFF_COLS; col++){
+      DEBUG_PORT.print(staff[col][row]);
+      DEBUG_PORT.print(", ");
+    }
     DEBUG_PORT.println();
   }
 }
+
+

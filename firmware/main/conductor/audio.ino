@@ -105,7 +105,7 @@ void audio_setup( void ){
   AudioMemory(64);
   
   sgtl5000_1.enable();
-  sgtl5000_1.volume(0.20);
+  sgtl5000_1.volume(0.95);
   SPI.setMOSI(SDCARD_MOSI_PIN);
   SPI.setSCK(SDCARD_SCK_PIN);
 
@@ -177,6 +177,10 @@ void showPlayHead( uint8_t col ){
   if(col == 0){
     prev_col = (STAFF_COLS-1);
   }
+
+  DEBUG_PORT.print("setting color for column: ");
+  DEBUG_PORT.print(col);
+  DEBUG_PORT.println();
 
   CRGB rgb(0, 0, 0);
   setColumnRGB(rgb, prev_col);

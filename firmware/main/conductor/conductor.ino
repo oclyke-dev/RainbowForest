@@ -17,6 +17,7 @@
 #define DEBUG_BAUD (115200)
 
 #define REST_INACTIVE_SEC (60)
+uint32_t rest_inactive = 0;
 #define PAUSED_BLINK_PERIOD_MS (1000)
 
 #define BRIDGE_PORT Serial1
@@ -45,7 +46,6 @@ volatile bool playNext = false;
 volatile bool playbackRunning = true;
 volatile uint8_t playbackColumn = 0;
 
-uint32_t rest = (REST_INACTIVE_SEC * 1000);
 bool playButtonIllumination = true;
 
 void setup() {
@@ -92,9 +92,10 @@ void loop() {
   }
 
   if(playbackRunning){
-    if(now >= rest){
-      pause();
-    } 
+    // if((now - rest_inactive) >= (REST_INACTIVE_SEC * 1000)){
+    //   rest_inactive = now;
+    //   pause();
+    // } 
   
     if(playNext){
       playNext = false;   
@@ -103,5 +104,33 @@ void loop() {
         playbackColumn = 0;
       }
     }
+  }
+
+  static uint32_t debug_staff = 0;
+  if((now - debug_staff) > 100){
+    debug_staff = now;
+    debugShowStaff();
+  }
+  
+}
+
+
+
+void debugShowStaff( void ){
+
+  for(size_t idx = 0; idx < 100; idx++){
+    DEBUG_PORT.println();
+  }
+
+  for(size_t r = STAFF_ROWS; r > 0; r--){
+    size_t row = r-1;
+    DEBUG_PORT.print("row [");
+    DEBUG_PORT.print(row);
+    DEBUG_PORT.print("]: ");
+    for(size_t col = 0; col < STAFF_COLS; col++){
+      DEBUG_PORT.print(staff[col][row]);
+      DEBUG_PORT.print(", ");
+    }
+    DEBUG_PORT.println();
   }
 }
