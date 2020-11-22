@@ -246,8 +246,8 @@ void sampleColumns( void ){
       prev = staff[col][row];
       staff[col][row] = current;
 
-      if(1){ // temporary
-      // if((prev != current) || (full_update_requested)){     // send the current value if the value at this position has changed or a full update is requested
+//      if(1){ // temporary
+       if((prev != current) || (full_update_requested)){     // send the current value if the value at this position has changed or a full update is requested
       
         cart.col = col;
         cart.row = row;
