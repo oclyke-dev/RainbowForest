@@ -271,6 +271,8 @@ void sampleColumns( void ){
     }
   }
 
+//  onCatReception(&cat, NULL); // use this to re-send the current cat (increased sends means more likely to remedy a failure)
+
   if(full_update_sent){
     full_update_sent = false;
     full_update_requested = false;
@@ -303,5 +305,3 @@ void debugShowStaff( void ){
     DEBUG_PORT.println();
   }
 }
-
-
