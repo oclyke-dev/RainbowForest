@@ -19,7 +19,7 @@
 
 // #define PRODUCTION // comment out to use development settings
 
-#define CONTROLLER_COLUMN (6)   // indicates which column this controller reads (default if preferences unused)
+#define CONTROLLER_COLUMN (0)   // indicates which column this controller reads (default if preferences unused)
 
 #define DEV_HOST "10.0.0.29"   // <-- for development set this to the ip address of the machine running the api server
 #define DEV_PORT 81
