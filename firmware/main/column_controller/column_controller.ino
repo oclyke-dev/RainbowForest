@@ -17,7 +17,7 @@
 
 #include "src/components/configuration/network_config.h" // NETWORK_SSID, NETWORK_PASSWORD, PRIVATE_AUTH_HEADER
 
-#define PRODUCTION // comment out to use development settings
+// #define PRODUCTION // comment out to use development settings
 
 #define CONTROLLER_COLUMN (6)   // indicates which column this controller reads (default if preferences unused)
 
