@@ -29,6 +29,36 @@ void requestColumn (void) {
 }
 
 
+void sendRow (size_t row) {
+  const char* fmt = \
+  "{\
+    \"timestamp\": \"%d\",\
+    \"id\": {\
+      \"name\": \"column\",\
+      \"extra\": \"%d\"\
+    },\
+    \"update\": {\
+      \"entries\": [\
+        {\
+          \"column\": %d,\
+          \"row\": %d,\
+          \"entry\": {\
+            \"note\": %d\
+          }\
+        }\
+      ]\
+    }\
+  }";
+
+  staff_data_t val = staff[0][row];
+
+  uint32_t now = millis();
+  size_t required = 1 + snprintf(NULL, 0, fmt, now, column_number, column_number, row, val);
+  char msg[required] = {'\0'};
+  snprintf(msg, required, fmt, now, column_number, column_number, row, val);
+  private_ws.sendTXT(msg);
+}
+
 #if STAFF_ROWS == 7
 #define msg_fmt \
   "{\

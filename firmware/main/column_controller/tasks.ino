@@ -26,6 +26,15 @@ void handleUserInput( void * arg ) {
   }
 }
 
+void detectAndSend(SensorNode* node, size_t idx, void* args){
+#ifdef DEBUG_GEN_FAKE_DATA
+  detect_fake(node, idx, args);
+#else
+  detect(node, idx, args);
+#endif // DEBUG_GEN_FAKE_DATA
+  sendRow(idx); // send updates piecewise
+}
+
 void updateSensors( void* arg ){
 
   // initialize column i2c
@@ -39,14 +48,7 @@ void updateSensors( void* arg ){
   while(1){
 
     // read all sensors in random sequence to make pretty blinking
-#ifdef DEBUG_GEN_FAKE_DATA
-    sensors.forEachRandOrder(detect_fake, NULL);
-#else
-    sensors.forEachRandOrder(detect, NULL);
-#endif // DEBUG_GEN_FAKE_DATA
-
-    // send updates
-    sendColumn();
+    sensors.forEachRandOrder(detectAndSend, NULL);
 
     // print debug info
     DEBUG_PRINTF(("Column: [ "));
