@@ -1,0 +1,45 @@
+import * as express from 'express';
+import * as http from 'http';
+import * as WebSocket from 'ws';
+
+// server settings
+const PORT = 81;
+
+// set up express and http server
+const app = express();
+const server = http.createServer(app);
+
+//initialize the WebSocket server instance
+const ws_server = new WebSocket.Server({ server });
+
+ws_server.on('connection', (ws: WebSocket) => {
+
+    //connection is up, let's add a simple simple event
+    ws.on('message', (message: string) => {
+
+        //log the received message and send it back to the client
+        console.log('received: %s', message);
+        ws.send(`Hello, you sent -> ${message}`);
+    });
+
+    //send immediatly a feedback to the incoming connection    
+    ws.send('Hi there, I am a WebSocket server');
+});
+
+
+// redirect visitors to the client app
+app.get('/*', (req, res) => {
+  res.redirect('https://oclyke.dev/rainbow-forest')
+});
+
+// start the server
+server.listen(PORT, () => {
+  const address = server.address();
+  let port = undefined;
+  if(address){
+    if(typeof(address) !== 'string'){
+      port = address.port;
+    }
+  }
+  console.log(`listening on *:${port}`);
+});

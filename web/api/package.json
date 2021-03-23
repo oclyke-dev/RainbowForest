@@ -1,0 +1,19 @@
+{
+  "name": "rainbow-forest-api",
+  "version": "0",
+  "main": "index.js",
+  "author": "oclyke",
+  "license": "MIT",
+  "dependencies": {
+    "@types/express": "^4.17.11",
+    "@types/ws": "^7.4.0",
+    "express": "^4.17.1",
+    "typescript": "^4.2.3",
+    "ws": "^7.4.4"
+  },
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "build": "tsc"
+  },
+  "devDependencies": {}
+}

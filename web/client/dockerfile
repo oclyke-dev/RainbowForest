@@ -1,0 +1,30 @@
+FROM nginx:mainline-alpine
+
+# define arguments for the build
+ARG server_root=/usr/share/nginx/html/rainbow-forest
+
+# add packages
+#   - yarn: package manager for app build
+RUN apk update && apk add \
+  yarn
+
+RUN rm /etc/nginx/conf.d/*
+ADD root.conf /etc/nginx/conf.d/
+
+# create working directory in which to build app
+WORKDIR /usr/src/app
+
+# install dependencies (before source files to utilize caching)
+COPY package*.json ./
+COPY yarn.lock ./
+RUN yarn install --production
+
+# copy source files and run build
+COPY . .
+RUN yarn build
+
+# copy build to location to be served by nginx
+RUN mkdir -p ${server_root} && cp -r build/. ${server_root}/
+
+# remove working directory to reduce image size
+RUN rm -rf /usr/src/app
