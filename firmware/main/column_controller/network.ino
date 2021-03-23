@@ -1,41 +1,99 @@
+/* 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.md', which is part of this source code package.
+*/
 
-void networkRequestEvent( void ){
-  uint8_t* p_reg = (uint8_t*)(&register_map);
-  size_t written = NetworkWire.write((p_reg + reg_address), (sizeof(register_map)/sizeof(uint8_t)) - reg_address);
-  // this sends the entire remaining memory map
+#ifdef PRODUCTION
+  #define HOST "oclyke.dev"
+  #define PORT 443
+  #define USE_SSL               // <-- when in production mode we use SSL (the nginx ingress handles decryption before messages hit the api server)
+#else
+  #define HOST DEV_HOST
+  #define PORT DEV_PORT
+#endif // PRODUCTION
+
+#define PROTOCOL "rf"
+
+// api base url
+const char* api = "/rainbow-forest/api/v1";
+
+// private endpoint
+const char* private_end = "/private";
+
+void init_network ( void ){
+  WiFi.onEvent(wifi_event_handler);
+  WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
+
+  private_ws.setExtraHeaders(PRIVATE_AUTH_HEADER);
+  private_ws.onEvent(private_ws_event_handler);
 }
 
-// when data is received from the controller
-void networkReceiveEvent(int bytes_received)
-{
-  if(bytes_received == 0){ return; }
+void wifi_event_handler(WiFiEvent_t event){
+  switch(event) {
+    case SYSTEM_EVENT_STA_GOT_IP: {
+      DEBUG_PORT.print("WiFi got ip: ");
+      DEBUG_PORT.print(WiFi.localIP());
+      DEBUG_PORT.println();
 
-  int bytes_data = bytes_received - 1;
-  size_t node_data_size = (sizeof(column_map_t)/sizeof(uint8_t));
-  uint8_t sub_index = 0x00;
-  uint8_t data = 0x00;
+      // construct the desired endpoint
+      const size_t route_len = (strlen(api) + strlen(private_end)) + 1;
+      char route[route_len] = {'\0'};
+      strcat(route, api);
+      strcat(route, private_end);
 
-  uint8_t* p_reg = (uint8_t*)(&register_map);
-  uint8_t* p_pro = (uint8_t*)(&protection_map);
-
-  reg_address = NetworkWire.read(); // get the beginning offset
-  
-  for(int idx = 0; idx < bytes_data; idx++){
-    data = NetworkWire.read();
-    if(reg_address < (sizeof(register_map)/sizeof(uint8_t))){
-      sub_index = reg_address % node_data_size;
-      *(p_reg + reg_address) &= ~(*(p_pro + sub_index));          // clear writeable bits for incoming value
-      *(p_reg + reg_address) |= (data & (*(p_pro + sub_index)));  // or in valid bits from the data
+      // connect to the endpoint
+#ifdef USE_SSL
+      private_ws.beginSSL(HOST, PORT, route, "", PROTOCOL);
+#else
+      private_ws.begin(HOST, PORT, route, PROTOCOL);
+#endif // USE_SSL
     }
-
-    reg_address += 1;
-  }
-
-  if(bytes_data != 0){
-    sensors.forEachRandOrder(updateColors, NULL);
+    break;
+    
+  case SYSTEM_EVENT_STA_DISCONNECTED:
+    DEBUG_PRINTF(("WiFi disconnected\n"));
+    WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
+    break;
+    
+  default:
+    DEBUG_PRINTF(("[WiFi] event: %d\n", event));
+    break;
   }
 }
 
-void NETWORK_WIRE_IT_HANDLER(void) {
-  NetworkWire.onService();
+void private_ws_event_handler(WStype_t type, uint8_t * payload, size_t length) {
+  switch(type) {
+    case WStype_DISCONNECTED:
+      DEBUG_PRINTF(("[WSc] Disconnected!\n"));
+      break;
+      
+    case WStype_CONNECTED:
+      DEBUG_PRINTF(("[WSc] Connected to url: %s\n",  payload));
+      requestColumn();
+      break;
+      
+    case WStype_TEXT:
+      DEBUG_PRINTF(("[WSc] get text: %s\n", payload));
+      // send message to server
+      // webSocket.sendTXT("message here");
+      break;
+      
+    case WStype_BIN:
+      DEBUG_PRINTF(("[WSc] get binary length: %u\n", length));
+      // send data to server
+      // webSocket.sendBIN(payload, length);
+      break;
+      
+    case WStype_ERROR:
+      DEBUG_PRINTF(("[WSc] error: %s\n",  payload));
+      break;
+    
+    case WStype_FRAGMENT_TEXT_START:
+    case WStype_FRAGMENT_BIN_START:
+    case WStype_FRAGMENT:
+    case WStype_FRAGMENT_FIN:
+    default:
+      DEBUG_PRINTF(("[WSc] event: %d\n",  type));
+      break;
+  }
 }

@@ -23,7 +23,7 @@ const char* getColorNameByStaffValue(staff_data_t val){
   const char* retval = NULL;
   size_t num_detectable_colors = (sizeof(detectable_colors)/sizeof(color_definition_t));
   size_t color_index = 0;
-  for(color_index; color_index < num_detectable_colors; color_index++){
+  for(  ; color_index < num_detectable_colors; color_index++){
     if(detectable_colors[color_index].staff_val == val){
       retval = detectable_colors[color_index].name;
       break;
