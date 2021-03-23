@@ -1,3 +1,6 @@
+# macos
+.DS_Store
+
 # network config (secrets)
 firmware/components/configuration/network_config.h
 
