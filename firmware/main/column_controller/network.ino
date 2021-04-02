@@ -3,13 +3,18 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+#include "Arduino.h"
+
+IPAddress host_ip = IPAddress(0,0,0,0);
+
 #ifdef PRODUCTION
-  #define HOST "oclyke.dev"
-  #define PORT 443
-  #define USE_SSL               // <-- when in production mode we use SSL (the nginx ingress handles decryption before messages hit the api server)
+  #define HOST host_ip
+  #define PORT 81
+  #define MDNS_HOSTNAME "rainbow-forest-pi"
 #else
   #define HOST DEV_HOST
   #define PORT DEV_PORT
+  #define MDNS_HOSTNAME DEV_MDNS_HOSTNAME
 #endif // PRODUCTION
 
 #define PROTOCOL "rf"
@@ -35,18 +40,33 @@ void wifi_event_handler(WiFiEvent_t event){
       DEBUG_PORT.print(WiFi.localIP());
       DEBUG_PORT.println();
 
+      const char* host_fmt = "rf-col-%d";
+      size_t required = 1 + snprintf(NULL, 0, host_fmt, column_number);
+      char host[required] = {'\0'};
+      snprintf(host, required, host_fmt, column_number);
+      if (!MDNS.begin(host)) {
+        Serial.println("Error setting up MDNS responder!");
+      }
+
+      host_ip = MDNS.queryHost(MDNS_HOSTNAME);
+      DEBUG_PORT.print("mDNS got host ip: ");
+      DEBUG_PORT.print(host_ip);
+      DEBUG_PORT.println();
+
       // construct the desired endpoint
       const size_t route_len = (strlen(api) + strlen(private_end)) + 1;
       char route[route_len] = {'\0'};
       strcat(route, api);
       strcat(route, private_end);
 
-      // connect to the endpoint
-#ifdef USE_SSL
-      private_ws.beginSSL(HOST, PORT, route, "", PROTOCOL);
+#ifdef PRODUCTION
+      Serial.printf("PROD MODE - connecting to mDNS resolved host '%s' (%u.%u.%u.%u)\n", MDNS_HOSTNAME, (host_ip & 0xFF), ((host_ip>>8) & 0xFF), ((host_ip>>16) & 0xFF), ((host_ip>>24) & 0xFF));
 #else
+      Serial.printf("DEV MODE - connecting directly to DEV_HOST: %s\n", HOST);
+#endif // PRODUCTION
+
+      // connect to the endpoint
       private_ws.begin(HOST, PORT, route, PROTOCOL);
-#endif // USE_SSL
     }
     break;
     

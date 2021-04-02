@@ -6,7 +6,7 @@
 type DebugType = 'verbose' | 'log' | 'warn' | 'error';
 type DebugLevel = DebugType | 'all';
 
-const debug_lvl: DebugLevel = 'verbose';
+const debug_lvl: DebugLevel = 'log';
 
 const debug_fn_factory = (type: DebugType): (...args: any[]) => void => {
   let fn = (...args: any[]) => {};

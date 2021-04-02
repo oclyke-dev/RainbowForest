@@ -6,51 +6,16 @@
 import * as WebSocket from 'ws';
 import * as url from 'url';
 
-import { debug } from './utility';
-import { truth } from './secrets';
-import { Staff } from './staff';
-
-export type EntryData = {
-  color: string,
-  note: number,
-};
-export type ColumnData = EntryData[];
-export type StaffData = ColumnData[];
-
-export type EntryFormat = {             // <-- may send individual entries
-  row: number,
-  column: number,
-  entry: EntryData,
-};
-export type ColumnFormat = {            // <-- must send whole column (all entries)
-  column: number,
-  entries: ColumnData,
-};
-export type StaffFormat = ColumnData[]; // <-- must send all columns
-
-export type Domain = {
-  staff?: StaffFormat,
-  columns?: ColumnFormat[],
-  entries?: EntryFormat[],
-}
-
-export type ID = {
-  name: 'column' | 'server' | 'client',   // indicates who sent the message
-  extra?: string,                         // a field to allow additional information (columns will provide their index)
-}
-
-export type Message = {
-  timestamp: string,
-  id: ID,
-  update?: Domain,  // an updated state is being broadcast
-  request?: Domain, // a device is requesting an update regarding a particular domain
-}
+import { debug } from '../../common/utility';
+import { truth } from '../../common/secrets';
+import staff, { Staff } from '../../common/staff';
+import Message, {
+  messageToString,
+  strAsMessage,
+} from '../../common/message';
 
 const private_wss = new WebSocket.Server({ noServer: true });
 const public_wss = new WebSocket.Server({ noServer: true });
-
-// staff
-const staff = new Staff(16, 7, 5);
 
 let column_clients: (null | {alive: boolean, ws: WebSocket})[] = [...new Array(staff.width).map(e => null)];
 
@@ -132,7 +97,7 @@ private_wss.on('connection', (ws) => {
           response.update.entries.push({column: e.column, row: e.row, entry: staff.at(e.column, e.row)});
         });
       }
-      ws.send(msgToString(response));
+      ws.send(messageToString(response));
     }
   }); 
   ws.on('close', function close() {
@@ -178,7 +143,7 @@ public_wss.on('connection', (ws) => {
           response.update.entries.push({column: e.column, row: e.row, entry: staff.at(e.column, e.row)});
         });
       }
-      ws.send(msgToString(response));
+      ws.send(messageToString(response));
     }
 
   });
@@ -228,57 +193,10 @@ const now = () => {
   return `todo: timestamp`;
 }
 
-const msgToString = (msg: Message) => {
-  return JSON.stringify(msg);
-}
-
-function asMessage(data: unknown): Message {
-  if (typeof data === 'object' && data !== null) {
-    const maybeMessage = data as Message
-    
-    // check id
-    const maybeID = maybeMessage.id as ID
-    if(typeof maybeID.name !== 'string'){
-      throw new TypeError('id.name is not a string');
-    }
-    if(maybeID.extra){
-      if(typeof maybeID.extra !== 'string'){
-        throw new TypeError('id.extra is not a string');
-      }
-    }
-    
-    // check timestamp
-    if(typeof maybeMessage.timestamp !== 'string'){ throw new TypeError('timestamp not string type'); }
-
-    // // check update format
-    // if(maybeMessage.update){
-    //   asDomain(maybeMessage.update);
-    // }
-
-    // // check set format
-    // if(maybeMessage.set){
-    //   asDomain(maybeMessage.set);
-    // }
-
-    // // check request format
-    // if(maybeMessage.request){
-    //   asDomain(maybeMessage.request);
-    // }
-
-    return maybeMessage;
-  }
-  throw new TypeError('data is not a Message');
-}
-
-export const strAsMessage = (str: string): Message => {
-  const o = (JSON.parse(str) as unknown);
-  return asMessage(o);
-}
-
 // send changes to public clients
 export const updatePublic = (msg: Message) => {
   public_wss.clients.forEach((ws) => {
-    ws.send(msgToString(msg));
+    ws.send(messageToString(msg));
   });
 }
 

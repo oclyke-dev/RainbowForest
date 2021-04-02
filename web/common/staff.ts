@@ -4,15 +4,13 @@
 */
 
 import { debug } from './utility';
-import {
+import Message, {
   EntryData,
-  ColumnData,
   StaffData,
-  Message,
   ColumnFormat,
   EntryFormat,
   StaffFormat,
-} from './api';
+} from './message';
 
 type StaffEvents = 'change';
 type EventHandler = (staff: Staff) => void;
@@ -128,3 +126,8 @@ export class Staff {
     }
   }
 }
+
+// staff
+const staff = new Staff(16, 7, 5); // set staff dimensions here
+
+export default staff;
