@@ -3,7 +3,6 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
-import React from 'react';
 import {
   useState,
 } from 'react';
@@ -23,6 +22,10 @@ import {
   makeStyles,
 } from '@material-ui/core/styles';
 
+import {
+  playColumn,
+} from './audio';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   section: {
@@ -35,14 +38,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// // server address
-// const host = 'oclyke.dev';
-// const port = 443;
-// const protocol = 'wss';
+// server address
+const host = 'oclyke.dev';
+const port = 443;
+const protocol = 'wss';
 
-const host = '10.9.12.89';
-const port = 81;
-const protocol = 'ws';
+// const host = '10.0.0.29';
+// const port = 81;
+// const protocol = 'ws';
 
 // root of api
 const api = '/rainbow-forest/api/v1';
@@ -95,10 +98,9 @@ function App() {
 
   const bull = <span className={classes.bullet}>•</span>;
 
-
   return <>
     <Box display='flex' flexDirection='column' justifyContent='space-between' style={{width: '100%', height: '100%'}}>
-      
+
       {/* header */}
       <Box>
         <Sluicebox>
