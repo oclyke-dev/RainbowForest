@@ -22,6 +22,10 @@ import {
   makeStyles,
 } from '@material-ui/core/styles';
 
+import {
+  playColumn,
+} from './../audio';
+
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import PaletteIcon from '@material-ui/icons/Palette';
 
@@ -30,7 +34,11 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import { PauseCircleFilled } from '@material-ui/icons';
 
-export type StaffType = any[][];
+type Entry = {
+  color: string,
+  note: number,
+}
+export type StaffType = Entry[][];
 
 type StaffProps = {
   staff: StaffType,
@@ -108,6 +116,10 @@ const Staff = (props: StaffProps) => {
   const advancePlaying = () => {
     setState(prev => {
       let update = {...prev};
+      const current = prev.next;
+      
+      playColumn(staff[current].map(e => e.note));
+
       update.next = prev.next + 1;
       if(update.next >= staff.length){
         update.next = 0;
