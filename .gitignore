@@ -12,6 +12,7 @@ web/rpi/dist
 firmware/components/configuration/network_config.h
 web/api/src/secrets.ts
 web/rpi/src/secrets.ts
+web/client/src/secrets.ts
 
 # components within main programs
 firmware/main/*/src/components/*
