@@ -5,6 +5,7 @@
 
 import {
   useState,
+  useEffect,
 } from 'react';
 
 import Sluicebox from './components/Sluicebox';
@@ -23,8 +24,8 @@ import {
 } from '@material-ui/core/styles';
 
 import {
-  playColumn,
-} from './audio';
+  mob_logo
+} from './assets/images';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -105,14 +106,12 @@ function App() {
       <Box>
         <Sluicebox>
           <Box className={classes.section} display='flex' flexDirection='row' justifyContent='space-between' >
+            <a href='https://museumofboulder.org/'>
+              <img src={mob_logo} alt='logo' width='150px'/>
+            </a>
             <Box>
               <Typography>
                 Rainbow Forest
-              </Typography>
-            </Box>
-            <Box>
-              <Typography>
-                museum of boulder
               </Typography>
             </Box>
           </Box>
@@ -124,7 +123,13 @@ function App() {
       <Box>
         <Sluicebox>
           <Box className={classes.section}>
-            <Staff staff={staff}/>
+            <Staff
+              staff={staff}
+            />
+          </Box>
+          <Divider />
+          <Box className={classes.section}>
+            todo: use local storage to allow key entry that will authenticate users to control the rainbow forest
           </Box>
           <Divider />
           <Box className={classes.section}>

@@ -52,7 +52,6 @@ main_level_ctrl.connect(context.destination);
 
 // play a column
 export const playColumn = (col: number[]) => {
-
   col.forEach((c, note) => {
     const promise = instruments[c];
     if(typeof promise !== 'undefined'){
@@ -69,5 +68,27 @@ export const playColumn = (col: number[]) => {
   })
 }
 
+// change volume
+export const default_gain = 1.0;
+export const min_gain = 0.0;
+export const max_gain = 2.0;
 
 
+export const setGain = (gain: number) => {
+  if(gain > max_gain){ gain = max_gain; }
+  if(gain < min_gain){ gain = min_gain; }
+  main_level_ctrl.gain.setValueAtTime(gain, 0);
+  return gain;
+}
+
+// adjust playback speed
+export const min_bpm = 60;
+export const max_bpm = 180;
+
+export let period = 750;
+export const setBPM = (bpm: number) => {
+  if(bpm > max_bpm){ bpm = max_bpm; }
+  if(bpm < min_bpm){ bpm = min_bpm; }
+  period = 60*1000/bpm;
+  return bpm;
+}

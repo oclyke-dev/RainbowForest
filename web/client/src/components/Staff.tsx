@@ -8,22 +8,19 @@ import React from 'react';
 import {
   Box,
   Button,
-  Divider,
   Tooltip,
-  IconButton,
 } from '@material-ui/core';
 import {
   ToggleButton,
   ToggleButtonGroup,
 } from '@material-ui/lab';
 import {
-  createMuiTheme,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core/styles';
 
 import {
   playColumn,
+  period,
 } from './../audio';
 
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
@@ -32,7 +29,9 @@ import PaletteIcon from '@material-ui/icons/Palette';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
-import { PauseCircleFilled } from '@material-ui/icons';
+
+import Volume from './../components/Volume';
+import Speed from './../components/Speed';
 
 type Entry = {
   color: string,
@@ -93,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 type DisplayTypes = 'colors' | 'notes';
 const note_color_map = ['white', 'red', 'green', 'blue', 'cyan', 'magenta'];
 
-let interval: any;
+let timeout: NodeJS.Timeout;
 
 type PlayState = {
   playing: boolean, // whether we are running or not
@@ -119,6 +118,8 @@ const Staff = (props: StaffProps) => {
       const current = prev.next;
       
       playColumn(staff[current].map(e => e.note));
+      clearTimeout(timeout);
+      timeout = setTimeout(advancePlaying, period);
 
       update.next = prev.next + 1;
       if(update.next >= staff.length){
@@ -129,14 +130,14 @@ const Staff = (props: StaffProps) => {
   }
 
   const resetPlaying = () => {
-    clearInterval(interval);
+    clearTimeout(timeout);
     setState(initial_state);
   }
 
   const togglePlaying = () => {
     let play = false;
     setState(prev => {
-      clearInterval(interval);
+      clearTimeout(timeout);
 
       let update = {...prev};
       update.playing = !prev.playing;
@@ -149,7 +150,7 @@ const Staff = (props: StaffProps) => {
 
     if(play){
       advancePlaying();
-      interval = setInterval(advancePlaying, 1000);
+      timeout = setTimeout(advancePlaying, period);
     }
   }
   
@@ -193,57 +194,77 @@ const Staff = (props: StaffProps) => {
     </Box>
 
     <Box className={classes.controlpane} display='flex' flexDirection='row' justifyContent='space-between'>
-
+        
       {/* play controls */}
-      <Box>
-        <Button
-          variant='outlined'
-          aria-label='reset'
-          size='small'
-          onClick={resetPlaying}
-        >
-          <Tooltip title={'reset'} arrow >
-            <SkipPreviousIcon/>
-          </Tooltip>
-        </Button>
+      <Box display='flex' flexDirection='column' justifyContent='space-around'>
+        <Box>
+          <Button
+            variant='outlined'
+            aria-label='reset'
+            size='small'
+            onClick={resetPlaying}
+          >
+            <Tooltip title={'reset'} arrow >
+              <SkipPreviousIcon/>
+            </Tooltip>
+          </Button>
 
-        <Button
-          variant='outlined'
-          color={(state.playing) ? undefined : 'primary'}
-          aria-label='play/pause'
-          size='small'
-          onClick={togglePlaying}
-        >
-          <Tooltip title={(state.playing) ? 'pause' : 'play'} arrow >
-            {(state.playing) ? <PauseIcon /> : <PlayArrowIcon />}
-          </Tooltip>
-        </Button>
+          <Button
+            variant='outlined'
+            color={(state.playing) ? undefined : 'primary'}
+            aria-label='play/pause'
+            size='small'
+            onClick={togglePlaying}
+          >
+            <Tooltip title={(state.playing) ? 'pause' : 'play'} arrow >
+              {(state.playing) ? <PauseIcon /> : <PlayArrowIcon />}
+            </Tooltip>
+          </Button>
+        </Box>
       </Box>
 
+      {/* volume control */}
+      <Volume/>
+
+
+
+
+      {/* space taker */}
+      <Box display='flex' flexGrow={1}>
+
+        {/* speed control */}
+        <Speed />
+        
+      </Box>
+
+      
       {/* display toggle */}
-      <Box>
-        <ToggleButtonGroup
-          value={display}
-          size='small'
-          exclusive
-          onChange={(e, update: DisplayTypes) => {
-            setDisplay(update);
-          }}
-        >
-          <ToggleButton value='notes' aria-label='show-notes'>
-            <Tooltip title={'notes'} arrow>
-              <MusicNoteIcon fontSize='small'/>
-            </Tooltip>
-          </ToggleButton>
+      <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+        <Box display='flex' flexDirection='column' justifyContent='space-around'>
+          <Box>
+            <ToggleButtonGroup
+              value={display}
+              size='small'
+              exclusive
+              onChange={(e, update: DisplayTypes) => {
+                setDisplay(update);
+              }}
+            >
+              <ToggleButton value='notes' aria-label='show-notes'>
+                <Tooltip title={'notes'} arrow>
+                  <MusicNoteIcon fontSize='small'/>
+                </Tooltip>
+              </ToggleButton>
 
-          <ToggleButton value='colors' aria-label='show-colors'>
-            <Tooltip title={'colors'} arrow >
-              <PaletteIcon fontSize='small'/>
-            </Tooltip>
-          </ToggleButton>
-        </ToggleButtonGroup>
+              <ToggleButton value='colors' aria-label='show-colors'>
+                <Tooltip title={'colors'} arrow >
+                  <PaletteIcon fontSize='small'/>
+                </Tooltip>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        </Box>
       </Box>
-
     </Box>
   </>
 }
