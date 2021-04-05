@@ -40,7 +40,7 @@ const Speed = () => {
   const classes = useStyles();
 
   const [volume_anchor_el, setVolumeAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [bpm, setBPM] = useState<number>(170);
+  const [bpm, setBPM] = useState<number>((min_bpm + max_bpm) / 2);
 
   const [readout_bpm, setReadoutBPM] = useState(String(bpm));
 

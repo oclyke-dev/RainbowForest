@@ -100,7 +100,7 @@ type PlayState = {
 }
 const initial_state: PlayState = {
   playing: false,
-  next: 0,
+  next: 1,
 };
 
 const Staff = (props: StaffProps) => {
@@ -130,8 +130,13 @@ const Staff = (props: StaffProps) => {
   }
 
   const resetPlaying = () => {
-    clearTimeout(timeout);
-    setState(initial_state);
+    // clearTimeout(timeout);
+    setState((prev) => {
+      return {
+        ...initial_state,
+        playing: prev.playing,
+      }
+    });
   }
 
   const togglePlaying = () => {
@@ -185,7 +190,7 @@ const Staff = (props: StaffProps) => {
       <Box className={classes.staff}>
         <Box className={classes.column} style={{width: col_width, height: col_width}}></Box>
       {staff.map((column, idc) => {
-        const highlighted = (state.playing && ((state.next - 1) === idc));
+        const highlighted = (((state.next - 1) === idc));
         return <Box key={`staff.progress.${idc}`} className={`${classes.column} ${classes.indicator} ${highlighted && classes.highlight}`} style={{width: col_width}}>
           {/* {idc} */}
         </Box>
@@ -195,6 +200,7 @@ const Staff = (props: StaffProps) => {
 
     <Box className={classes.controlpane} display='flex' flexDirection='row' justifyContent='space-between'>
         
+    {(display === 'notes') && <>
       {/* play controls */}
       <Box display='flex' flexDirection='column' justifyContent='space-around'>
         <Box>
@@ -225,9 +231,6 @@ const Staff = (props: StaffProps) => {
 
       {/* volume control */}
       <Volume/>
-
-
-
 
       {/* space taker */}
       <Box display='flex' flexGrow={1}>
