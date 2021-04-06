@@ -4,11 +4,21 @@
 */
 
 import React from 'react';
+import {
+  useState,
+  useRef,
+} from 'react';
 
 import {
   Box,
   Button,
   Tooltip,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
 } from '@material-ui/core';
 import {
   ToggleButton,
@@ -33,6 +43,33 @@ import PauseIcon from '@material-ui/icons/Pause';
 import Volume from './../components/Volume';
 import Speed from './../components/Speed';
 
+import {
+  setAnimation,
+  animations,
+} from '../animations/animations';
+
+import {
+  socket
+} from './../utilities/interface';
+
+import {
+  useAuth,
+} from './../hooks/useAuth';
+
+import {
+  Message,
+  messageToString,
+  ColumnFormat,
+  EntryData,
+} from './../../../common/message';
+
+import {
+  truth
+} from './../../../common/secrets';
+
+import GradientEditor from './GradientEditor';
+import Picker from './Picker';
+
 type Entry = {
   color: string,
   note: number,
@@ -40,7 +77,6 @@ type Entry = {
 export type StaffType = Entry[][];
 
 type StaffProps = {
-  staff: StaffType,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -107,7 +143,25 @@ const Staff = (props: StaffProps) => {
   const classes = useStyles();
   const [display, setDisplay] = React.useState<DisplayTypes>('notes');
   const [state, setState] = React.useState<PlayState>(initial_state);
-  const staff = props.staff;
+
+  const [value, setValue] = React.useState('female');
+
+  const handlePatternChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value);
+  };
+
+  const [authorized] = useAuth();
+
+  const [staff, setStaff] = useState<StaffType>([]);
+  socket.onmessage = (e) => {
+    const msg = JSON.parse(e.data) as any;
+    // console.log(msg.update.staff)
+    if(msg.update.staff){
+      setStaff(msg.update.staff);
+    }
+  };
+  const staff_ref = useRef(staff);
+  staff_ref.current = staff;
 
   const total_cols = staff.length + 1;
   const col_width = `${(100/total_cols)}%`;
@@ -117,12 +171,12 @@ const Staff = (props: StaffProps) => {
       let update = {...prev};
       const current = prev.next;
       
-      playColumn(staff[current].map(e => e.note));
+      playColumn(staff_ref.current[current].map(e => e.note));
       clearTimeout(timeout);
       timeout = setTimeout(advancePlaying, period);
 
       update.next = prev.next + 1;
-      if(update.next >= staff.length){
+      if(update.next >= staff_ref.current.length){
         update.next = 0;
       }
       return update;
@@ -157,6 +211,40 @@ const Staff = (props: StaffProps) => {
       advancePlaying();
       timeout = setTimeout(advancePlaying, period);
     }
+  }
+
+  const setStaffColors = (colors: string[][]) => {
+    if(colors.length !== staff.length){ return; }
+    colors.forEach((e, idx) => {
+      if(colors[idx].length !== staff[idx].length){ return; }
+    });
+
+    setStaff((prev) => {
+      let current = [...prev];
+
+      colors.forEach((c, idc) => {
+        c.forEach((color, idr) => {
+          current[idc][idr].color = color;
+        });
+      });
+
+      if(authorized){
+        // send updated colors to sensor columns
+        let msg: Message = {
+          timestamp: 'todo: timestamp',
+          auth_key: truth,
+          id: {
+            name: 'client'
+          },
+          update: {
+            columns: current.map((col, x) => ({column: x, entries: col})),
+          }
+        }
+        socket.send(messageToString(msg));
+      }
+
+      return current;
+    });
   }
   
   return <>
@@ -239,10 +327,18 @@ const Staff = (props: StaffProps) => {
         <Speed />
         
       </Box>
+    </>}
+
+      {/* gradient editor */}
+    {(display === 'colors') && <>
+      <Box display='flex' flexDirection='column' justifyContent='space-around' flexGrow={1}>
+        <GradientEditor/>
+      </Box>
+    </>}
 
       
       {/* display toggle */}
-      <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+      <Box display='flex' flexDirection='row' justifyContent='flex-end' marginLeft={2}>
         <Box display='flex' flexDirection='column' justifyContent='space-around'>
           <Box>
             <ToggleButtonGroup
@@ -250,7 +346,9 @@ const Staff = (props: StaffProps) => {
               size='small'
               exclusive
               onChange={(e, update: DisplayTypes) => {
-                setDisplay(update);
+                if (update !== null) {
+                  setDisplay(update);
+                }
               }}
             >
               <ToggleButton value='notes' aria-label='show-notes'>
@@ -269,6 +367,42 @@ const Staff = (props: StaffProps) => {
         </Box>
       </Box>
     </Box>
+
+
+  {(display === 'colors') && <>
+    <Picker />
+
+
+
+    <FormControl component='fieldset'>
+      <FormLabel component='legend'>pattern</FormLabel>
+      <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handlePatternChange}>
+    {animations.map((a, idx) => {
+
+      const handleSelect = () => {
+        const animation = a.ani;
+        if(animation){
+          setAnimation((ts) => {
+            setStaffColors(animation(ts, {width: staff.length, height: staff[0].length}));
+          })
+        }else{
+          setAnimation(undefined);
+        }
+      }
+
+      return <>
+        <FormControlLabel value={a.name} control={<Radio onClick={handleSelect}/>} label={a.name} />
+      </>
+    })}
+      </RadioGroup>
+    </FormControl>
+
+    <Box display='flex' flexWrap='wrap'>
+
+    </Box>
+
+  </>}
+
   </>
 }
 

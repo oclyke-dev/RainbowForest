@@ -3,6 +3,40 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+#include "Arduino.h"
+
+uint8_t hexCharToNumber (char c) {
+  if(c >= '0' && c <= '9'){
+    return (c - '0') + 0;
+  }
+
+  if(c >= 'a' && c <= 'f'){
+    return (c - 'a') + 10;
+  }
+
+  if(c >= 'A' && c <= 'F'){
+    return (c - 'A') + 10;
+  }
+
+  return 0;
+}
+
+uint8_t str2u8(const char* str){
+  if(!str){ return 0; }
+  return (16 * hexCharToNumber(*(str + 0)) + (1 * hexCharToNumber(*(str + 1))));
+}
+
+CRGB hexToCRGB(const char* hex){
+  if(!hex){ return CRGB(0,0,0); }
+  
+  // expects format '#xxxxxx'
+  uint8_t r = str2u8(hex + 1);
+  uint8_t g = str2u8(hex + 3);
+  uint8_t b = str2u8(hex + 5);
+
+  return CRGB(r,g,b);
+}
+
 void printHex4(Stream* stream, uint32_t val){
   if(val < 0x1000){ stream->print(0); }
   if(val < 0x100){ stream->print(0); }

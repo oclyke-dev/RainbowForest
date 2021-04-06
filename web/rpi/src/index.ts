@@ -11,6 +11,7 @@ import staff from '../../common/staff';
 import { debug } from '../../common/utility';
 import { truth, api_headers } from '../../common/secrets';
 import Message, {
+  messageToString,
   strAsMessage
 } from '../../common/message';
 
@@ -25,6 +26,12 @@ const server = http.createServer(app);
 const API_PROTOCOL = 'wss';
 const API_SERVER = 'oclyke.dev';
 const API_PORT = 443;
+
+// // you can swap these in as dev values
+// const API_PROTOCOL = 'ws';
+// const API_SERVER = '10.0.0.29';
+// const API_PORT = 81;
+
 const API_ENDPOINT = '/rainbow-forest/api/v1/private';
 const OUTGOING_WS_URL = `${API_PROTOCOL}://${API_SERVER}:${API_PORT}${API_ENDPOINT}`
 const outgoing_wss = new WebSocket(OUTGOING_WS_URL, {headers: {...api_headers}});
@@ -73,7 +80,21 @@ outgoing_wss.on('message', (data) => {
         if(client){
           if(client.ws){
             debug.verbose('sending update to column: ', c.column);
-            client.ws.send(data);
+
+            // reduce the message size going to each sensor (only include the relevant column)
+            let fwd: Message = {
+              id: {
+                name: 'rpi', // impersonating the server -- maybe should
+              },
+              timestamp: 'todo: timestamp',
+              update: {
+                columns: [
+                  {column: c.column, entries: c.entries}
+                ]
+              }
+            }
+
+            client.ws.send(messageToString(fwd));
           }
         }
       })

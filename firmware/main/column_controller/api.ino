@@ -5,6 +5,48 @@
 
 #include "Arduino.h"
 
+StaticJsonDocument<4096> doc;
+
+
+
+void parseUpdate (const char* msg) {
+  // DEBUG_PRINTF(("parsing update: %s\n", msg));
+
+  DeserializationError error = deserializeJson(doc, msg);
+  if (error) {
+    DEBUG_PRINTF(("deserializeJson() failed: "));
+    Serial.println(error.f_str());
+    DEBUG_PRINTF(("\n"));
+    return;
+  }
+
+  // const char* from = doc["id"]["name"];
+
+  if(doc["update"]["columns"][0]){
+    size_t updated_col = doc["update"]["columns"][0]["column"];
+    if(updated_col == column_number){
+      DEBUG_PRINTF(("update colors: {"));
+
+      // read colors from this column
+      for(size_t idx = 0; idx < STAFF_ROWS; idx++){
+        const char* color = doc["update"]["columns"][0]["entries"][idx]["color"];
+
+        if(color){
+          // DEBUG_PRINTF(("'%s', ", color));
+          CRGB c = hexToCRGB(color);
+          if(sensors[idx]){
+            *sensors[idx] = c;
+          }
+          DEBUG_PRINTF(("%d, %d, %d, ", c.r, c.g, c.b));
+        }else{
+          DEBUG_PRINTF(("'FAIL', "));
+        }
+      }
+
+      DEBUG_PRINTF(("}\n"));
+    }
+  }
+}
 
 void requestColumn (void) {
   uint32_t now = millis();

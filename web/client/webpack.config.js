@@ -20,6 +20,11 @@ module.exports = {
         include: path.resolve(__dirname, 'src'),
       },
       {
+        test: /\.(ts|tsx)$/,
+        loader: 'ts-loader',
+        include: path.resolve(__dirname, './../common'),
+      },
+      {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         include: path.resolve(__dirname, 'src'),

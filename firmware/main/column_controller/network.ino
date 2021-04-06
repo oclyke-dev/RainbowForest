@@ -93,7 +93,7 @@ void private_ws_event_handler(WStype_t type, uint8_t * payload, size_t length) {
       break;
       
     case WStype_TEXT:
-      DEBUG_PRINTF(("[WSc] get text: %s\n", payload));
+      parseUpdate((const char*)payload);
       // send message to server
       // webSocket.sendTXT("message here");
       break;

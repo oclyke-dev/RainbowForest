@@ -10,7 +10,7 @@ import {
 
 import {
   truth
-} from './../secrets';
+} from './../../../common/secrets';
 
 export const useAuth = (): [boolean, ((key: string) => void)] => {
   const [authenticated, setAuthenticated] = useState<boolean>(false);

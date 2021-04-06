@@ -10,6 +10,7 @@
 #include <WiFi.h>
 #include <WebSocketsClient.h>   // WebSockets by Markus Sattler (2.x.x for ESP)
 #include <ESPmDNS.h>
+#include <ArduinoJson.h>
 
 #include "src/components/cmt/cmt.h"
 #include "src/components/staff/staff.h"
@@ -18,13 +19,13 @@
 
 #include "src/components/configuration/network_config.h" // NETWORK_SSID, NETWORK_PASSWORD, PRIVATE_AUTH_HEADER
 
-#define PRODUCTION // comment out to use development settings
+// #define PRODUCTION // comment out to use development settings
 
 #define CONTROLLER_COLUMN (12)   // indicates which column this controller reads (default if preferences unused)
 
-// #define DEV_HOST "10.9.13.44"   // <-- for development set this to the ip address of the machine running the api server
-#define DEV_HOST "10.9.12.89"
-#define DEV_PORT 81
+// #define DEV_HOST "10.9.13.44"   // <-- for development set this to the ip address of the machine running the translation server (this would be the raspberry pi in real life)
+#define DEV_HOST "10.0.0.29"
+#define DEV_PORT 82
 #define DEV_MDNS_HOSTNAME "rainbow-forest-pi" // '.local' get appended automatically by ESPmDNS library 
 
 #define DEBUG_OUTPUT // uncomment to enable debug output

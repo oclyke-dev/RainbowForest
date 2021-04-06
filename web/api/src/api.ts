@@ -12,14 +12,19 @@ import staff, { Staff } from '../../common/staff';
 import Message, {
   messageToString,
   strAsMessage,
+  EntryData,
 } from '../../common/message';
 
 const private_wss = new WebSocket.Server({ noServer: true });
 const public_wss = new WebSocket.Server({ noServer: true });
 
 let column_clients: (null | {alive: boolean, ws: WebSocket})[] = [...new Array(staff.width).map(e => null)];
+let rpi_client: (null | {alive: boolean, ws: WebSocket}) = null;
 
 private_wss.on('connection', (ws) => {
+  // cache the rpi client (assume any connection on private endpoint is the rpi)
+  rpi_client = {alive: true, ws};
+
   ws.on('message', (str: string) => {
     const msg = strAsMessage(str);
 
@@ -36,6 +41,7 @@ private_wss.on('connection', (ws) => {
 
     // cache the websocket for the given column
     column_clients[col] = {alive: true, ws};
+    rpi_client = {alive: true, ws};
 
     let response: Message = {
       id: {
@@ -144,6 +150,55 @@ public_wss.on('connection', (ws) => {
         });
       }
       ws.send(messageToString(response));
+    }
+
+    // handle updates (authorized clients can change the colors on the display)
+    if(msg.update){
+      if(msg.auth_key){
+        if(msg.auth_key === truth){
+
+          // handle full staff updates
+          if(msg.update.staff){
+            debug.error('full staff updates are not handled for client --> sensor', new Date().toString())
+          }
+
+          // handle column updates
+          if(msg.update.columns){
+
+            // copy the color data into the model
+            msg.update.columns.forEach((col, x) => {
+              col.entries.forEach((row, y) => {
+                staff.setEntry({row: y, column: x, entry: {color: row.color, note: undefined}});
+              });
+            });
+
+            // change id of message
+            let fwd: Message = {
+              ...msg,
+              id: {
+                name: 'server'
+              }
+            }
+
+            // fwd to the rpi (who will then fwd to the sensors)
+            if(rpi_client){
+              if(rpi_client.ws){
+                rpi_client.ws.send(messageToString(fwd))
+              }
+            }
+          }
+
+          // handle entry updates
+          if(msg.update.entries){
+            debug.error('entry updates are not handled for client --> sensor', new Date().toString())
+          }
+
+        }else{
+          debug.error('unauthorized - incorrect auth key');
+        }
+      }else{
+        debug.error('unauthorized - no auth_key field');
+      }
     }
 
   });

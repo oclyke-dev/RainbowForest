@@ -4,8 +4,8 @@
 */
 
 export type EntryData = {
-  color: string,
-  note: number,
+  color?: string,
+  note?: number,
 };
 export type ColumnData = EntryData[];
 export type StaffData = ColumnData[];
@@ -28,13 +28,14 @@ export type Domain = {
 }
 
 export type ID = {
-  name: 'column' | 'server' | 'client',   // indicates who sent the message
+  name: 'column' | 'rpi' | 'server' | 'client',   // indicates who sent the message
   extra?: string,                         // a field to allow additional information (columns will provide their index)
 }
 
-type Message = {
+export type Message = {
   timestamp: string,
   id: ID,
+  auth_key?: string,
   update?: Domain,  // an updated state is being broadcast
   request?: Domain, // a device is requesting an update regarding a particular domain
 }
