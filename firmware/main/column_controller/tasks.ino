@@ -5,6 +5,9 @@
 
 #include "Arduino.h"
 
+#define I2C_SDA (23)
+#define I2C_SCL (22)
+
 void handleUserInput( void * arg ) {
 
   while(1){
@@ -38,7 +41,7 @@ void detectAndSend(SensorNode* node, size_t idx, void* args){
 void updateSensors( void* arg ){
 
   // initialize column i2c
-  COLUMN_WIRE_PORT.begin();
+  COLUMN_WIRE_PORT.begin(I2C_SDA, I2C_SCL);
 
   // initialize sensor string
   FastLED.addLeds<WS2811, DATA_PIN, RGB>(sensors.getControl(), sensors.getNumControlElements()); // have to add leds in main sketch before sensors.begin()
