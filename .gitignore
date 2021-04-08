@@ -2,7 +2,21 @@
 .DS_Store
 
 # network config (secrets)
+# node modules
+web/api/node_modules
+web/client/node_modules
+web/rpi/node_modules
+
+# build dirs
+web/api/dist
+web/client/dist
+web/rpi/dist
+
+# secrets
 firmware/components/configuration/network_config.h
+web/api/src/secrets.ts
+web/rpi/src/secrets.ts
+web/client/src/secrets.ts
 
 # components within main programs
 firmware/main/*/src/components/*

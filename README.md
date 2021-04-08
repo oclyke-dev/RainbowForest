@@ -28,6 +28,26 @@ Partial / experimental programs may be contained in ```firmware/prototyping``` f
 
 The hardware directory contains the Eagle design files and Gerber manufacturing files for the original Rainbow Forest installation.
 
+## Web
+
+The Rainbow Forest installation connects to the world wide web, allowing users to check in on its status from anywhere.
+
+In the museum a single-board computer running Chromium is used as a dedicated user interface.
+
+```
+./Chromium.app/Contents/MacOS/Chromium --app=https://oclyke.dev/rainbow-forest
+```
+
+## raspberry pi
+the rainbow forest uses a local raspberry pi microcomputer to provide a user interface for museum visitors. this is acheived by using Chromium in kiosk mode. the raspberry pi also translates ```ws://``` messages into ```wss://``` messages for transfer to the main server (since the esp32s were unhappy running ```wss://```) 
+
+[headless raspberry pi configuration](https://desertbot.io/blog/headless-raspberry-pi-3-bplus-ssh-wifi-setup)
+[configuring rapberry pi for kiosk mode](https://die-antwort.eu/techblog/2017-12-setup-raspberry-pi-for-kiosk-mode/)
+[using systemd on the pi](https://www.raspberrypi.org/documentation/linux/usage/systemd.md)
+[using node and pm2 to daemonize applications](https://dev.to/bogdaaamn/run-your-nodejs-application-on-a-headless-raspberry-pi-4jnn)
+[distributions of node for raspberry pi](https://github.com/nodesource/distributions)
+
+
 ## License
 
 This project is subject to the license listed in file ```LICENSE.md```

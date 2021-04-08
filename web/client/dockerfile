@@ -1,0 +1,13 @@
+FROM nginx:mainline-alpine
+
+# define arguments for the build
+ARG server_root=/usr/share/nginx/html/rainbow-forest
+
+RUN rm /etc/nginx/conf.d/*
+ADD root.conf /etc/nginx/conf.d/
+
+# make the directory from which to serve
+RUN mkdir -p ${server_root}
+
+# copy built files (you must build on your own machine, sorry [use ```yarn build```])
+COPY  ./dist/. ${server_root}/
