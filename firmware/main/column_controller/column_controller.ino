@@ -19,17 +19,17 @@
 
 #include "src/components/configuration/network_config.h" // NETWORK_SSID, NETWORK_PASSWORD, PRIVATE_AUTH_HEADER
 
-// #define PRODUCTION // comment out to use development settings
+#define PRODUCTION // comment out to use development settings
 
-#define CONTROLLER_COLUMN (12)   // indicates which column this controller reads (default if preferences unused)
+#define CONTROLLER_COLUMN (0)   // indicates which column this controller reads (default if preferences unused)
 
 // #define DEV_HOST "10.9.13.44"   // <-- for development set this to the ip address of the machine running the translation server (this would be the raspberry pi in real life)
 #define DEV_HOST "10.0.0.29"
 #define DEV_PORT 82
 #define DEV_MDNS_HOSTNAME "rainbow-forest-pi" // '.local' get appended automatically by ESPmDNS library 
 
-#define DEBUG_OUTPUT // uncomment to enable debug output
-#define DEBUG_GEN_FAKE_DATA // uncomment to generate fake column data
+// #define DEBUG_OUTPUT // uncomment to enable debug output
+// #define DEBUG_GEN_FAKE_DATA // uncomment to generate fake column data
 
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD (115200)
