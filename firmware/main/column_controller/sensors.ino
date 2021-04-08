@@ -32,7 +32,11 @@ void detect_fake(SensorNode* node, size_t idx, void* args){
   staff[0][idx] = random(0, STAFF_VALS + 1);
   detection_ok_staff[0][idx] = true;
 
-  delay(500);
+  uint32_t now = millis();
+  while((millis() - now) < 500){
+    read_idler();
+  }
+  
   delay(random(64));
 }
 
