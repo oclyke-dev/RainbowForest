@@ -30,8 +30,8 @@ CRGB hexToCRGB(const char* hex){
   if(!hex){ return CRGB(0,0,0); }
   
   // expects format '#xxxxxx'
-  uint8_t r = str2u8(hex + 1);
-  uint8_t g = str2u8(hex + 3);
+  uint8_t g = str2u8(hex + 1);
+  uint8_t r = str2u8(hex + 3);
   uint8_t b = str2u8(hex + 5);
 
   return CRGB(r,g,b);
