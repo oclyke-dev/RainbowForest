@@ -25,7 +25,6 @@ void parseUpdate (const char* msg) {
   if(doc["update"]["columns"][0]){
     size_t updated_col = doc["update"]["columns"][0]["column"];
     if(updated_col == column_number){
-      DEBUG_PRINTF(("update colors: {"));
 
       // read colors from this column
       for(size_t idx = 0; idx < STAFF_ROWS; idx++){
@@ -37,16 +36,11 @@ void parseUpdate (const char* msg) {
           if(sensors[idx]){
             *sensors[idx] = c;
           }
-          if(idx == 0){
-            DEBUG_PRINTF(("%d, %d, %d ", c.r, c.g, c.b));
-          }
           
         }else{
           DEBUG_PRINTF(("'FAIL', "));
         }
       }
-
-      DEBUG_PRINTF(("}\n"));
     }
   }
 }
