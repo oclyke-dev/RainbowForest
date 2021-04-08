@@ -77,8 +77,8 @@ void setup() {
 
   button0_flag = false; // don't allow button presses until setup has completed
 
-  // // begin tasks
-  // xTaskCreate(handleUserInput, "handleUserInput", 10000, NULL, 1, NULL);  // handle ISRs
+  // begin tasks
+  xTaskCreate(handleUserInput, "handleUserInput", 10000, NULL, 1, NULL);  // handle ISRs
   xTaskCreate(updateSensors, "updateSensors", 10000, NULL, 1, NULL);      // update sensors
 }
 
