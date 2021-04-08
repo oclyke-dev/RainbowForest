@@ -37,7 +37,10 @@ void parseUpdate (const char* msg) {
           if(sensors[idx]){
             *sensors[idx] = c;
           }
-          DEBUG_PRINTF(("%d, %d, %d, ", c.r, c.g, c.b));
+          if(idx == 0){
+            DEBUG_PRINTF(("%d, %d, %d ", c.r, c.g, c.b));
+          }
+          
         }else{
           DEBUG_PRINTF(("'FAIL', "));
         }
