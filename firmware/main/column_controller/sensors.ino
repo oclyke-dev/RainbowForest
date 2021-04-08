@@ -34,14 +34,14 @@ void detect_fake(SensorNode* node, size_t idx, void* args){
 
 void printInfo(SensorNode* node, size_t idx, void* args){
   
-  DEBUG_PRINTF(("%d: ", idx));
+  DEBUG_PORT.printf("%d: ", idx);
 
   staff_data_t current = staff[0][idx];
   if(detection_ok_staff[0][idx]){
-    DEBUG_PRINTF(("%s", getColorNameByStaffValue(current)));
+    DEBUG_PORT.printf("%s", getColorNameByStaffValue(current));
   }else{
-    DEBUG_PRINTF(("unknown"));
+    DEBUG_PORT.printf("unknown");
   }
 
-  DEBUG_PRINTF((", "));
+  DEBUG_PORT.printf(", ");
 }

@@ -84,11 +84,11 @@ void wifi_event_handler(WiFiEvent_t event){
 void private_ws_event_handler(WStype_t type, uint8_t * payload, size_t length) {
   switch(type) {
     case WStype_DISCONNECTED:
-      DEBUG_PRINTF(("[WSc] Disconnected!\n"));
+      DEBUG_PORT.printf("[WSc] Disconnected!\n");
       break;
       
     case WStype_CONNECTED:
-      DEBUG_PRINTF(("[WSc] Connected to url: %s\n",  payload));
+      DEBUG_PORT.printf("[WSc] Connected to url: %s\n",  payload);
       requestColumn();
       break;
       

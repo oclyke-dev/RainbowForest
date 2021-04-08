@@ -46,7 +46,7 @@ void updateSensors( void* arg ){
   // initialize sensor string
   FastLED.addLeds<WS2811, DATA_PIN, RGB>(sensors.getControl(), sensors.getNumControlElements()); // have to add leds in main sketch before sensors.begin()
   SensorStatus_e retval = sensors.begin();
-  DEBUG_PORT.print("sensors.begin() returned: "); DEBUG_PORT.println(retval);
+  DEBUG_PORT.printf("sensors.begin() returned: %d \n", retval);
 
   while(1){
 
@@ -54,8 +54,8 @@ void updateSensors( void* arg ){
     sensors.forEachRandOrder(detectAndSend, NULL);
 
     // print debug info
-    DEBUG_PRINTF(("Column: [ "));
+    DEBUG_PORT.printf("Column: [ ");
     sensors.forEach(printInfo, NULL);
-    DEBUG_PRINTF(("]\n"));
+    DEBUG_PORT.printf("]\n");
   }
 }
