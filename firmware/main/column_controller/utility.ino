@@ -29,12 +29,13 @@ uint8_t str2u8(const char* str){
 CRGB hexToCRGB(const char* hex){
   if(!hex){ return CRGB(0,0,0); }
   
-  // expects format '#xxxxxx'
-  uint8_t g = str2u8(hex + 1);
-  uint8_t r = str2u8(hex + 3);
-  uint8_t b = str2u8(hex + 5);
+  // expects format 'xxxxxx'
+  uint8_t r = str2u8(hex + 0);
+  uint8_t g = str2u8(hex + 2);
+  uint8_t b = str2u8(hex + 4);
 
-  return CRGB(r,g,b);
+  //          G  R  B (b/c that's how the leds we are using interpret the signals)
+  return CRGB(g,r,b);
 }
 
 void printHex4(Stream* stream, uint32_t val){
