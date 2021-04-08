@@ -63,10 +63,12 @@ private:
 
   isl_readint_t _reading;
   CRGB _led = CRGB(0, 0, 0);
+  bool _locked = false;
 
   SensorStatus_e _setIllumination(const CRGB& c);   // led changes immediately (FastLED.show() is called)
   SensorStatus_e _setLed(const CRGB& c);            // stores color as desired and puts the color in the control line but FastLED.show() is not called
-  
+  SensorStatus_e _lockLed(bool lock);               // when locked the desired led color does not get pushed into the control queue
+
 protected:
 public:
   SensorNode( size_t index, CRGB* control, SFE_ISL29125* sensor );

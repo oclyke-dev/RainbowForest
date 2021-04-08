@@ -44,6 +44,7 @@ isl_readint_t SensorNode::read(void (*idle_fn)(void)){
         _report(SENSOR_ERR_CONFIG);
         return _reading;
     }
+    _lockLed(true);                             // lock led to prevent interruption of the illumination color
     //                      G  R  B
     _setIllumination(CRGB(255, 255, 255));      // illuminate the target (adjust white balance)
     power(true);                                // turn on sensor power
@@ -68,6 +69,7 @@ isl_readint_t SensorNode::read(void (*idle_fn)(void)){
     _reading.b = _sensor->readBlue();
 
     power(false);           // turn off sensor power
+    _lockLed(false);        // unlock the led
     _setLed(_led);          // return led to desired color
 
     _report(SENSOR_OK);
@@ -84,6 +86,13 @@ SensorStatus_e SensorNode::_setIllumination(const CRGB& c){
 SensorStatus_e SensorNode::_setLed(const CRGB& c){
     if(!_control){ return _report(SENSOR_ERR_CONFIG); }
     _led = c;
-    _control[(2*_index) + 1] = c;
+    if(!_locked){
+        _control[(2*_index) + 1] = c;
+    }
+    return _report(SENSOR_OK);
+}
+
+SensorStatus_e SensorNode::_lockLed(bool lock){
+    _locked = lock;
     return _report(SENSOR_OK);
 }
