@@ -73,7 +73,7 @@ public:
 
   SensorStatus_e status = SENSOR_OK;
 
-  isl_readint_t read( void );
+  isl_readint_t read(void (*idle_fn)(void) = NULL);
   SensorStatus_e power(bool on);
 
   unsigned int getRed( void ){ return _reading.r; }

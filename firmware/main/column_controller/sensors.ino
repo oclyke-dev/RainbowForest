@@ -3,8 +3,12 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+void read_idler( void ){
+  FastLED.show(); // allow led updates while reading
+}
+
 void detect(SensorNode* node, size_t idx, void* args){
-  node->read();
+  node->read(read_idler);
   
   rgb_f_t rgb;
   rgb.r = rgbElemByUI16(node->getRed());

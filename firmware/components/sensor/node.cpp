@@ -30,7 +30,16 @@ SensorStatus_e SensorNode::power(bool on){
     return _report(SENSOR_OK);
 }
 
-isl_readint_t SensorNode::read( void ){
+void idle_for(uint32_t ms, void (*idle_fn)(void)){
+    uint32_t now = millis();
+    while((millis() - now) < ms){
+        if(idle_fn){
+            (*idle_fn)();
+        }
+    }
+}
+
+isl_readint_t SensorNode::read(void (*idle_fn)(void)){
     if((!_control) || (!_sensor)){
         _report(SENSOR_ERR_CONFIG);
         return _reading;
@@ -42,16 +51,16 @@ isl_readint_t SensorNode::read( void ){
     _sensor->init();
 
     // sensor continuously runs ADC at ~ 10 hz so to be sure wait 0.2 seconds before reading
-    delay(200);
+    idle_for(200, idle_fn);
     
-    delay(300); // delay to combat voltage sag from turning on all the leds...
-                // i've experimentally determined that while there is no LED brightness that completely 
-                // eliminates noise in detected color there is a minimum total delay between turning on
-                // the leds and taking a sample that gets darn close. Its approx 500 ms total (including
-                // time dedicated to letting the sensor read)
+    idle_for(300, idle_fn); // delay to combat voltage sag from turning on all the leds...
+                            // i've experimentally determined that while there is no LED brightness that completely 
+                            // eliminates noise in detected color there is a minimum total delay between turning on
+                            // the leds and taking a sample that gets darn close. Its approx 500 ms total (including
+                            // time dedicated to letting the sensor read)
 
-                // the final product may as well turn on all the leds, wait half a second, and then sample
-                // all of the color sensors rapidly. 
+                            // the final product may as well turn on all the leds, wait half a second, and then sample
+                            // all of the color sensors rapidly. 
 
     // read the sensor
     _reading.r = _sensor->readRed();
