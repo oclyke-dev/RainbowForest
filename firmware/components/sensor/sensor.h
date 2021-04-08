@@ -64,7 +64,8 @@ private:
   isl_readint_t _reading;
   CRGB _led = CRGB(0, 0, 0);
 
-  SensorStatus_e _setLed(const CRGB& c);
+  SensorStatus_e _setIllumination(const CRGB& c);   // led changes immediately (FastLED.show() is called)
+  SensorStatus_e _setLed(const CRGB& c);            // stores color as desired and puts the color in the control line but FastLED.show() is not called
   
 protected:
 public:

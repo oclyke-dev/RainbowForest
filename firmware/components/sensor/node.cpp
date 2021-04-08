@@ -35,9 +35,9 @@ isl_readint_t SensorNode::read( void ){
         _report(SENSOR_ERR_CONFIG);
         return _reading;
     }
-    //             G  R  B
-    _setLed(CRGB(255, 255, 255));   // illuminate the target (adjust white balance)
-    power(true);                    // turn on sensor power
+    //                      G  R  B
+    _setIllumination(CRGB(255, 255, 255));      // illuminate the target (adjust white balance)
+    power(true);                                // turn on sensor power
     
     _sensor->init();
 
@@ -65,9 +65,16 @@ isl_readint_t SensorNode::read( void ){
     return _reading;
 }
 
-SensorStatus_e SensorNode::_setLed(const CRGB& c){
+SensorStatus_e SensorNode::_setIllumination(const CRGB& c){
     if(!_control){ return _report(SENSOR_ERR_CONFIG); }
     _control[(2*_index) + 1] = c;
     FastLED.show();
+    return _report(SENSOR_OK);
+}
+
+SensorStatus_e SensorNode::_setLed(const CRGB& c){
+    if(!_control){ return _report(SENSOR_ERR_CONFIG); }
+    _led = c;
+    _control[(2*_index) + 1] = c;
     return _report(SENSOR_OK);
 }
