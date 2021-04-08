@@ -68,9 +68,7 @@ volatile bool button0_flag = false;
 #endif // DEBUG_OUTPUT
 
 void setup() {
-#ifdef DEBUG_OUTPUT
   DEBUG_PORT.begin(DEBUG_BAUD);
-#endif // DEBUG_OUTPUT
 
   init_network();
   init_gpio();
