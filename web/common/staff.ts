@@ -76,7 +76,7 @@ export class Staff {
     if(entry.color){
       updated.color = entry.color;
     }
-    if(entry.note){
+    if(typeof(entry.note) !== 'undefined'){
       updated.note = entry.note;
     }
 
