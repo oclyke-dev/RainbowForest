@@ -4,6 +4,7 @@ import * as cello from './assets/audio/cello/cello';
 import * as guitar from './assets/audio/guitar/guitar';
 import * as trombone from './assets/audio/trombone/trombone';
 import * as violin from './assets/audio/violin/violin';
+import * as percussion from './assets/audio/percussion/percussion';
 
 // types
 export type Instrument = {
@@ -33,13 +34,13 @@ const loadInstrument = async (urls: string[]) => {
 }
 
 let instruments = [
-  undefined,                      // 0
-  loadInstrument(banjo.notes),    // 1
-  loadInstrument(flute.notes),    // 2
-  loadInstrument(cello.notes),    // 3
-  loadInstrument(guitar.notes),   // 4
-  loadInstrument(trombone.notes), // 5
-  loadInstrument(violin.notes),   // 6
+  undefined,                        // 0
+  loadInstrument(banjo.notes),      // 1 (red)
+  loadInstrument(trombone.notes),   // 2 (yellow)
+  loadInstrument(percussion.notes),      // 3 (green)
+  loadInstrument(percussion.notes), // 4 (cyan)
+  loadInstrument(violin.notes),     // 5 (blue)
+  loadInstrument(cello.notes),      // 6 -- UNUSED --
 ]
 
 

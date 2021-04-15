@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type DisplayTypes = 'colors' | 'notes';
-const note_color_map = ['white', 'red', 'green', 'blue', 'cyan', 'magenta'];
+const note_color_map = ['white', 'red', 'yellow', 'green', 'cyan', 'blue'];
 
 let timeout: NodeJS.Timeout;
 
@@ -269,7 +269,7 @@ const Staff = (props: StaffProps) => {
         const color = (display === 'colors') ? entry.color : note_color_map[entry.note]
 
         return <Box key={`staff.column.${idc}.row.${idr}`} className={classes.note} style={{backgroundColor: color}}>
-        </Box> })}
+        </Box> }).reverse()}
       </Box> })}
     </Box>
 
