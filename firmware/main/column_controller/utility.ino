@@ -58,7 +58,7 @@ void setColumnNumber( uint8_t c ){
   preferences.putUChar(PREFS_KEY_COL_NUM, column_number);
   showColumnNumber(column_number);
 
-  DEBUG_PRINTF(("Set column to %d\n", column_number));
+  Serial.printf("Set column to %d\n", column_number);
 }
 
 void button0ISR() {
