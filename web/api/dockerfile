@@ -1,11 +1,9 @@
 FROM node:14
 
 WORKDIR /usr/src/app
-
-COPY package*.json ./
-COPY yarn.lock ./
-RUN yarn install --production
 COPY . .
 
+# you must build on your own machine, sorry [use ```yarn build```]
+
 EXPOSE 81
-CMD [ "yarn", "start" ]
+CMD [ "node", "dist/api/src/index.js" ]
