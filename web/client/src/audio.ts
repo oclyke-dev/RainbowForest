@@ -37,7 +37,7 @@ let instruments = [
   undefined,                        // 0
   loadInstrument(banjo.notes),      // 1 (red)
   loadInstrument(trombone.notes),   // 2 (yellow)
-  loadInstrument(percussion.notes),      // 3 (green)
+  loadInstrument(flute.notes),      // 3 (green)
   loadInstrument(percussion.notes), // 4 (cyan)
   loadInstrument(violin.notes),     // 5 (blue)
   loadInstrument(cello.notes),      // 6 -- UNUSED --
