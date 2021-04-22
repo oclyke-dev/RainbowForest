@@ -3,6 +3,9 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+#define BASE_DEBOUNCE_MS (250)
+#define DEBOUNCE(x) (BASE_DEBOUNCE_MS + x)
+
 #define BUTTON1_PIN (EXAMPLE1_PIN) // Example 1
 #define BUTTON2_PIN (EXAMPLE2_PIN) // Example 2
 #define BUTTON3_PIN (EXAMPLE3_PIN) // Example 3
@@ -30,9 +33,9 @@ void isrButton1( void ){
   static uint32_t debounce = 0;
   uint32_t now = millis();
   if(now >= debounce){
-    debounce += 250;
-    DEBUG_PORT.println("button1 (example song 1)");
-    show_song(jurassicPark);
+    debounce += DEBOUNCE(0);
+    DEBUG_PORT.println("example song 1");
+    kbSendNumeral(1);
   }
 }
 
@@ -40,9 +43,9 @@ void isrButton2( void ){
   static uint32_t debounce = 0;
   uint32_t now = millis();
   if(now >= debounce){
-    debounce += 250;
-    DEBUG_PORT.println("button1 (jurassic park)");
-    show_song(jurassicPark);
+    debounce += DEBOUNCE(0);
+    DEBUG_PORT.println("example song 2");
+    kbSendNumeral(2);
   }
 }
 
@@ -50,9 +53,9 @@ void isrButton3( void ){
   static uint32_t debounce = 0;
   uint32_t now = millis();
   if(now >= debounce){
-    debounce += 250;
-    DEBUG_PORT.println("button1 (pokemonLevelUp)");
-    show_song(pokemonLevelUp);
+    debounce += DEBOUNCE(0);
+    DEBUG_PORT.println("example song 3");
+    kbSendNumeral(4);
   }
 }
 
@@ -60,9 +63,9 @@ void isrButton4( void ){
   static uint32_t debounce = 0;
   uint32_t now = millis();
   if(now >= debounce){
-    debounce += 250;
-    DEBUG_PORT.println("button1 (funkytown)");
-    show_song(funkytown);
+    debounce += DEBOUNCE(0);
+    DEBUG_PORT.println("example song 4");
+    kbSendNumeral(4);
   } 
 }
 
@@ -70,9 +73,9 @@ void isrButton5( void ){
   static uint32_t debounce = 0;
   uint32_t now = millis();
   if(now >= debounce){
-    debounce += 250;
-    DEBUG_PORT.println("button1 (miiShopChannel)");
-    show_song(miiShopChannel);
+    debounce += DEBOUNCE(0);
+    DEBUG_PORT.println("example song 5");
+    kbSendNumeral(5);
   }
 }
 
@@ -80,16 +83,12 @@ void isrButton6( void ){  // play / pause
   static uint32_t debounce = 0;
   uint32_t now = millis();
   if(now >= debounce){
-    debounce += 250;
+    debounce += DEBOUNCE(0);
     DEBUG_PORT.println("button6 (play/pause!)");
-    if(playbackRunning){
-      pause();
-    }else{
-      play();
-    }
+    kbSendTogglePlayback();
   }
 }
 
 void onTempoChange(TempoDial<uint8_t>* dial, void* params){
-  setBPM(dial->getVal()); 
+  DEBUG_PORT.println(dial->getVal()); 
 }
