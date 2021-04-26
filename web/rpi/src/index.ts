@@ -174,14 +174,25 @@ app.get('/*', (req, res) => {
   res.redirect('https://oclyke.dev/rainbow-forest')
 });
 
-// start the server
-server.listen(PORT, () => {
-  const address = server.address();
-  let port = undefined;
-  if(address){
-    if(typeof(address) !== 'string'){
-      port = address.port;
+process.on('SIGTERM', () => {
+  process.exit(2);
+})
+
+// catch any error and make sure to exit with an error code (to trigger system restart)
+try {
+  server.listen(PORT, () => {
+
+    // start the server
+    const address = server.address();
+    let port = undefined;
+    if(address){
+      if(typeof(address) !== 'string'){
+        port = address.port;
+      }
     }
-  }
-  console.log(`listening on *:${port}`);
-});
+    console.log(`listening on *:${port}`);
+  });
+} catch {
+  process.exit(1);
+}
+
