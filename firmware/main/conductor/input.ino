@@ -55,7 +55,7 @@ void isrButton3( void ){
   if(now >= debounce){
     debounce += DEBOUNCE(0);
     DEBUG_PORT.println("example song 3");
-    kbSendNumeral(4);
+    kbSendNumeral(3);
   }
 }
 
