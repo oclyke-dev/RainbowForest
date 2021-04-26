@@ -11,7 +11,7 @@
     "ws": "^7.4.4"
   },
   "scripts": {
-    "start": "tsc && node dist/rpi/src/index.js",
+    "start": "node dist/rpi/src/index.js",
     "build": "tsc"
   }
 }
