@@ -48,7 +48,7 @@ void kbSendTempoDown( void ){
 }
 
 void kbSendTogglePlayback( void ){
-  kbPush(KEY_MEDIA_PLAY_PAUSE);
+  kbPush(KEY_SPACE);
 }
 
 
