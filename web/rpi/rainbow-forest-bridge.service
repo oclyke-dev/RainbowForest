@@ -1,0 +1,12 @@
+[Unit]
+Description=node application to convert column messages from ws: to wss: and fo$
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+WorkingDirectory=/home/pi/RainbowForest/web/rpi/
+ExecStart=yarn start >> /var/log/rainbow-forest/rf.log 2>&1
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
