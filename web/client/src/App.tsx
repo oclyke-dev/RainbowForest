@@ -3,6 +3,7 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+import React from 'react';
 import {
   useState,
   useEffect,
@@ -13,6 +14,7 @@ import Staff, { StaffType } from './components/Staff';
 
 import {
   Box,
+  Button,
   Divider,
   TextField,
   InputAdornment,
@@ -33,6 +35,10 @@ import {
 import {
   useAuth
 } from './hooks/useAuth';
+
+import {
+  examples
+} from './components/Staff';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -152,6 +158,19 @@ function App() {
           <Divider />
           <Box className={classes.section}>
             Show Example Song
+          </Box>
+          <Box className={classes.section}>
+          {examples.map((e, idx) => {
+            return <React.Fragment key={`example_song.${idx}.${e.name}`}>
+              <Button
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('example-request', {detail: (idx + 1).toString()}));
+                }}
+              >
+                {e.name}
+              </Button>
+            </ React.Fragment>
+          })}
           </Box>
         </Sluicebox>
       </Box>

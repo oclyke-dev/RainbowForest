@@ -7,6 +7,7 @@ import React from 'react';
 import {
   useState,
   useRef,
+  useEffect,
 } from 'react';
 
 import {
@@ -59,8 +60,6 @@ import {
 import {
   Message,
   messageToString,
-  ColumnFormat,
-  EntryData,
 } from './../../../common/message';
 
 import {
@@ -78,6 +77,99 @@ export type StaffType = Entry[][];
 
 type StaffProps = {
 }
+
+type ExampleID = '1' | '2' | '3' | '4' | '5';
+type Example = {
+  name: string,
+  colors: (string | null)[],
+};
+
+const N = null;
+const T = 'ffff00';
+const F = '00ff00';
+const P = '0000ff';
+const G = 'ff0000';
+
+export const examples: Example[] = [
+  {
+    name: 'axelf',
+    colors: [
+      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
+      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, T, N, N, N, T, N,
+      /* 5 (A) */  N, N, N, N, N, T, T, N, N, N, N, N, N, N, N, N,
+      /* 4 (G) */  N, N, T, N, N, N, N, N, N, N, N, N, N, N, N, T,
+      /* 3 (F) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 2 (E) */  T, N, N, N, T, N, N, N, T, N, N, N, T, N, N, N,
+      /* 1 (D) */  N, N, N, N, N, N, N, T, N, N, N, N, N, N, N, N,
+      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, T, N, N, 
+      ]
+  },
+  {
+    name: 'pokemon level up',
+    colors: [
+      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
+      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 5 (A) */  N, N, N, N, N, N, N, N, G, G, G, N, N, N, N, N,
+      /* 4 (G) */  G, N, N, N, G, G, G, N, N, N, N, N, N, G, G, G,
+      /* 3 (F) */  N, G, N, G, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 2 (E) */  N, N, G, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
+    ]
+  },
+  {
+    name: 'funkytown',
+    colors: [
+      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
+      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, F, N, N, N, N, N,
+      /* 5 (A) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 4 (G) */  F, F, N, F, N, N, N, N, F, N, N, F, N, N, N, N,
+      /* 3 (F) */  N, N, F, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 1 (D) */  N, N, N, N, N, F, N, F, N, N, N, N, N, N, N, N,
+      /* 0 (C) */  N, N, N, N, N, N, N, N, N, F, N, N, N, N, N, N, 
+    ]
+  },
+  {
+    name: 'mii shop channel',
+    colors: [
+      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
+      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 5 (A) */  N, N, P, N, N, P, N, N, N, N, N, N, N, N, N, N,
+      /* 4 (G) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 3 (F) */  P, N, N, N, N, N, N, P, N, N, N, N, N, N, N, N,
+      /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 1 (D) */  N, N, N, P, N, N, N, N, P, P, P, N, N, N, N, N,
+      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
+    ]
+  },
+  {
+    name: 'somewhere over the rainbow',
+    colors: [
+      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
+      /* 6 (B) */  N, N, N, N, N, N, N, N, F, N, N, N, F, N, N, N,
+      /* 5 (A) */  N, N, N, N, N, N, N, N, N, N, N, F, N, N, N, N,
+      /* 4 (G) */  F, N, N, N, N, N, N, N, N, N, F, N, N, N, N, N,
+      /* 3 (F) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 0 (C) */  N, N, N, N, F, N, N, N, N, N, N, N, N, N, F, N, 
+    ]
+  },
+  {
+    name: 'jurassic park',
+    colors: [
+      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
+      /* 6 (B) */  T, N, T, N, N, N, N, N, T, N, T, N, N, N, N, N,
+      /* 5 (A) */  N, T, N, N, N, N, N, N, N, T, N, N, N, N, N, N,
+      /* 4 (G) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 3 (F) */  N, N, N, N, T, N, N, N, N, N, N, N, T, N, N, N,
+      /* 2 (E) */  N, N, N, N, N, N, T, N, N, N, N, N, N, N, T, N,
+      /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
+      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
+    ]
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   staff: {
@@ -137,6 +229,11 @@ type PlayState = {
 const initial_state: PlayState = {
   playing: false,
   next: 1,
+};
+
+let debounce = {
+  toggle_playing: false,
+  examples: false,
 };
 
 const Staff = (props: StaffProps) => {
@@ -246,6 +343,74 @@ const Staff = (props: StaffProps) => {
       return current;
     });
   }
+
+  const showExampleSong = (id: ExampleID) => {
+    console.log('showing example song: ', id);
+    const example = examples[Number(id) - 1];
+    let converted: (string | null)[][] = [...new Array(16)].map(() => []);
+
+    let column = 0;
+    example.colors.forEach((c) => {
+      converted[column].push(c)
+      column += 1;
+      if(column >= 16){
+        column = 0;
+      }
+    });
+    setStaffColors(converted);
+  }
+
+  useEffect(() => {
+    const handleKeydown = (e: any) => {
+
+      switch(e.key){
+        case ' ':
+          if(!debounce.toggle_playing){
+            debounce.toggle_playing = true;
+            setTimeout(() => {
+              debounce.toggle_playing = false;
+            }, 500);
+            togglePlaying();
+          } else{
+            console.warn('debouncing!');
+          }
+          break;
+        
+        // fall through for example numbers
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+          if(!debounce.examples){
+            debounce.examples = true;
+            setTimeout(() => {
+              debounce.examples = false;              
+            }, 500);
+            showExampleSong(e.key);
+          }
+          break;
+
+        default:
+          console.warn('unrecognized key press');
+          break;
+      }
+    } 
+
+    const handleExampleRequest = (e: any) => {
+      showExampleSong(e.detail);
+    }
+
+    window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('example-request', handleExampleRequest);
+    
+    return () => {
+      // cleanup function
+      window.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('example-request', handleExampleRequest)
+    }
+  
+  }, [])
   
   return <>
 
