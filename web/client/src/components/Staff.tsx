@@ -203,9 +203,7 @@ const Staff = (props: StaffProps) => {
   }
 
   const playColumn = (idx: number) => {
-    if(isColumnHighlighted(idx)){
-      updatePlayhead(idx);
-    }
+    updatePlayhead(idx);
     audioPlayColumn(staff_ref.current[idx].map(e => ((e.note) ? e.note : 0)));
   }
   
