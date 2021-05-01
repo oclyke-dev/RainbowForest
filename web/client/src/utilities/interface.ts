@@ -3,14 +3,14 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
-// // server address
-// const host = 'oclyke.dev';
-// const port = 443;
-// const protocol = 'wss';
+// server address
+const host = 'oclyke.dev';
+const port = 443;
+const protocol = 'wss';
 
-const host = '10.0.0.29';
-const port = 81;
-const protocol = 'ws';
+// const host = '10.0.0.29';
+// const port = 81;
+// const protocol = 'ws';
 
 // root of api
 const api = '/rainbow-forest/api/v1';
