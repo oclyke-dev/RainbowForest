@@ -4,12 +4,9 @@
 */
 
 import {
-  HSV
-} from './../animations/animations';
-
-import {
+  HSV,
   GradientEntry,
-} from './../hooks/useGradient';
+} from './../../../common/gradient';
 
 var convert = require('color-convert');
 

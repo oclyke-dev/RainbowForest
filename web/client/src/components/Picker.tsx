@@ -37,7 +37,13 @@ const Picker = () => {
 
   const signalColorChange: ColorChangeHandler  = (color, e) => {
     setPickerColor(color.hex);
-    const event = new CustomEvent('color-picker-change', {detail: {color}});
+    const event = new CustomEvent('color-picker-change', {detail: {color, complete: false}});
+    window.dispatchEvent(event);
+  }
+
+  const signalColorChangeComplete: ColorChangeHandler  = (color, e) => {
+    setPickerColor(color.hex);
+    const event = new CustomEvent('color-picker-change', {detail: {color, complete: true}});
     window.dispatchEvent(event);
   }
 
@@ -47,6 +53,7 @@ const Picker = () => {
         <HuePicker
           color={picker_color}
           onChange={signalColorChange}
+          onChangeComplete={signalColorChangeComplete}
         />
 
       {/* <AlphaPicker

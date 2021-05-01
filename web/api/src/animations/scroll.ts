@@ -10,12 +10,14 @@ import {
 import {
   sampleGradient_HSV,
   sampleGradient_RGB, 
-} from './../hooks/useGradient';
+} from './../../../common/gradient';
+
+import staff from './../../../common/staff';
 
 var convert = require('color-convert');
 
-const rainbow: AnimationFormat = {
-  name: 'diamond',
+const scroll: AnimationFormat = {
+  name: 'scroll',
   ani: (ts, dims) => {
 
     const max_freq = 0.1;
@@ -26,12 +28,9 @@ const rainbow: AnimationFormat = {
     let colors = [...new Array(dims.width)].map((col, x) => {
       return [...new Array(dims.height)].map((row, y) => {
 
-        const lrp = Math.abs(x - 7.5)/dims.width;
-        const udp = Math.abs(y - 3)/dims.height;
-        let tp = lrp + udp;
-        tp = (tp + phase) % 1;
-        
-        const c = sampleGradient_RGB(tp);
+        const lrp = x/dims.width;
+        const tp = (lrp + phase) % 1;
+        const c = sampleGradient_RGB(staff.gradient(), tp);
 
         return convert.rgb.hex([c.r, c.g, c.b]);
       });
@@ -40,4 +39,4 @@ const rainbow: AnimationFormat = {
   }
 };
 
-export default rainbow;
+export default scroll;

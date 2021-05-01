@@ -3,7 +3,7 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
-import {
+import React, {
   useRef,
   useState,
   useEffect,
@@ -24,8 +24,6 @@ import {
 
 import {
   useGradient,
-  sampleGradient_HSV,
-  sampleGradient_RGB,
 } from '../hooks/useGradient';
 
 import {
@@ -38,7 +36,10 @@ import {
 
 import {
   HSV,
-} from './../animations/animations';
+  Gradient,
+  sampleGradient_HSV,
+  sampleGradient_RGB,
+} from './../../../common/gradient';
 
 const convert = require('color-convert')
 
@@ -103,6 +104,10 @@ const GradientEditor = () => {
     selected = undefined;
   }
 
+  const sendGradientUpdateEvent = (g: Gradient) => {
+    window.dispatchEvent(new CustomEvent('gradient-change', {detail: g}));
+  }
+
   const handleDrag = (e: PointerEvent) => {
     const pos = {x: e.pageX, y: e.pageY};
     let loc = (pos.x - bounds.left) / bounds.width;
@@ -117,6 +122,7 @@ const GradientEditor = () => {
         ...prev_el,
         loc,
       }
+      sendGradientUpdateEvent(current);
       return current;
     });
   }
@@ -129,6 +135,7 @@ const GradientEditor = () => {
   // set up a listener for color changes by the color picker
   useEffect(() => {
     const handlePickerColorChange = (e: any) => {
+      const complete = e.detail.complete;
       const hex = e.detail.color.hex;
       const hsv_arr = convert.hex.hsv(hex);
       const hsv: HSV = {h: hsv_arr[0], s: hsv_arr[1], v: hsv_arr[2]};
@@ -140,6 +147,9 @@ const GradientEditor = () => {
         current[selected] = {
           ...prev[selected],
           color: hsv,
+        }
+        if(complete){
+          sendGradientUpdateEvent(current);
         }
         return current;
       });
@@ -164,7 +174,8 @@ const GradientEditor = () => {
 
           setGradient(prev => {
             const current = [...prev];
-            current.push({color: sampleGradient_HSV(loc), loc, flags: {hover: false}});
+            current.push({color: sampleGradient_HSV(gradient, loc), loc, flags: {hover: false}});
+            sendGradientUpdateEvent(current);
             return current;
           });
         }}
@@ -183,7 +194,7 @@ const GradientEditor = () => {
         backgroundColor: convert.hsv.hex([c.h, c.s, c.v]),
       }
 
-      return <>
+      return <React.Fragment key={`gradient_editor.handle.${idx}`}>
         <Box 
           className={classes.handle}
           style={style} 
@@ -211,8 +222,9 @@ const GradientEditor = () => {
               }
               let current = [...prev];
               current.splice(idx, 1);
+              sendGradientUpdateEvent(current);
               return current;
-            });
+            });            
           }}
         >
           <CloseIcon />
@@ -220,7 +232,7 @@ const GradientEditor = () => {
       </>}
 
         </Box>
-      </>
+      </React.Fragment>
     })}      
     </div>
   </>

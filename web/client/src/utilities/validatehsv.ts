@@ -5,7 +5,7 @@
 
 import {
   HSV,
-} from './../animations/animations';
+} from './../../../common/gradient';
 
 export const validateHSV = (src: HSV[]): HSV[] => {
   return src.map(c => {

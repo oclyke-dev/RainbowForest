@@ -12,13 +12,35 @@ import Message, {
   StaffFormat,
 } from './message';
 
+import {
+  examples,
+} from './examples';
+
+import {
+  Gradient,
+  initial_gradient,
+} from './gradient';
+
 type StaffEvents = 'change';
 type EventHandler = (staff: Staff) => void;
+
+enum Color {
+  off = '000000',
+  white = 'ffffff',
+};
+
+const now = () => {
+  return `todo: timestamp`;
+}
 
 export class Staff {
   readonly width: number;
   readonly height: number;
   private _data: StaffData;
+  example: null | number;
+  playhead: null | number;
+  private _gradient: Gradient;
+
 
   handlers: {
     [E in StaffEvents]?: EventHandler[]
@@ -30,11 +52,15 @@ export class Staff {
     this._data = [...new Array(this.width)].map(() => {
       return [...new Array(this.height)].map(() => {
         return {
-          color: '#ffffff',
+          color: Color.off,
           note: 0,
         }
       })
     });
+
+    this.example = null;
+    this.playhead = null;
+    this._gradient = initial_gradient;
 
     this.handlers = {}
   }
@@ -50,8 +76,12 @@ export class Staff {
   //   this.handlers[key]?.forEach(h => h(this));
   // }
 
+  gradient(){
+    return this._gradient;
+  }
+
   column (idx: number) {
-    return this._data[idx]
+    return this.data()[idx]
   }
 
   at (idc: number, idr: number) {
@@ -62,8 +92,47 @@ export class Staff {
     return [...new Array(this.width)].map((e, idc) => { return this.column(idc)[idx]; })
   }
 
+  // this data accessor function allows us to 'compose' new colors on top of the stored node colors (for example to show the playhead and example songs...)
   data () {
-    return this._data;
+
+    // expand without references!
+    let composed = this._data.map(col => {
+      return col.map(entry => {
+        return {...entry}
+      })
+    });
+
+    // add example song
+    if(this.example !== null){
+      let column = 0;
+      let row = 0;
+      examples[this.example].colors.forEach((c) => {
+        if(c){
+          composed[column][row] = {
+            ...composed[column][row],
+            color: c,
+          }
+        }
+
+        column += 1;
+        if(column >= this.width){
+          row += 1;
+          column = 0;
+        }
+      });
+    }
+
+    // add playhead
+    if(this.playhead !== null){
+      composed[this.playhead].forEach((e, idx) => {
+        composed[(this.playhead as any)][idx] = {
+          ...e,
+          color: Color.white,
+        }
+      })
+    }
+
+    return composed;
   }
 
   setEntry (data: EntryFormat) {
@@ -108,6 +177,49 @@ export class Staff {
     // this.dispatchEvent('change');
   }
 
+  // generate an update message in response
+  handleRequest(msg: Message) {
+    let response: Message = {
+      id: {
+        name: 'server',
+      },
+      timestamp: now(),
+    }
+
+    if(msg.request){
+      response.update = {};
+      if(msg.request.staff){
+        response.update.staff = staff.data();
+      }
+      if(msg.request.columns){
+        response.update.columns = [];
+        msg.request.columns.forEach(c => {
+          if(!response.update){ throw new TypeError('this should not happen - update'); }
+          if(!response.update.columns){ throw new TypeError('this should not happen - columns'); }
+          response.update.columns.push({column: c.column, entries: staff.column(c.column)});
+        });
+      }
+      if(msg.request.entries){
+        response.update.entries = [];
+        msg.request.entries.forEach(e => {
+          if(!response.update){ throw new TypeError('this should not happen - update'); }
+          if(!response.update.entries){ throw new TypeError('this should not happen - entries'); }
+          response.update.entries.push({column: e.column, row: e.row, entry: staff.at(e.column, e.row)});
+        });
+      }
+      if(typeof msg.request.playhead !== 'undefined'){
+        response.update.playhead = this.playhead;
+      }
+      if(typeof msg.request.example !== 'undefined'){
+        response.update.example = this.example;
+      }
+      if(typeof msg.request.gradient !== 'undefined'){
+        response.update.gradient = this.gradient();
+      }
+    }
+    return response;
+  }
+
   handleUpdate (msg: Message) {
     if(msg.update){
       if(msg.update.staff){
@@ -123,7 +235,33 @@ export class Staff {
           this.setEntry(e);
         });
       }
+      if(typeof msg.update.playhead !== 'undefined'){
+        this.playhead = msg.update.playhead;
+      }
+      if(typeof msg.update.example !== 'undefined'){
+        this.example = msg.update.example;
+      }
+      if(msg.update.gradient){
+        if(msg.update.gradient.length >= 2){
+          this._gradient = msg.update.gradient;
+        }
+      }
     }
+  }
+
+  // send all staff data (public interface)
+  makePublicUpdate() {
+    const msg: Message = {
+      id: {
+        name: 'server',
+      },
+      timestamp: now(),
+      update: {
+        staff: staff.data(),
+        gradient: this.gradient(),
+      }
+    };
+    return msg;
   }
 }
 

@@ -3,6 +3,8 @@
 // file 'LICENSE.md', which is part of this source code package.
 */
 
+import { Gradient } from "./gradient";
+
 export type EntryData = {
   color?: string,
   note?: number,
@@ -25,6 +27,9 @@ export type Domain = {
   staff?: StaffFormat,
   columns?: ColumnFormat[],
   entries?: EntryFormat[],
+  playhead?: null | number,
+  example?: null | number,
+  gradient?: Gradient,        // colors used for the animation
 }
 
 export type ID = {

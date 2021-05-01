@@ -82,9 +82,14 @@ void wifi_event_handler(WiFiEvent_t event){
 }
 
 void private_ws_event_handler(WStype_t type, uint8_t * payload, size_t length) {
+  static size_t disconnected_count = 0;
   switch(type) {
     case WStype_DISCONNECTED:
       DEBUG_PORT.printf("[WSc] Disconnected!\n");
+      disconnected_count += 1;
+      if(disconnected_count > 10){
+        ESP.restart();
+      }
       break;
       
     case WStype_CONNECTED:

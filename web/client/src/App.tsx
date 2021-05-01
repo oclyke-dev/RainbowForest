@@ -38,7 +38,7 @@ import {
 
 import {
   examples
-} from './components/Staff';
+} from './../../common/examples';
 
 const useStyles = makeStyles((theme) => ({
   root: {},

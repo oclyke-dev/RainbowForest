@@ -14,12 +14,6 @@ import {
   Box,
   Button,
   Tooltip,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
 } from '@material-ui/core';
 import {
   ToggleButton,
@@ -30,7 +24,7 @@ import {
 } from '@material-ui/core/styles';
 
 import {
-  playColumn,
+  playColumn as audioPlayColumn,
   period,
 } from './../audio';
 
@@ -45,11 +39,6 @@ import Volume from './../components/Volume';
 import Speed from './../components/Speed';
 
 import {
-  setAnimation,
-  animations,
-} from '../animations/animations';
-
-import {
   socket
 } from './../utilities/interface';
 
@@ -60,6 +49,7 @@ import {
 import {
   Message,
   messageToString,
+  StaffFormat,
 } from './../../../common/message';
 
 import {
@@ -78,98 +68,10 @@ export type StaffType = Entry[][];
 type StaffProps = {
 }
 
-type ExampleID = '1' | '2' | '3' | '4' | '5';
-type Example = {
-  name: string,
-  colors: (string | null)[],
-};
-
-const N = null;
-const T = 'ffff00';
-const F = '00ff00';
-const P = '0000ff';
-const G = 'ff0000';
-
-export const examples: Example[] = [
-  {
-    name: 'axelf',
-    colors: [
-      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, T, N, N, N, T, N,
-      /* 5 (A) */  N, N, N, N, N, T, T, N, N, N, N, N, N, N, N, N,
-      /* 4 (G) */  N, N, T, N, N, N, N, N, N, N, N, N, N, N, N, T,
-      /* 3 (F) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 2 (E) */  T, N, N, N, T, N, N, N, T, N, N, N, T, N, N, N,
-      /* 1 (D) */  N, N, N, N, N, N, N, T, N, N, N, N, N, N, N, N,
-      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, T, N, N, 
-      ]
-  },
-  {
-    name: 'pokemon level up',
-    colors: [
-      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 5 (A) */  N, N, N, N, N, N, N, N, G, G, G, N, N, N, N, N,
-      /* 4 (G) */  G, N, N, N, G, G, G, N, N, N, N, N, N, G, G, G,
-      /* 3 (F) */  N, G, N, G, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 2 (E) */  N, N, G, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
-    ]
-  },
-  {
-    name: 'funkytown',
-    colors: [
-      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, F, N, N, N, N, N,
-      /* 5 (A) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 4 (G) */  F, F, N, F, N, N, N, N, F, N, N, F, N, N, N, N,
-      /* 3 (F) */  N, N, F, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 1 (D) */  N, N, N, N, N, F, N, F, N, N, N, N, N, N, N, N,
-      /* 0 (C) */  N, N, N, N, N, N, N, N, N, F, N, N, N, N, N, N, 
-    ]
-  },
-  {
-    name: 'mii shop channel',
-    colors: [
-      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-      /* 6 (B) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 5 (A) */  N, N, P, N, N, P, N, N, N, N, N, N, N, N, N, N,
-      /* 4 (G) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 3 (F) */  P, N, N, N, N, N, N, P, N, N, N, N, N, N, N, N,
-      /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 1 (D) */  N, N, N, P, N, N, N, N, P, P, P, N, N, N, N, N,
-      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
-    ]
-  },
-  {
-    name: 'somewhere over the rainbow',
-    colors: [
-      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-      /* 6 (B) */  N, N, N, N, N, N, N, N, F, N, N, N, F, N, N, N,
-      /* 5 (A) */  N, N, N, N, N, N, N, N, N, N, N, F, N, N, N, N,
-      /* 4 (G) */  F, N, N, N, N, N, N, N, N, N, F, N, N, N, N, N,
-      /* 3 (F) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 2 (E) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 0 (C) */  N, N, N, N, F, N, N, N, N, N, N, N, N, N, F, N, 
-    ]
-  },
-  {
-    name: 'jurassic park',
-    colors: [
-      /*           0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 */
-      /* 6 (B) */  T, N, T, N, N, N, N, N, T, N, T, N, N, N, N, N,
-      /* 5 (A) */  N, T, N, N, N, N, N, N, N, T, N, N, N, N, N, N,
-      /* 4 (G) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 3 (F) */  N, N, N, N, T, N, N, N, N, N, N, N, T, N, N, N,
-      /* 2 (E) */  N, N, N, N, N, N, T, N, N, N, N, N, N, N, T, N,
-      /* 1 (D) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
-      /* 0 (C) */  N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, 
-    ]
-  },
-];
+import {
+  ExampleID,
+} from './../../../common/examples';
+import { useGradient } from '../hooks/useGradient';
 
 const useStyles = makeStyles((theme) => ({
   staff: {
@@ -224,11 +126,11 @@ let timeout: NodeJS.Timeout;
 
 type PlayState = {
   playing: boolean, // whether we are running or not
-  next: number,     // next column to play
+  idx: number,     // column that is playing
 }
 const initial_state: PlayState = {
   playing: false,
-  next: 1,
+  idx: 0,
 };
 
 let debounce = {
@@ -240,6 +142,8 @@ const Staff = (props: StaffProps) => {
   const classes = useStyles();
   const [display, setDisplay] = React.useState<DisplayTypes>('notes');
   const [state, setState] = React.useState<PlayState>(initial_state);
+  const state_ref = useRef(state);
+  state_ref.current = state;
 
   const [value, setValue] = React.useState('female');
 
@@ -248,13 +152,23 @@ const Staff = (props: StaffProps) => {
   };
 
   const [authorized] = useAuth();
+  const authorized_ref = useRef(authorized);
+  authorized_ref.current = authorized;
 
-  const [staff, setStaff] = useState<StaffType>([]);
+  const [gradient, setGradient] = useGradient();
+  const gradient_ref = useRef(gradient);
+  gradient_ref.current = gradient;
+
+  const [staff, setStaff] = useState<StaffFormat>([]);
   socket.onmessage = (e) => {
-    const msg = JSON.parse(e.data) as any;
-    // console.log(msg.update.staff)
-    if(msg.update.staff){
-      setStaff(msg.update.staff);
+    const msg = JSON.parse(e.data) as Message;
+    if(msg.update){
+      if(msg.update.staff){
+        setStaff(msg.update.staff);
+      }
+      if(msg.update.gradient){
+        setGradient(msg.update.gradient);
+      }
     }
   };
   const staff_ref = useRef(staff);
@@ -263,19 +177,52 @@ const Staff = (props: StaffProps) => {
   const total_cols = staff.length + 1;
   const col_width = `${(100/total_cols)}%`;
 
+  const isColumnHighlighted = (idc: number) => {
+    const state = state_ref.current;
+    const playing = state.playing;
+    if(!playing){ return false; }
+    if(state.idx === idc){ return true; }
+    return false;
+  }
+
+  const updatePlayhead = (ph: number | null) => {
+    // update the playhead
+    if(socket){
+      const update: Message = {
+        timestamp: 'todo timestamp',
+        id: {
+          name: 'client',
+        },
+        auth_key: truth,
+        update: {
+          playhead: ph,
+        }
+      }
+      socket.send(messageToString(update));
+    }
+  }
+
+  const playColumn = (idx: number) => {
+    if(isColumnHighlighted(idx)){
+      updatePlayhead(idx);
+    }
+    audioPlayColumn(staff_ref.current[idx].map(e => ((e.note) ? e.note : 0)));
+  }
+  
   const advancePlaying = () => {
     setState(prev => {
       let update = {...prev};
-      const current = prev.next;
-      
-      playColumn(staff_ref.current[current].map(e => e.note));
+      const last = prev.idx;
+
+      update.idx = last + 1;
+      if(update.idx >= staff_ref.current.length){
+        update.idx = 0;
+      }
+
+      playColumn(update.idx);
       clearTimeout(timeout);
       timeout = setTimeout(advancePlaying, period);
 
-      update.next = prev.next + 1;
-      if(update.next >= staff_ref.current.length){
-        update.next = 0;
-      }
       return update;
     });
   }
@@ -305,59 +252,31 @@ const Staff = (props: StaffProps) => {
     });
 
     if(play){
-      advancePlaying();
+      playColumn(state_ref.current.idx);
       timeout = setTimeout(advancePlaying, period);
+    }else{
+      updatePlayhead(null);
     }
   }
 
-  const setStaffColors = (colors: string[][]) => {
-    if(colors.length !== staff.length){ return; }
-    colors.forEach((e, idx) => {
-      if(colors[idx].length !== staff[idx].length){ return; }
-    });
-
-    setStaff((prev) => {
-      let current = [...prev];
-
-      colors.forEach((c, idc) => {
-        c.forEach((color, idr) => {
-          current[idc][idr].color = color;
-        });
-      });
-
-      if(authorized){
-        // send updated colors to sensor columns
-        let msg: Message = {
-          timestamp: 'todo: timestamp',
-          auth_key: truth,
-          id: {
-            name: 'client'
-          },
-          update: {
-            columns: current.map((col, x) => ({column: x, entries: col})),
-          }
-        }
-        socket.send(messageToString(msg));
-      }
-
-      return current;
-    });
-  }
-
   const showExampleSong = (id: ExampleID) => {
-    console.log('showing example song: ', id);
-    const example = examples[Number(id) - 1];
-    let converted: (string | null)[][] = [...new Array(16)].map(() => []);
-
-    let column = 0;
-    example.colors.forEach((c) => {
-      converted[column].push(c)
-      column += 1;
-      if(column >= 16){
-        column = 0;
+    // console.log('showing example song: ', id);
+    if(authorized_ref.current){
+      // send updated colors to sensor columns
+      let msg: Message = {
+        timestamp: 'todo: timestamp',
+        auth_key: truth,
+        id: {
+          name: 'client'
+        },
+        update: {
+          example: (Number(id) - 1),
+        }
       }
-    });
-    setStaffColors(converted);
+      socket.send(messageToString(msg));
+    }else{
+      console.warn('not authorized')
+    }
   }
 
   useEffect(() => {
@@ -401,13 +320,29 @@ const Staff = (props: StaffProps) => {
       showExampleSong(e.detail);
     }
 
+    const handleGradientChange = (e: any) => {
+      const msg: Message = {
+        timestamp: 'todo timestamp',
+        id: {
+          name: 'client',
+        },
+        auth_key: truth,
+        update: {
+          gradient: e.detail,
+        }
+      }
+      socket.send(messageToString(msg));
+    }
+
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('example-request', handleExampleRequest);
+    window.addEventListener('gradient-change', handleGradientChange);
     
     return () => {
       // cleanup function
       window.removeEventListener('keydown', handleKeydown);
-      window.removeEventListener('example-request', handleExampleRequest)
+      window.removeEventListener('example-request', handleExampleRequest);
+      window.removeEventListener('gradient-change', handleGradientChange);
     }
   
   }, [])
@@ -431,7 +366,7 @@ const Staff = (props: StaffProps) => {
       return <Box key={`staff.column.${idc}`} className={classes.column} style={{width: col_width, height: col_width}}>
       { column.map((entry, idr) => {
 
-        const color = (display === 'colors') ? entry.color : note_color_map[entry.note]
+        const color = (display === 'colors') ? `#${entry.color}` : note_color_map[(entry.note) ? entry.note : 0];
 
         return <Box key={`staff.column.${idc}.row.${idr}`} className={classes.note} style={{backgroundColor: color}}>
         </Box> }).reverse()}
@@ -443,7 +378,7 @@ const Staff = (props: StaffProps) => {
       <Box className={classes.staff}>
         <Box className={classes.column} style={{width: col_width, height: col_width}}></Box>
       {staff.map((column, idc) => {
-        const highlighted = (((state.next - 1) === idc));
+        const highlighted = isColumnHighlighted(idc);
         return <Box key={`staff.progress.${idc}`} className={`${classes.column} ${classes.indicator} ${highlighted && classes.highlight}`} style={{width: col_width}}>
           {/* {idc} */}
         </Box>
@@ -497,7 +432,11 @@ const Staff = (props: StaffProps) => {
       {/* gradient editor */}
     {(display === 'colors') && <>
       <Box display='flex' flexDirection='column' justifyContent='space-around' flexGrow={1}>
+
+      { authorized && <>
         <GradientEditor/>
+      </>}
+
       </Box>
     </>}
 
@@ -535,37 +474,9 @@ const Staff = (props: StaffProps) => {
 
 
   {(display === 'colors') && <>
-    <Picker />
-
-
-
-    <FormControl component='fieldset'>
-      <FormLabel component='legend'>pattern</FormLabel>
-      <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handlePatternChange}>
-    {animations.map((a, idx) => {
-
-      const handleSelect = () => {
-        const animation = a.ani;
-        if(animation){
-          setAnimation((ts) => {
-            setStaffColors(animation(ts, {width: staff.length, height: staff[0].length}));
-          })
-        }else{
-          setAnimation(undefined);
-        }
-      }
-
-      return <>
-        <FormControlLabel value={a.name} control={<Radio onClick={handleSelect}/>} label={a.name} />
-      </>
-    })}
-      </RadioGroup>
-    </FormControl>
-
-    <Box display='flex' flexWrap='wrap'>
-
-    </Box>
-
+    { authorized && <>
+      <Picker />
+    </>}
   </>}
 
   </>

@@ -15,6 +15,11 @@ import Message, {
   EntryData,
 } from '../../common/message';
 
+import {
+  fps_period,
+  animations,
+} from './animations/animations';
+
 const private_wss = new WebSocket.Server({ noServer: true });
 const public_wss = new WebSocket.Server({ noServer: true });
 
@@ -43,13 +48,6 @@ private_wss.on('connection', (ws) => {
     column_clients[col] = {alive: true, ws};
     rpi_client = {alive: true, ws};
 
-    let response: Message = {
-      id: {
-        name: 'server',
-      },
-      timestamp: now(),
-    }
-
     // handle updates
     if(msg.update){
       try {
@@ -71,8 +69,8 @@ private_wss.on('connection', (ws) => {
           });
         }      
   
-        staff.handleUpdate(msg);  // <-- update the staff data by this message
-        updatePublicStaff(staff); // <-- send updated staff over public interface
+        staff.handleUpdate(msg);                // <-- update the staff data by this message
+        updatePublic(staff.makePublicUpdate()); // <-- send updated staff over public interface
       } catch (err) {
         debug.error(err);
       }
@@ -81,28 +79,7 @@ private_wss.on('connection', (ws) => {
 
     // handle requests
     if(msg.request){
-      response.update = {};
-      if(msg.request.staff){
-        debug.error('column controllers cannot request whole staff updates');
-      }
-      if(msg.request.columns){
-        response.update.columns = [];
-        msg.request.columns.forEach(c => {
-          if(!response.update){ throw new TypeError('this should not happen - update'); }
-          if(!response.update.columns){ throw new TypeError('this should not happen - columns'); }
-          if(c.column !== col){ throw new TypeError('a column controller cannot request updates for other columns'); }
-          response.update.columns.push({column: c.column, entries: staff.column(c.column)});
-        });
-      }
-      if(msg.request.entries){
-        response.update.entries = [];
-        msg.request.entries.forEach(e => {
-          if(!response.update){ throw new TypeError('this should not happen - update'); }
-          if(!response.update.entries){ throw new TypeError('this should not happen - entries'); }
-          if(e.column !== col){ throw new TypeError('a column controller cannot request updates for other columns'); }
-          response.update.entries.push({column: e.column, row: e.row, entry: staff.at(e.column, e.row)});
-        });
-      }
+      const response = staff.handleRequest(msg);
       ws.send(messageToString(response));
     }
   }); 
@@ -120,35 +97,9 @@ public_wss.on('connection', (ws) => {
       return;
     }
 
-    let response: Message = {
-      id: {
-        name: 'server',
-      },
-      timestamp: now(),
-    }
-
     // handle requests
     if(msg.request){
-      response.update = {};
-      if(msg.request.staff){
-        response.update.staff = staff.data();
-      }
-      if(msg.request.columns){
-        response.update.columns = [];
-        msg.request.columns.forEach(c => {
-          if(!response.update){ throw new TypeError('this should not happen - update'); }
-          if(!response.update.columns){ throw new TypeError('this should not happen - columns'); }
-          response.update.columns.push({column: c.column, entries: staff.column(c.column)});
-        });
-      }
-      if(msg.request.entries){
-        response.update.entries = [];
-        msg.request.entries.forEach(e => {
-          if(!response.update){ throw new TypeError('this should not happen - update'); }
-          if(!response.update.entries){ throw new TypeError('this should not happen - entries'); }
-          response.update.entries.push({column: e.column, row: e.row, entry: staff.at(e.column, e.row)});
-        });
-      }
+      const response = staff.handleRequest(msg);
       ws.send(messageToString(response));
     }
 
@@ -159,38 +110,28 @@ public_wss.on('connection', (ws) => {
 
           // handle full staff updates
           if(msg.update.staff){
-            debug.error('full staff updates are not handled for client --> sensor', new Date().toString())
+            throw new Error(`full staff updates are not handled for client --> sensor ${new Date().toString()}`);
           }
 
           // handle column updates
           if(msg.update.columns){
-
-            // copy the color data into the model
-            msg.update.columns.forEach((col, x) => {
-              col.entries.forEach((row, y) => {
-                staff.setEntry({row: y, column: x, entry: {color: row.color, note: undefined}});
-              });
-            });
-
-            // change id of message
-            let fwd: Message = {
-              ...msg,
-              id: {
-                name: 'server'
-              }
-            }
-
-            // fwd to the rpi (who will then fwd to the sensors)
-            if(rpi_client){
-              if(rpi_client.ws){
-                rpi_client.ws.send(messageToString(fwd))
-              }
-            }
+            throw new Error(`column updates are not handled for client --> sensor ${new Date().toString()}`);
           }
 
           // handle entry updates
           if(msg.update.entries){
-            debug.error('entry updates are not handled for client --> sensor', new Date().toString())
+            throw new Error(`entry updates are not handled for client --> sensor ${new Date().toString()}`);
+          }
+
+          // handle the update and send over public interfaces
+          staff.handleUpdate(msg);
+          updatePublic(staff.makePublicUpdate());
+
+          // fwd to the rpi (who will then fwd to the sensors)
+          if(rpi_client){
+            if(rpi_client.ws){
+              rpi_client.ws.send(messageToString(staff.makePublicUpdate()))
+            }
           }
 
         }else{
@@ -202,6 +143,10 @@ public_wss.on('connection', (ws) => {
     }
 
   });
+
+  // send immediate update
+  updatePublic(staff.makePublicUpdate());
+
 });
 
 // handle authorization
@@ -255,15 +200,34 @@ export const updatePublic = (msg: Message) => {
   });
 }
 
-export const updatePublicStaff = (staff: Staff) => {
-  const msg: Message = {
-    id: {
-      name: 'server',
-    },
-    timestamp: now(),
-    update: {
-      staff: staff.data(),
-    }
-  };
-  updatePublic(msg);
+export const startAnimation = () => {
+  const animation = animations[1];
+
+  if(animation){
+    setInterval(() => {
+      if(animation.ani){
+        const colors = animation.ani(Date.now(), { width: staff.width, height: staff.height });
+        
+        const update: Message = {
+          timestamp: 'todo timestamp',
+          id: {
+            name: 'server',
+          },
+          update: {
+            staff: colors.map(col => {
+              return col.map(color => {
+                return {
+                  color,
+                }
+              })
+            })
+          }
+        }
+
+        staff.handleUpdate(update);
+        updatePublic(staff.makePublicUpdate());
+
+      }
+    }, fps_period);
+  }
 }

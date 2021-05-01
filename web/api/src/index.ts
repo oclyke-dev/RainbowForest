@@ -10,6 +10,10 @@ import {
   upgrade as transportUpgrade,
 } from './api';
 
+import {
+  startAnimation,
+} from './api';
+
 // server settings
 const PORT = 81;
 
@@ -38,3 +42,6 @@ server.listen(PORT, () => {
   }
   console.log(`listening on *:${port}`);
 });
+
+// start animation
+startAnimation();
