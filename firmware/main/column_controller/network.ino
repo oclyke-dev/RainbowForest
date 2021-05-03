@@ -77,11 +77,12 @@ void wifi_event_handler(WiFiEvent_t event){
   case SYSTEM_EVENT_STA_DISCONNECTED:
     DEBUG_PRINTF(("WiFi disconnected\n"));
     clearColors();
-#ifdef NETWORK_PASSWORD
-    WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
-#else
-    WiFi.begin(NETWORK_SSID);
-#endif
+// #ifdef NETWORK_PASSWORD
+//     WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
+// #else
+//     WiFi.begin(NETWORK_SSID);
+// #endif
+    ESP.restart();
     break;
     
   default:
