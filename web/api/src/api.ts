@@ -230,7 +230,7 @@ export const startAnimation = () => {
 
         if(rpi_client)
         if(rpi_client.ws){
-          rpi_client.ws.send(public_update);
+          rpi_client.ws.send(messageToString(public_update));
         }
 
       }
