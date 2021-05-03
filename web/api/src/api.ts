@@ -12,6 +12,8 @@ import staff, { Staff } from '../../common/staff';
 import Message, {
   messageToString,
   strAsMessage,
+  ColumnFormat,
+  ColumnData,
   EntryData,
 } from '../../common/message';
 
@@ -29,6 +31,7 @@ let rpi_client: (null | {alive: boolean, ws: WebSocket}) = null;
 private_wss.on('connection', (ws) => {
   // cache the rpi client (assume any connection on private endpoint is the rpi)
   rpi_client = {alive: true, ws};
+  console.log('rpi connected + cached');
 
   ws.on('message', (str: string) => {
     const msg = strAsMessage(str);
@@ -230,7 +233,32 @@ export const startAnimation = () => {
 
         if(rpi_client)
         if(rpi_client.ws){
-          rpi_client.ws.send(messageToString(public_update));
+          // need to convert this animation update to the format that is handled by the columns (they only accept column updates... ugh)
+          
+
+          let columns: ColumnFormat[] = [];
+          if(public_update.update){
+            if(public_update.update.staff){
+              columns = public_update.update.staff.map((col, idx) => {
+                return {
+                  column: idx,
+                  entries: col,
+                };
+              })
+            }
+          }
+          
+          let rpi_update : Message = {
+            timestamp: 'todo timestamp',
+            id: {
+              name: 'server',
+            },
+            update: {
+              columns,
+            }
+          }
+          
+          rpi_client.ws.send(messageToString(rpi_update));
         }
 
       }
