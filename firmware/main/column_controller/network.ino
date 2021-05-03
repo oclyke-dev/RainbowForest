@@ -76,6 +76,7 @@ void wifi_event_handler(WiFiEvent_t event){
     
   case SYSTEM_EVENT_STA_DISCONNECTED:
     DEBUG_PRINTF(("WiFi disconnected\n"));
+    clearColors();
 #ifdef NETWORK_PASSWORD
     WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
 #else
@@ -95,6 +96,7 @@ void private_ws_event_handler(WStype_t type, uint8_t * payload, size_t length) {
     case WStype_DISCONNECTED:
       DEBUG_PORT.printf("[WSc] Disconnected!\n");
       disconnected_count += 1;
+      clearColors()
       if(disconnected_count > 10){
         ESP.restart();
       }
