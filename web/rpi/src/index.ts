@@ -45,9 +45,11 @@ try {
   const incoming_wss = new WebSocket.Server({ noServer: true });
   incoming_wss.on('connection', (ws) => {
     ws.on('message', (str: string) => {
-      debug.verbose(`received: ${str}`);
+      
       const msg: Message = strAsMessage(str);
       const col_number = Number(msg.id.extra);
+      debug.verbose(`received msg from column ${col_number}:`, msg);
+      
       if(!isNaN(col_number) && (col_number < column_clients.length)){
         const cache = {alive: true, ws};
         column_clients[col_number] = cache;
