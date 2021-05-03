@@ -5,9 +5,7 @@
 
 #include "Arduino.h"
 
-StaticJsonDocument<4096> doc;
-
-
+StaticJsonDocument<8192> doc;
 
 void parseUpdate (const char* msg) {
   // DEBUG_PRINTF(("parsing update: %s\n", msg));
