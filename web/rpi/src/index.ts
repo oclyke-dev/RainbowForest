@@ -48,12 +48,12 @@ try {
       
       const msg: Message = strAsMessage(str);
       const col_number = Number(msg.id.extra);
-      debug.verbose(`received msg from column ${col_number}:`, msg);
+      // debug.verbose(`received msg from column ${col_number}:`, msg);
       
       if(!isNaN(col_number) && (col_number < column_clients.length)){
         const cache = {alive: true, ws};
         column_clients[col_number] = cache;
-        debug.verbose(`caching column client ${col_number} (${cache.ws})`);
+        // debug.verbose(`caching column client ${col_number} (${cache.ws})`);
       }
       outgoing_wss.send(str);
     }); 
