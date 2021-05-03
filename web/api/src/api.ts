@@ -225,7 +225,13 @@ export const startAnimation = () => {
         }
 
         staff.handleUpdate(update);
-        updatePublic(staff.makePublicUpdate());
+        const public_update = staff.makePublicUpdate();
+        updatePublic(public_update);
+
+        if(rpi_client)
+        if(rpi_client.ws){
+          rpi_client.ws.send(public_update);
+        }
 
       }
     }, fps_period);
