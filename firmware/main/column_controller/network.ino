@@ -27,7 +27,11 @@ const char* private_end = "/private";
 
 void init_network ( void ){
   WiFi.onEvent(wifi_event_handler);
+#ifdef NETWORK_PASSWORD
   WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
+#else
+  WiFi.begin(NETWORK_SSID);
+#endif
 
   private_ws.setExtraHeaders(PRIVATE_AUTH_HEADER);
   private_ws.onEvent(private_ws_event_handler);
@@ -72,7 +76,11 @@ void wifi_event_handler(WiFiEvent_t event){
     
   case SYSTEM_EVENT_STA_DISCONNECTED:
     DEBUG_PRINTF(("WiFi disconnected\n"));
+#ifdef NETWORK_PASSWORD
     WiFi.begin(NETWORK_SSID, NETWORK_PASSWORD);
+#else
+    WiFi.begin(NETWORK_SSID);
+#endif
     break;
     
   default:
