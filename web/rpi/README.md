@@ -71,7 +71,7 @@ yarn build
 ### start pm2 with app
 sudo is important here too because it give daemons root access
 ```
-sudo pm2 start ~/.../RainbowForest/web/rpi/dist/rpi/src/index.js
+sudo pm2 start ~/.../RainbowForest/web/rpi/dist/rpi/src/index.js --name rainbow-forest-bridge
 sudo pm2 startup
 sudo pm2 save
 ```
