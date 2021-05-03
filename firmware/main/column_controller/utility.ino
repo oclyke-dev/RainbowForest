@@ -69,13 +69,9 @@ void clearColors ( void ) {
   // read colors from this column
   DEBUG_PRINTF(("clearing node colors\n"));
   for(size_t idx = 0; idx < STAFF_ROWS; idx++){
-    if(color){
-      CRGB c = CRGB(0,0,0);
-      if(sensors[idx]){
-        *sensors[idx] = c;
-      }
-    }else{
-      DEBUG_PRINTF(("'FAIL', "));
+    CRGB c = CRGB(0,0,0);
+    if(sensors[idx]){
+      *sensors[idx] = c;
     }
   }
 }
