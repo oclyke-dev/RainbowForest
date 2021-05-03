@@ -73,13 +73,23 @@ try {
     // cast to Message type
     const msg: Message = strAsMessage(data.toString());
 
+    debug.verbose('received message from server: ', msg);
+
     // handle updates (push them down to column controllers)
     if(msg.update){
+
+      debug.verbose('\tmessage is an update', msg.update);
       
       // relay updates from the server to applicable columns
       if(msg.update.columns){
-        msg.update.columns.forEach(c => {
+
+        debug.verbose('\t\tupdate has columns: ', msg.update.columns);
+
+        msg.update.columns.forEach((c, idx) => {
           const client = column_clients[c.column];
+
+          debug.verbose(`\t\t\tclient[${idx}]: `, client);
+
           if(client){
             if(client.ws){
               debug.verbose('sending update to column: ', c.column);
