@@ -96,7 +96,7 @@ void private_ws_event_handler(WStype_t type, uint8_t * payload, size_t length) {
     case WStype_DISCONNECTED:
       DEBUG_PORT.printf("[WSc] Disconnected!\n");
       disconnected_count += 1;
-      clearColors()
+      clearColors();
       if(disconnected_count > 10){
         ESP.restart();
       }
