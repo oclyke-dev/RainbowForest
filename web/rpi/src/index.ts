@@ -216,7 +216,7 @@ process.stdin.on('keypress', function (ch, key) {
     if(ch){
       const n = Number(ch);
       if(n >= 0 && n < 7){
-        playColumn([...new Array(7)].map((e, idx) => { return (n === idx) ? 1 : 0}));
+        playColumn([...new Array(7)].map((e, idx) => { return (n === idx) ? 0 : null}));
       }
     }
 });
@@ -249,11 +249,13 @@ const instruments: Instrument[] = [
 ]
 
 // play a column
-const playColumn = (col: number[]) => {
+const playColumn = (col: (number | null)[]) => {
 
   col.forEach((i, idx) => {
-    const path = instruments[i].notes[idx].path;
-    let player = spawn('omxplayer', ['--no-keys', path, '&']);
+    if(i !== null){
+      const path = instruments[i].notes[idx].path;
+      let player = spawn('omxplayer', ['--no-keys', path, '&']);
+    }
   })
 
   console.log('playing: ', col);
