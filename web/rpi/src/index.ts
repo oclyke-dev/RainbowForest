@@ -233,14 +233,14 @@ type Instrument = {
 
 let banjo: Instrument = {
   notes: [
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_C3_very-long_piano_normal.mp3'},
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_D3_very-long_piano_normal.mp3'},
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_E3_very-long_piano_normal.mp3'},
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_F3_very-long_piano_normal.mp3'},
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_G3_very-long_piano_normal.mp3'},
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_A3_very-long_piano_normal.mp3'},
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_B3_very-long_piano_normal.mp3'},
-    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_C3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_C3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_D3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_E3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_F3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_G3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_A3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_B3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_C3_very-long_piano_normal.mp3'},
   ]
 }
 
