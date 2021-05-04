@@ -15,6 +15,8 @@ import Message, {
   strAsMessage
 } from '../../common/message';
 
+const { spawn } = require('child_process');
+
 // catch any error and make sure to exit with an error code (to trigger system restart)
 try {
 
@@ -198,4 +200,66 @@ try {
 } catch {
   process.exit(1);
 }
+
+
+var keypress = require('keypress');
+// use decoration to enable stdin to start sending ya events 
+keypress(process.stdin);
+// listen for the "keypress" event
+process.stdin.on('keypress', function (ch, key) {
+    console.log('got "keypress"', key, ch);
+    if (key && key.ctrl && key.name == 'c') {
+      process.stdin.pause();
+      process.exit(0);
+    }
+
+    if(ch){
+      const n = Number(ch);
+      if(n >= 0 && n < 7){
+        playColumn([...new Array(7)].map((e, idx) => { return (n === idx) ? 1 : 0}));
+      }
+    }
+});
+
+process.stdin.setRawMode(true);
+process.stdin.resume();
+
+type Instrument = {
+  notes: {
+    path: string,
+    // buffer: AudioBuffer | undefined,
+  }[],
+}
+
+let banjo: Instrument = {
+  notes: [
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_C3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_D3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_E3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_F3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_G3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_A3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_B3_very-long_piano_normal.mp3'},
+    {path: '/home/pi/RainbowForest/web/rpi/src/assets/banjo/banjo_C3_very-long_piano_normal.mp3'},
+  ]
+}
+
+const instruments: Instrument[] = [
+  banjo,
+]
+
+// play a column
+const playColumn = (col: number[]) => {
+
+  col.forEach((i, idx) => {
+    const path = instruments[i].notes[idx].path;
+    let player = spawn('omxplayer', ['--no-keys', path, '&']);
+  })
+
+  console.log('playing: ', col);
+
+}
+
+
+
 

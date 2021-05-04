@@ -41,6 +41,7 @@ let instruments = [
   loadInstrument(percussion.notes), // 4 (cyan)
   loadInstrument(violin.notes),     // 5 (blue)
   loadInstrument(cello.notes),      // 6 -- UNUSED --
+  loadInstrument(guitar.notes),     // 7 -- UNUSED --
 ]
 
 
