@@ -260,10 +260,10 @@ const playColumn = (col: (number | null)[]) => {
       const path = instruments[i].notes[idx].path;
       let player = spawn('omxplayer', ['--no-keys', path, '&']);
       player.stdout.on('data', (data: any) => {
-        console.log(data)
+        logAsciiBuffer(data);
       })
       player.stderr.on('data', (data: any) => {
-        console.warn('error: ', data)
+        console.warn('error: ', logAsciiBuffer(data))
       })
       player.on('close', (code: any) => {
         console.log(`child process exited with code ${code}`);
