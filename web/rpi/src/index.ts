@@ -248,6 +248,10 @@ const instruments: Instrument[] = [
   banjo,
 ]
 
+const logAsciiBuffer = (b: any) => {
+  console.log(String.fromCharCode(b));
+}
+
 // play a column
 const playColumn = (col: (number | null)[]) => {
 
