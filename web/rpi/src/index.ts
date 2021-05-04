@@ -231,6 +231,8 @@ type Instrument = {
   }[],
 }
 
+const milibels = 0;
+
 let banjo: Instrument = {
   notes: [
     {path: '/home/pi/RainbowForest/web/rpi/src/assets/audio/banjo/banjo_C3_very-long_piano_normal.mp3'},
@@ -258,7 +260,7 @@ const playColumn = (col: (number | null)[]) => {
   col.forEach((i, idx) => {
     if(i !== null){
       const path = instruments[i].notes[idx].path;
-      let player = spawn('omxplayer', ['--no-keys', path, '&']);
+      let player = spawn('omxplayer', ['--no-keys', '-b', `${milibels}`, path, '&']);
       player.stdout.on('data', (data: any) => {
         logAsciiBuffer(data);
       })
