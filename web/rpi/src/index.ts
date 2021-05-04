@@ -216,7 +216,7 @@ process.stdin.on('keypress', function (ch, key) {
     if(ch){
       const n = Number(ch);
       if(n >= 0 && n < 7){
-        playColumn([...new Array(7)].map((e, idx) => { return (n === idx) ? 0 : null}));
+        playColumn([...new Array(7)].map((e, idx) => { return (n >= idx) ? 0 : null}));
       }
     }
 });
