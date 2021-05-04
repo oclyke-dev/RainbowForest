@@ -260,7 +260,7 @@ const playColumn = (col: (number | null)[]) => {
   col.forEach((i, idx) => {
     if(i !== null){
       const path = instruments[i].notes[idx].path;
-      let player = spawn('omxplayer', ['--no-keys', '-b', `${milibels}`, path, '&']);
+      let player = spawn('omxplayer', ['--no-keys', '--vol', `${milibels}`, path, '&']);
       player.stdout.on('data', (data: any) => {
         logAsciiBuffer(data);
       })
