@@ -249,7 +249,7 @@ const instruments: Instrument[] = [
 ]
 
 const logAsciiBuffer = (b: any) => {
-  console.log(String.fromCharCode(b));
+  console.log(String.fromCharCode(...b));
 }
 
 // play a column
