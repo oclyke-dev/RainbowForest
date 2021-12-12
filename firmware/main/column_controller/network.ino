@@ -9,7 +9,7 @@ IPAddress host_ip = IPAddress(0,0,0,0);
 
 #ifdef PRODUCTION
   #define HOST host_ip
-  #define PORT 81
+  #define PORT 5678
   #define MDNS_HOSTNAME "rainbow-forest-pi"
 #else
   #define HOST DEV_HOST
@@ -17,13 +17,15 @@ IPAddress host_ip = IPAddress(0,0,0,0);
   #define MDNS_HOSTNAME DEV_MDNS_HOSTNAME
 #endif // PRODUCTION
 
-#define PROTOCOL "rf"
+void sendUDP(const uint8_t* msg, size_t len) {
+  udp.beginPacket(HOST, PORT);
+  udp.write(msg, len);
+  udp.endPacket();
+}
 
-// api base url
-const char* api = "/rainbow-forest/api/v1";
-
-// private endpoint
-const char* private_end = "/private";
+void sendUDP_str(const char* msg) {
+  sendUDP((uint8_t*)msg, strlen(msg));
+}
 
 void init_network ( void ){
   WiFi.onEvent(wifi_event_handler);
@@ -33,8 +35,7 @@ void init_network ( void ){
   WiFi.begin(NETWORK_SSID);
 #endif
 
-  private_ws.setExtraHeaders(PRIVATE_AUTH_HEADER);
-  private_ws.onEvent(private_ws_event_handler);
+  udp.begin(PORT);
 }
 
 void wifi_event_handler(WiFiEvent_t event){
@@ -57,20 +58,11 @@ void wifi_event_handler(WiFiEvent_t event){
       DEBUG_PORT.print(host_ip);
       DEBUG_PORT.println();
 
-      // construct the desired endpoint
-      const size_t route_len = (strlen(api) + strlen(private_end)) + 1;
-      char route[route_len] = {'\0'};
-      strcat(route, api);
-      strcat(route, private_end);
-
 #ifdef PRODUCTION
       Serial.printf("PROD MODE - connecting to mDNS resolved host '%s' (%u.%u.%u.%u)\n", MDNS_HOSTNAME, (host_ip & 0xFF), ((host_ip>>8) & 0xFF), ((host_ip>>16) & 0xFF), ((host_ip>>24) & 0xFF));
 #else
       Serial.printf("DEV MODE - connecting directly to DEV_HOST: %s\n", HOST);
 #endif // PRODUCTION
-
-      // connect to the endpoint
-      private_ws.begin(HOST, PORT, route, PROTOCOL);
     }
     break;
     
@@ -88,48 +80,5 @@ void wifi_event_handler(WiFiEvent_t event){
   default:
     DEBUG_PRINTF(("[WiFi] event: %d\n", event));
     break;
-  }
-}
-
-void private_ws_event_handler(WStype_t type, uint8_t * payload, size_t length) {
-  static size_t disconnected_count = 0;
-  switch(type) {
-    case WStype_DISCONNECTED:
-      DEBUG_PORT.printf("[WSc] Disconnected!\n");
-      disconnected_count += 1;
-      clearColors();
-      if(disconnected_count > 10){
-        ESP.restart();
-      }
-      break;
-      
-    case WStype_CONNECTED:
-      DEBUG_PORT.printf("[WSc] Connected to url: %s\n",  payload);
-      requestColumn();
-      break;
-      
-    case WStype_TEXT:
-      parseUpdate((const char*)payload);
-      // send message to server
-      // webSocket.sendTXT("message here");
-      break;
-      
-    case WStype_BIN:
-      DEBUG_PRINTF(("[WSc] get binary length: %u\n", length));
-      // send data to server
-      // webSocket.sendBIN(payload, length);
-      break;
-      
-    case WStype_ERROR:
-      DEBUG_PRINTF(("[WSc] error: %s\n",  payload));
-      break;
-    
-    case WStype_FRAGMENT_TEXT_START:
-    case WStype_FRAGMENT_BIN_START:
-    case WStype_FRAGMENT:
-    case WStype_FRAGMENT_FIN:
-    default:
-      DEBUG_PRINTF(("[WSc] event: %d\n",  type));
-      break;
   }
 }

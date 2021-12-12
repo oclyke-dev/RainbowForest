@@ -62,7 +62,7 @@ void requestColumn (void) {
   size_t required = 1 + snprintf(NULL, 0, fmt, now, column_number, column_number);
   char msg[required] = {'\0'};
   snprintf(msg, required, fmt, now, column_number, column_number);
-  private_ws.sendTXT(msg);
+  sendUDP_str(msg);
 }
 
 
@@ -93,8 +93,8 @@ void sendRow (size_t row) {
   size_t required = 1 + snprintf(NULL, 0, fmt, now, column_number, column_number, row, val);
   char msg[required] = {'\0'};
   snprintf(msg, required, fmt, now, column_number, column_number, row, val);
-  private_ws.sendTXT(msg);
-}
+  sendUDP_str(msg);
+  }
 
 #if STAFF_ROWS == 7
 #define msg_fmt \
@@ -124,7 +124,7 @@ void sendColumn (void) {
   size_t required = 1 + snprintf(NULL, 0, msg_fmt, now, column_number, column_number, staff[0][0], staff[0][1], staff[0][2], staff[0][3], staff[0][4], staff[0][5], staff[0][6]);
   char msg[required] = {'\0'};
   snprintf(msg, required, msg_fmt, now, column_number, column_number, staff[0][0], staff[0][1], staff[0][2], staff[0][3], staff[0][4], staff[0][5], staff[0][6]);
-  private_ws.sendTXT(msg);
+  sendUDP_str(msg);
 }
 #else
 #error "sendColumn(void) is only configured to work with 7 rows - please make an implementation for your number of rows"

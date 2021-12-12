@@ -1,0 +1,7 @@
+#ifndef _NETWORK_CONFIG_H_
+#define _NETWORK_CONFIG_H_
+
+#define NETWORK_SSID "your network ssid here"
+#define NETWORK_PASSWORD "your network password here"
+
+#endif // _NETWORK_CONFIG_H_

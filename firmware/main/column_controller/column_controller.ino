@@ -8,7 +8,7 @@
 #include <Wire.h>
 #include <Preferences.h>
 #include <WiFi.h>
-#include <WebSocketsClient.h>   // WebSockets by Markus Sattler (2.x.x for ESP)
+#include <WifiUdp.h>
 #include <ESPmDNS.h>
 #include <ArduinoJson.h>
 
@@ -17,15 +17,14 @@
 #include "src/components/sensor/sensor.h"
 #include "src/components/configuration/configuration.h"
 
-#include "src/components/configuration/network_config.h" // NETWORK_SSID, NETWORK_PASSWORD, PRIVATE_AUTH_HEADER
+#include "src/components/configuration/network_config.h" // NETWORK_SSID, NETWORK_PASSWORD
 
-#define PRODUCTION // comment out to use development settings
+// #define PRODUCTION // comment out to use development settings
 
 #define CONTROLLER_COLUMN (0)   // indicates which column this controller reads (default if preferences unused)
 
-// #define DEV_HOST "10.9.13.44"   // <-- for development set this to the ip address of the machine running the translation server (this would be the raspberry pi in real life)
-#define DEV_HOST "10.0.0.29"
-#define DEV_PORT 82
+#define DEV_HOST "10.0.0.92"    // the ip address of the UDP server to drect messages to
+#define DEV_PORT 5678           // port on which the UDP server is listening, and also on which the column controller listens for control messages
 #define DEV_MDNS_HOSTNAME "rainbow-forest-pi" // '.local' get appended automatically by ESPmDNS library 
 
 // #define DEBUG_OUTPUT // uncomment to enable debug output
@@ -51,8 +50,7 @@ SensorString sensors(COLUMN_LEN, DATA_PIN, &COLUMN_WIRE_PORT);
 Staff <staff_data_t> staff;
 Staff <bool> detection_ok_staff;
 
-WebSocketsClient private_ws;
-volatile bool private_ws_active = false;
+WiFiUDP udp;
 
 Preferences preferences;
 #define PREFS_NAMESPACE "rf-col"
@@ -78,10 +76,10 @@ void setup() {
   button0_flag = false; // don't allow button presses until setup has completed
 
   // begin tasks
+  xTaskCreate(checkNetwork, "checkNetwork", 10000, NULL, 1, NULL);        // run network
   xTaskCreate(handleUserInput, "handleUserInput", 10000, NULL, 1, NULL);  // handle ISRs
   xTaskCreate(updateSensors, "updateSensors", 10000, NULL, 1, NULL);      // update sensors
 }
 
 void loop() {
-  private_ws.loop();  // feed the websocket
 }

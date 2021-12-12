@@ -59,3 +59,27 @@ void updateSensors( void* arg ){
     DEBUG_PORT.printf("]\n");
   }
 }
+
+
+void checkNetwork( void* arg ){
+  const size_t rx_buf_len = 512;
+  char udp_rx_buf[rx_buf_len];
+
+  while(1){
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+    udp.parsePacket();
+    size_t received = udp.read(udp_rx_buf, rx_buf_len);
+    if (received != 0) {
+      parseUpdate((const char*)udp_rx_buf);
+    }
+
+    // read all sensors in random sequence to make pretty blinking
+    sensors.forEachRandOrder(detectAndSend, NULL);
+
+    // print debug info
+    DEBUG_PORT.printf("Column: [ ");
+    sensors.forEach(printInfo, NULL);
+    DEBUG_PORT.printf("]\n");
+  }
+}
+
